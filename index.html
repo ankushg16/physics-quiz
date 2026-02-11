@@ -73,6 +73,7 @@
             line-height: 1.6;
             margin-bottom: 20px;
             color: #333;
+            white-space: pre-line;
         }
 
         .answer-input {
@@ -249,117 +250,220 @@
     </div>
 
     <script>
-        // Quiz data structure
+        // Quiz data structure (typed answers: A/B/C/D or simple numeric/text)
         const quizData = [
             {
-                question: "What is the condition for an operator Â to be linear?",
-                correctAnswer: "Â(α|ψ⟩ + β|φ⟩) = αÂ|ψ⟩ + βÂ|φ⟩",
-                acceptedAnswers: ["linear", "linearity preserved", "preserves linearity"],
+                question:
+                    "MCQ: Which option correctly states the condition for a linear operator A?\n\n" +
+                    "A) A(|ψ⟩|φ⟩) = A|ψ⟩ A|φ⟩\n" +
+                    "B) A(α|ψ⟩ + β|φ⟩) = αA|ψ⟩ + βA|φ⟩ for all α, β\n" +
+                    "C) A|ψ⟩ = |ψ⟩ for all |ψ⟩\n" +
+                    "D) A†A = I\n\n" +
+                    "Type: A / B / C / D",
+                correctAnswer: "B",
+                acceptedAnswers: ["b", "option b", "b)"],
                 hints: [
-                    "Think about how the operator acts on a linear combination of vectors. Does it preserve scalar multiplication and addition?",
-                    "The operator must satisfy: Â(α|ψ⟩ + β|φ⟩) = αÂ|ψ⟩ + βÂ|φ⟩ for all scalars α, β"
+                    "Linearity means the operator respects addition and scalar multiplication.",
+                    "The correct option must keep α and β outside the operator."
                 ],
-                solution: "A linear operator preserves linearity during its operation.\n\nMathematically: Â(α|ψ⟩ + β|φ⟩) = αÂ|ψ⟩ + βÂ|φ⟩\n\nThis means:\n1. The operator preserves scalar multiplication\n2. The operator preserves vector addition\n\nExample: d/dx is linear because d/dx(sin x + cos x) = d/dx(sin x) + d/dx(cos x)\nCounter-example: √ is non-linear because √(A + B) ≠ √A + √B",
+                solution:
+                    "Correct option: B.\n\n" +
+                    "A is linear if it satisfies:\n" +
+                    "A(α|ψ⟩ + β|φ⟩) = αA|ψ⟩ + βA|φ⟩ for all scalars α, β.\n\n" +
+                    "This is the combination of additivity and homogeneity.",
                 topic: "Linear Operators"
             },
             {
-                question: "For a 2×2 matrix A = [[2,1],[1,2]], what are its eigenvalues?",
-                correctAnswer: "λ = 1, 3",
-                acceptedAnswers: ["1 and 3", "3 and 1", "1, 3", "3, 1", "lambda = 1 and 3"],
+                question:
+                    "Numerical/Short: For the 2×2 matrix A = [[2,1],[1,2]], enter its eigenvalues in the format: 1,3",
+                correctAnswer: "1,3",
+                acceptedAnswers: ["1,3", "3,1"],
                 hints: [
-                    "Use the characteristic equation: det(A - λI) = 0. This will give you a polynomial in λ.",
-                    "det([[2-λ, 1],[1, 2-λ]]) = 0 leads to (2-λ)² - 1 = 0, which simplifies to λ² - 4λ + 3 = 0"
+                    "Use det(A − λI) = 0.",
+                    "You should get λ² − 4λ + 3 = 0."
                 ],
-                solution: "To find eigenvalues, solve det(A - λI) = 0\n\nStep 1: Set up characteristic equation\ndet([[2-λ, 1],[1, 2-λ]]) = 0\n\nStep 2: Calculate determinant\n(2-λ)(2-λ) - (1)(1) = 0\n4 - 4λ + λ² - 1 = 0\nλ² - 4λ + 3 = 0\n\nStep 3: Factor or use quadratic formula\n(λ - 1)(λ - 3) = 0\n\nAnswer: λ = 1 and λ = 3\n\nThe eigenvectors are |ψ₁⟩ ∝ [1,1] for λ=3 and |ψ₂⟩ ∝ [1,-1] for λ=1",
-                topic: "Eigenvalues"
+                solution:
+                    "det(A − λI)=0 gives:\n" +
+                    "(2−λ)² − 1 = 0 → λ² − 4λ + 3 = 0 → (λ−1)(λ−3)=0.\n\n" +
+                    "Eigenvalues: 1 and 3.\n" +
+                    "Type: 1,3",
+                topic: "Eigenvalues (2×2)"
             },
             {
-                question: "What is the defining property of a Hermitian operator Ĥ?",
-                correctAnswer: "Ĥ = Ĥ†",
-                acceptedAnswers: ["hermitian", "self-adjoint", "Ĥ† = Ĥ", "equal to its adjoint"],
+                question:
+                    "MCQ: Which equation defines a Hermitian operator H?\n\n" +
+                    "A) H†H = I\n" +
+                    "B) H = H†\n" +
+                    "C) H² = I\n" +
+                    "D) det(H) = 1\n\n" +
+                    "Type: A / B / C / D",
+                correctAnswer: "B",
+                acceptedAnswers: ["b", "option b", "b)"],
                 hints: [
-                    "A Hermitian operator is also called a self-adjoint operator. Think about its relationship with its adjoint.",
-                    "The operator must equal its own adjoint (conjugate transpose): Ĥ = Ĥ†"
+                    "Hermitian means equal to its adjoint (conjugate transpose).",
+                    "Pick the option that states “operator equals its dagger”."
                 ],
-                solution: "A Hermitian operator is self-adjoint: Ĥ = Ĥ†\n\nIn matrix form: A_ij = A*_ji (each element equals the complex conjugate of its transpose)\n\nKey Properties:\n1. All eigenvalues are REAL\n2. Eigenvectors corresponding to distinct eigenvalues are ORTHOGONAL\n\nPhysical significance: In quantum mechanics, all observable quantities are represented by Hermitian operators because measurements must yield real values.\n\nExample: The Pauli matrices σₓ, σᵧ, σᵤ are all Hermitian.",
+                solution:
+                    "Correct option: B.\n\n" +
+                    "Hermitian (self-adjoint) means H = H†.",
                 topic: "Hermitian Operators"
             },
             {
-                question: "If two Hermitian operators  and B̂ don't commute, what is the nature of their commutator [Â,B̂]?",
-                correctAnswer: "skew-Hermitian",
-                acceptedAnswers: ["skew-hermitian", "anti-hermitian", "skew hermitian"],
+                question:
+                    "MCQ: If A and B are Hermitian, what is the nature of the commutator [A,B] = AB − BA?\n\n" +
+                    "A) Hermitian\n" +
+                    "B) Anti-Hermitian (skew-Hermitian)\n" +
+                    "C) Unitary\n" +
+                    "D) Symmetric\n\n" +
+                    "Type: A / B / C / D",
+                correctAnswer: "B",
+                acceptedAnswers: ["b", "option b", "b)"],
                 hints: [
-                    "Take the adjoint of [Â,B̂] = ÂB̂ - B̂Â. Use the fact that (ÂB̂)† = B̂†Â† and that both operators are Hermitian.",
-                    "Since  = Â† and B̂ = B̂†, you'll find that [Â,B̂]† = -[Â,B̂], which is the definition of skew-Hermitian."
+                    "Take the adjoint of (AB − BA).",
+                    "Use (AB)† = B†A† and A†=A, B†=B."
                 ],
-                solution: "Proof that [Â,B̂] is skew-Hermitian when  and B̂ are Hermitian:\n\nStep 1: Take adjoint of commutator\n[Â,B̂]† = (ÂB̂ - B̂Â)†\n      = (ÂB̂)† - (B̂Â)†\n      = B̂†Â† - Â†B̂†\n\nStep 2: Use Hermiticity ( = Â†, B̂ = B̂†)\n      = B̂Â - ÂB̂\n      = -(ÂB̂ - B̂Â)\n      = -[Â,B̂]\n\nSince [Â,B̂]† = -[Â,B̂], the commutator is skew-Hermitian.\n\nThis has important implications: eigenvalues of [Â,B̂] are purely imaginary or zero!",
-                topic: "Hermitian Operators - Commutators"
+                solution:
+                    "Correct option: B.\n\n" +
+                    "([A,B])† = (AB − BA)† = B†A† − A†B† = BA − AB = −[A,B].\n" +
+                    "So [A,B] is anti-Hermitian (skew-Hermitian).",
+                topic: "Commutators"
             },
             {
-                question: "What is the modulus of each eigenvalue of a unitary operator?",
-                correctAnswer: "|λ| = 1",
-                acceptedAnswers: ["1", "unity", "one", "|λ| = 1"],
+                question:
+                    "MCQ: If U is unitary and U|χ⟩ = λ|χ⟩, what is the value of |λ|?\n\n" +
+                    "A) 0\n" +
+                    "B) 1\n" +
+                    "C) 2\n" +
+                    "D) Depends on |χ⟩\n\n" +
+                    "Type: A / B / C / D",
+                correctAnswer: "B",
+                acceptedAnswers: ["b", "option b", "b)"],
                 hints: [
-                    "For a unitary operator Û, we have Û†Û = I. If Û|χ⟩ = λ|χ⟩, what happens when you compute ⟨χ|Û†Û|χ⟩?",
-                    "⟨χ|Û†Û|χ⟩ = ⟨χ|I|χ⟩ = ⟨χ|χ⟩, but also equals λ*λ⟨χ|χ⟩ = |λ|²⟨χ|χ⟩"
+                    "Unitary means U†U = I.",
+                    "Compute ⟨χ|U†U|χ⟩ in two ways."
                 ],
-                solution: "Proof that |λ| = 1 for unitary operators:\n\nGiven: Û is unitary, so Û†Û = I\nAlso: Û|χ⟩ = λ|χ⟩\n\nStep 1: Take adjoint\n⟨χ|Û† = ⟨χ|λ*\n\nStep 2: Compute ⟨χ|Û†Û|χ⟩\n⟨χ|Û†Û|χ⟩ = ⟨χ|λ*λ|χ⟩ = |λ|²⟨χ|χ⟩\n\nStep 3: Use unitarity\n⟨χ|I|χ⟩ = ⟨χ|χ⟩\n\nStep 4: Equate\n|λ|²⟨χ|χ⟩ = ⟨χ|χ⟩\n\nTherefore: |λ| = 1\n\nPhysical meaning: Unitary operators preserve the norm (length) of vectors, representing symmetry transformations in quantum mechanics.",
+                solution:
+                    "Correct option: B.\n\n" +
+                    "For unitary U, eigenvalues are unimodular, so |λ| = 1.",
                 topic: "Unitary Operators"
             },
             {
-                question: "What are the two conditions for an operator P̂ to be a projection operator?",
-                correctAnswer: "Hermitian and Idempotent (P̂² = P̂)",
-                acceptedAnswers: ["hermitian and idempotent", "idempotent and hermitian", "P̂² = P̂ and hermitian"],
+                question:
+                    "MCQ: Which pair of conditions defines a projection operator P?\n\n" +
+                    "A) P² = I and P = P†\n" +
+                    "B) P² = P and P = P†\n" +
+                    "C) P†P = I and det(P)=1\n" +
+                    "D) P² = 0 and P = −P†\n\n" +
+                    "Type: A / B / C / D",
+                correctAnswer: "B",
+                acceptedAnswers: ["b", "option b", "b)"],
                 hints: [
-                    "One condition relates to how the operator behaves when applied to itself (think about projecting twice).",
-                    "The operator must be: (1) Hermitian (P̂ = P̂†) and (2) Idempotent (P̂² = P̂)"
+                    "Projection twice should be the same as projection once.",
+                    "Also, it should be Hermitian in quantum measurements."
                 ],
-                solution: "A projection operator P̂ must satisfy TWO conditions:\n\n1. HERMITIAN: P̂ = P̂†\n   (The operator is self-adjoint)\n\n2. IDEMPOTENT: P̂² = P̂\n   (Applying the projection twice gives the same result as once)\n\nExample: P̂ = |u⟩⟨u| (where |u⟩ is normalized)\n\nVerification:\n• (|u⟩⟨u|)† = |u⟩⟨u| ✓ (Hermitian)\n• (|u⟩⟨u|)² = |u⟩⟨u|u⟩⟨u| = |u⟩⟨u| ✓ (Idempotent, since ⟨u|u⟩=1)\n\nPhysical meaning: Measuring a quantum state twice in succession gives the same result as measuring once.",
+                solution:
+                    "Correct option: B.\n\n" +
+                    "A projection operator satisfies:\n" +
+                    "1) Idempotent: P² = P\n" +
+                    "2) Hermitian: P = P†",
                 topic: "Projection Operators"
             },
             {
-                question: "What is the commutation relation [σₓ, σᵧ] for Pauli matrices?",
-                correctAnswer: "2iσᵤ",
-                acceptedAnswers: ["2i σz", "2iσz", "2i σᵤ"],
+                question:
+                    "MCQ: In the identity [σx, σy] = 2i σ?, which Pauli matrix appears?\n\n" +
+                    "A) σx\n" +
+                    "B) σy\n" +
+                    "C) σz\n" +
+                    "D) I (identity)\n\n" +
+                    "Type: A / B / C / D",
+                correctAnswer: "C",
+                acceptedAnswers: ["c", "option c", "c)"],
                 hints: [
-                    "Calculate σₓσᵧ and σᵧσₓ using the matrix representations: σₓ=[[0,1],[1,0]] and σᵧ=[[0,-i],[i,0]]",
-                    "When you compute σₓσᵧ - σᵧσₓ, you should get 2i times the third Pauli matrix σᵤ"
+                    "The commutator cycles x → y → z.",
+                    "Standard result: [σx, σy] = 2iσz."
                 ],
-                solution: "Calculating [σₓ, σᵧ]:\n\nStep 1: Recall Pauli matrices\nσₓ = [[0,1],[1,0]]\nσᵧ = [[0,-i],[i,0]]\nσᵤ = [[1,0],[0,-1]]\n\nStep 2: Calculate σₓσᵧ\nσₓσᵧ = [[0,1],[1,0]][[0,-i],[i,0]] = [[i,0],[0,-i]]\n\nStep 3: Calculate σᵧσₓ\nσᵧσₓ = [[0,-i],[i,0]][[0,1],[1,0]] = [[-i,0],[0,i]]\n\nStep 4: Find commutator\n[σₓ,σᵧ] = σₓσᵧ - σᵧσₓ = [[i,0],[0,-i]] - [[-i,0],[0,i]] = [[2i,0],[0,-2i]] = 2iσᵤ\n\nGeneral pattern:\n[σᵢ,σⱼ] = 2iεᵢⱼₖσₖ (where εᵢⱼₖ is the Levi-Civita symbol)\n\nAlso: Pauli matrices ANTI-COMMUTE: {σₓ,σᵧ} = σₓσᵧ + σᵧσₓ = 0",
+                solution:
+                    "Correct option: C.\n\n" +
+                    "[σx, σy] = 2iσz.",
                 topic: "Pauli Matrices"
             },
             {
-                question: "True or False: Eigenvectors corresponding to distinct eigenvalues of a Hermitian operator are orthogonal.",
-                correctAnswer: "True",
-                acceptedAnswers: ["true", "yes", "correct"],
+                question:
+                    "True/False: For a Hermitian operator, eigenvectors with distinct eigenvalues are orthogonal.\n\nType: True or False",
+                correctAnswer: "true",
+                acceptedAnswers: ["true", "t"],
                 hints: [
-                    "Consider ⟨χⱼ|Ĥ|χᵢ⟩ where Ĥ|χᵢ⟩ = λᵢ|χᵢ⟩ and Ĥ|χⱼ⟩ = λⱼ|χⱼ⟩ with λᵢ ≠ λⱼ",
-                    "Compare ⟨χⱼ|Ĥ|χᵢ⟩ = λᵢ⟨χⱼ|χᵢ⟩ with its adjoint form, using that Ĥ is Hermitian"
+                    "Use ⟨χj|H|χi⟩ computed in two ways.",
+                    "Hermitian implies ⟨χj|H|χi⟩ = ⟨Hχj|χi⟩."
                 ],
-                solution: "TRUE - Eigenvectors of distinct eigenvalues of Hermitian operators are orthogonal.\n\nProof:\nLet Ĥ be Hermitian with Ĥ|χᵢ⟩ = λᵢ|χᵢ⟩ and Ĥ|χⱼ⟩ = λⱼ|χⱼ⟩ where λᵢ ≠ λⱼ\n\nStep 1:\n⟨χⱼ|Ĥ|χᵢ⟩ = λᵢ⟨χⱼ|χᵢ⟩  ... (1)\n\nStep 2: Take adjoint of ⟨χᵢ|Ĥ|χⱼ⟩ = λⱼ⟨χᵢ|χⱼ⟩\n⟨χⱼ|Ĥ†|χᵢ⟩ = λⱼ*⟨χⱼ|χᵢ⟩\n\nStep 3: Since Ĥ is Hermitian (Ĥ† = Ĥ) and eigenvalues are real (λⱼ* = λⱼ):\n⟨χⱼ|Ĥ|χᵢ⟩ = λⱼ⟨χⱼ|χᵢ⟩  ... (2)\n\nStep 4: Subtract (1) from (2):\n0 = (λⱼ - λᵢ)⟨χⱼ|χᵢ⟩\n\nSince λᵢ ≠ λⱼ, we must have ⟨χⱼ|χᵢ⟩ = 0\n\nConclusion: |χᵢ⟩ ⊥ |χⱼ⟩",
-                topic: "Hermitian Operators - Orthogonality"
+                solution:
+                    "True.\n\n" +
+                    "For Hermitian operators, eigenvectors corresponding to distinct eigenvalues are orthogonal.",
+                topic: "Hermitian Spectral Property"
             },
             {
-                question: "What is the trace of any Pauli matrix (σₓ, σᵧ, or σᵤ)?",
+                question:
+                    "Short: What is the trace of σx, σy, and σz? (Enter a single number)",
                 correctAnswer: "0",
                 acceptedAnswers: ["0", "zero"],
                 hints: [
-                    "The trace is the sum of diagonal elements. Write out any Pauli matrix and add its diagonal entries.",
-                    "For σₓ=[[0,1],[1,0]], Tr(σₓ) = 0+0 = 0. Check this for σᵧ and σᵤ too!"
+                    "Trace = sum of diagonal elements.",
+                    "Each Pauli matrix has diagonals that add to zero."
                 ],
-                solution: "The trace of all Pauli matrices is ZERO.\n\nVerification:\n\nσₓ = [[0,1],[1,0]]\nTr(σₓ) = 0 + 0 = 0 ✓\n\nσᵧ = [[0,-i],[i,0]]\nTr(σᵧ) = 0 + 0 = 0 ✓\n\nσᵤ = [[1,0],[0,-1]]\nTr(σᵤ) = 1 + (-1) = 0 ✓\n\nGeneral properties of Pauli matrices:\n1. Tr(σᵢ) = 0 for all i\n2. σᵢ² = I (identity)\n3. σᵢ† = σᵢ (Hermitian)\n4. det(σᵢ) = -1\n5. {σᵢ,σⱼ} = 2δᵢⱼI (anti-commutation)\n\nPhysical meaning: Pauli matrices represent spin-1/2 operators in quantum mechanics.",
-                topic: "Pauli Matrices - Properties"
+                solution:
+                    "Tr(σx)=0, Tr(σy)=0, Tr(σz)=0.\nSo the answer is 0.",
+                topic: "Pauli Matrices"
             },
             {
-                question: "If eigenvalues of a skew-Hermitian operator can be written as iα (where α is real), what values can α take?",
-                correctAnswer: "Any real number (including zero)",
-                acceptedAnswers: ["real", "any real", "real number", "real or zero", "purely imaginary or zero"],
+                question:
+                    "Short: Eigenvalues of σz are +1 and −1. Type them in the format: 1,-1",
+                correctAnswer: "1,-1",
+                acceptedAnswers: ["1,-1", "-1,1"],
                 hints: [
-                    "Skew-Hermitian operators satisfy  = -Â†. What does this tell you about the eigenvalues?",
-                    "For skew-Hermitian: λ = -λ*, which means eigenvalues are purely imaginary or zero. So λ = iα where α ∈ ℝ"
+                    "σz is diagonal with entries 1 and −1.",
+                    "Diagonal entries of a diagonal matrix are its eigenvalues."
                 ],
-                solution: "For skew-Hermitian operators, eigenvalues are PURELY IMAGINARY or ZERO.\n\nProof:\nLet  be skew-Hermitian:  = -Â†\nWith Â|χ⟩ = λ|χ⟩\n\nStep 1:\n⟨χ|Â|χ⟩ = λ⟨χ|χ⟩  ... (1)\n\nStep 2: Take adjoint\n⟨χ|Â|χ⟩† = (λ⟨χ|χ⟩)†\n⟨χ|Â†|χ⟩ = λ*⟨χ|χ⟩  ... (2)\n\nStep 3: Use  = -Â†\n⟨χ|Â|χ⟩ = -λ*⟨χ|χ⟩  ... (3)\n\nStep 4: Compare (1) and (3)\nλ⟨χ|χ⟩ = -λ*⟨χ|χ⟩\nλ = -λ*\n\nThis means λ is purely imaginary or zero.\n\nWe can write: λ = iα where α ∈ ℝ (α can be any real number including 0)\n\nExample: i(Â + Â†) is skew-Hermitian when  is any operator.",
-                topic: "Skew-Hermitian Operators"
+                solution:
+                    "σz = [[1,0],[0,−1]], so eigenvalues are 1 and −1.\nType: 1,-1",
+                topic: "Pauli Matrices"
+            },
+            {
+                question:
+                    "MCQ: For σx = [[0,1],[1,0]], what is σx²?\n\n" +
+                    "A) 0\n" +
+                    "B) I (identity)\n" +
+                    "C) σx\n" +
+                    "D) σz\n\n" +
+                    "Type: A / B / C / D",
+                correctAnswer: "B",
+                acceptedAnswers: ["b", "option b", "b)"],
+                hints: [
+                    "Multiply σx by itself.",
+                    "Pauli matrices satisfy σi² = I."
+                ],
+                solution:
+                    "Correct option: B.\n\n" +
+                    "σx² = I.",
+                topic: "Pauli Matrices"
+            },
+            {
+                question:
+                    "MCQ: Is the matrix H = [[1, i], [−i, 2]] Hermitian?\n\n" +
+                    "A) Yes\n" +
+                    "B) No\n\n" +
+                    "Type: A / B",
+                correctAnswer: "A",
+                acceptedAnswers: ["a", "option a", "a)", "yes"],
+                hints: [
+                    "Hermitian means H = H† (conjugate transpose).",
+                    "Off-diagonal elements must be complex conjugates."
+                ],
+                solution:
+                    "Correct option: A.\n\n" +
+                    "H† swaps off-diagonals and complex-conjugates them:\n" +
+                    "(i)* = −i and (−i)* = i, so it matches.\n" +
+                    "Therefore H is Hermitian.",
+                topic: "Hermitian Matrices"
             }
         ];
 
@@ -367,6 +471,15 @@
         let score = 0;
         let attempts = 0;
         let hintIndex = 0;
+
+        function normalizeAnswer(s) {
+            // Lowercase, trim, collapse multiple spaces, remove spaces around commas
+            return s
+                .toLowerCase()
+                .trim()
+                .replace(/\s+/g, " ")
+                .replace(/\s*,\s*/g, ",");
+        }
 
         function loadQuestion() {
             if (currentQuestionIndex >= quizData.length) {
@@ -382,7 +495,7 @@
                 <div class="question-card">
                     <div class="question-number">Question ${currentQuestionIndex + 1} of ${quizData.length} | Topic: ${question.topic}</div>
                     <div class="question-text">${question.question}</div>
-                    <input type="text" class="answer-input" id="answer-input" placeholder="Enter your answer here..." />
+                    <input type="text" class="answer-input" id="answer-input" placeholder="Enter your answer here (e.g., B or 1,3 or True)..." />
                     <div>
                         <button class="btn btn-primary" onclick="checkAnswer()">Submit Answer</button>
                         <button class="btn btn-secondary" onclick="skipQuestion()">Skip Question</button>
@@ -398,10 +511,8 @@
             document.getElementById('current-question').textContent = currentQuestionIndex + 1;
             updateProgress();
 
-            // Focus on input
             document.getElementById('answer-input').focus();
 
-            // Allow Enter key to submit
             document.getElementById('answer-input').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') checkAnswer();
             });
@@ -417,7 +528,8 @@
         }
 
         function checkAnswer() {
-            const userAnswer = document.getElementById('answer-input').value.trim().toLowerCase();
+            const rawUser = document.getElementById('answer-input').value;
+            const userAnswer = normalizeAnswer(rawUser);
             const question = quizData[currentQuestionIndex];
             const feedback = document.getElementById('feedback');
 
@@ -431,41 +543,36 @@
             attempts++;
             document.getElementById('attempts').textContent = attempts;
 
-            // Check if answer is correct
-            const isCorrect = question.acceptedAnswers.some(ans => 
-                userAnswer.includes(ans.toLowerCase()) || ans.toLowerCase().includes(userAnswer)
-            );
+            // Exact-match check (unique answers)
+            const isCorrect = question.acceptedAnswers
+                .map(a => normalizeAnswer(a))
+                .some(a => a === userAnswer);
 
             if (isCorrect) {
                 score++;
                 document.getElementById('score').textContent = score;
                 feedback.className = 'feedback correct';
                 feedback.style.display = 'block';
-                feedback.innerHTML = '✅ <strong>Correct!</strong> Well done! Here\'s the complete solution:';
+                feedback.innerHTML = '✅ <strong>Correct!</strong> Well done! Here\\'s the complete solution:';
 
-                // Show solution
                 document.getElementById('solution').style.display = 'block';
 
-                // Change button to next question
                 document.querySelector('.btn-primary').textContent = 'Next Question →';
                 document.querySelector('.btn-primary').onclick = nextQuestion;
                 document.querySelector('.btn-secondary').style.display = 'none';
 
             } else {
-                // Incorrect - show hint
                 if (hintIndex < question.hints.length) {
                     feedback.className = 'feedback hint';
                     feedback.style.display = 'block';
                     feedback.innerHTML = `💡 <strong>Hint ${hintIndex + 1}:</strong> ${question.hints[hintIndex]}`;
                     hintIndex++;
                 } else {
-                    // No more hints - show solution
                     feedback.className = 'feedback incorrect';
                     feedback.style.display = 'block';
-                    feedback.innerHTML = '❌ <strong>Incorrect.</strong> Here\'s the complete solution:';
+                    feedback.innerHTML = '❌ <strong>Incorrect.</strong> Here\\'s the complete solution:';
                     document.getElementById('solution').style.display = 'block';
 
-                    // Change button to next question
                     document.querySelector('.btn-primary').textContent = 'Next Question →';
                     document.querySelector('.btn-primary').onclick = nextQuestion;
                     document.querySelector('.btn-secondary').style.display = 'none';
@@ -482,7 +589,7 @@
             const feedback = document.getElementById('feedback');
             feedback.className = 'feedback hint';
             feedback.style.display = 'block';
-            feedback.innerHTML = '⏭️ <strong>Question skipped.</strong> Here\'s the solution for your reference:';
+            feedback.innerHTML = '⏭️ <strong>Question skipped.</strong> Here\\'s the solution for your reference:';
             document.getElementById('solution').style.display = 'block';
 
             document.querySelector('.btn-primary').textContent = 'Next Question →';
@@ -517,7 +624,6 @@
             loadQuestion();
         }
 
-        // Initialize quiz on page load
         window.onload = function() {
             loadQuestion();
         };
