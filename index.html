@@ -73,7 +73,6 @@
             line-height: 1.6;
             margin-bottom: 20px;
             color: #333;
-            white-space: pre-line;
         }
 
         .answer-input {
@@ -250,154 +249,153 @@
     </div>
 
     <script>
-        // Quiz data structure (typed answers: A/B/C/D or simple numeric/text)
+        // Quiz data structure (easy answers: mostly A/B/C/D + a few numeric)
         const quizData = [
             {
                 question:
-                    "MCQ: Which option correctly states the condition for a linear operator A?\n\n" +
-                    "A) A(|ψ⟩|φ⟩) = A|ψ⟩ A|φ⟩\n" +
-                    "B) A(α|ψ⟩ + β|φ⟩) = αA|ψ⟩ + βA|φ⟩ for all α, β\n" +
-                    "C) A|ψ⟩ = |ψ⟩ for all |ψ⟩\n" +
-                    "D) A†A = I\n\n" +
+                    "MCQ: Which option correctly states the condition for a linear operator A?<br><br>" +
+                    "A) A(|ψ⟩|φ⟩) = A|ψ⟩ A|φ⟩<br>" +
+                    "B) A(α|ψ⟩ + β|φ⟩) = αA|ψ⟩ + βA|φ⟩ for all α, β<br>" +
+                    "C) A|ψ⟩ = |ψ⟩ for all |ψ⟩<br>" +
+                    "D) A†A = I<br><br>" +
                     "Type: A / B / C / D",
                 correctAnswer: "B",
-                acceptedAnswers: ["b", "option b", "b)"],
+                acceptedAnswers: ["b", "B"],
                 hints: [
                     "Linearity means the operator respects addition and scalar multiplication.",
-                    "The correct option must keep α and β outside the operator."
+                    "Pick the option where α and β can be pulled out."
                 ],
                 solution:
-                    "Correct option: B.\n\n" +
-                    "A is linear if it satisfies:\n" +
-                    "A(α|ψ⟩ + β|φ⟩) = αA|ψ⟩ + βA|φ⟩ for all scalars α, β.\n\n" +
-                    "This is the combination of additivity and homogeneity.",
+                    "Correct option: B\\n\\n" +
+                    "A is linear if it satisfies:\\n" +
+                    "A(α|ψ⟩ + β|φ⟩) = αA|ψ⟩ + βA|φ⟩ for all scalars α, β.\\n\\n" +
+                    "This combines additivity and homogeneity.",
                 topic: "Linear Operators"
             },
             {
                 question:
-                    "Numerical/Short: For the 2×2 matrix A = [[2,1],[1,2]], enter its eigenvalues in the format: 1,3",
+                    "Numerical: For the 2×2 matrix A = [[2,1],[1,2]], enter its eigenvalues in the format: 1,3",
                 correctAnswer: "1,3",
                 acceptedAnswers: ["1,3", "3,1"],
                 hints: [
                     "Use det(A − λI) = 0.",
-                    "You should get λ² − 4λ + 3 = 0."
+                    "You will get λ² − 4λ + 3 = 0."
                 ],
                 solution:
-                    "det(A − λI)=0 gives:\n" +
-                    "(2−λ)² − 1 = 0 → λ² − 4λ + 3 = 0 → (λ−1)(λ−3)=0.\n\n" +
-                    "Eigenvalues: 1 and 3.\n" +
-                    "Type: 1,3",
+                    "det(A − λI)=0 gives:\\n" +
+                    "(2−λ)² − 1 = 0 → λ² − 4λ + 3 = 0 → (λ−1)(λ−3)=0.\\n\\n" +
+                    "Eigenvalues: 1 and 3.\\nType: 1,3",
                 topic: "Eigenvalues (2×2)"
             },
             {
                 question:
-                    "MCQ: Which equation defines a Hermitian operator H?\n\n" +
-                    "A) H†H = I\n" +
-                    "B) H = H†\n" +
-                    "C) H² = I\n" +
-                    "D) det(H) = 1\n\n" +
+                    "MCQ: Which equation defines a Hermitian operator H?<br><br>" +
+                    "A) H†H = I<br>" +
+                    "B) H = H†<br>" +
+                    "C) H² = I<br>" +
+                    "D) det(H) = 1<br><br>" +
                     "Type: A / B / C / D",
                 correctAnswer: "B",
-                acceptedAnswers: ["b", "option b", "b)"],
+                acceptedAnswers: ["b", "B"],
                 hints: [
                     "Hermitian means equal to its adjoint (conjugate transpose).",
-                    "Pick the option that states “operator equals its dagger”."
+                    "Look for the option that says H equals H dagger."
                 ],
                 solution:
-                    "Correct option: B.\n\n" +
+                    "Correct option: B\\n\\n" +
                     "Hermitian (self-adjoint) means H = H†.",
                 topic: "Hermitian Operators"
             },
             {
                 question:
-                    "MCQ: If A and B are Hermitian, what is the nature of the commutator [A,B] = AB − BA?\n\n" +
-                    "A) Hermitian\n" +
-                    "B) Anti-Hermitian (skew-Hermitian)\n" +
-                    "C) Unitary\n" +
-                    "D) Symmetric\n\n" +
+                    "MCQ: If A and B are Hermitian, what is the nature of the commutator [A,B] = AB − BA?<br><br>" +
+                    "A) Hermitian<br>" +
+                    "B) Anti-Hermitian (skew-Hermitian)<br>" +
+                    "C) Unitary<br>" +
+                    "D) Symmetric<br><br>" +
                     "Type: A / B / C / D",
                 correctAnswer: "B",
-                acceptedAnswers: ["b", "option b", "b)"],
+                acceptedAnswers: ["b", "B"],
                 hints: [
                     "Take the adjoint of (AB − BA).",
-                    "Use (AB)† = B†A† and A†=A, B†=B."
+                    "Use (AB)† = B†A†, with A†=A and B†=B."
                 ],
                 solution:
-                    "Correct option: B.\n\n" +
-                    "([A,B])† = (AB − BA)† = B†A† − A†B† = BA − AB = −[A,B].\n" +
+                    "Correct option: B\\n\\n" +
+                    "([A,B])† = (AB − BA)† = B†A† − A†B† = BA − AB = −[A,B].\\n" +
                     "So [A,B] is anti-Hermitian (skew-Hermitian).",
                 topic: "Commutators"
             },
             {
                 question:
-                    "MCQ: If U is unitary and U|χ⟩ = λ|χ⟩, what is the value of |λ|?\n\n" +
-                    "A) 0\n" +
-                    "B) 1\n" +
-                    "C) 2\n" +
-                    "D) Depends on |χ⟩\n\n" +
+                    "MCQ: If U is unitary and U|χ⟩ = λ|χ⟩, what is |λ|?<br><br>" +
+                    "A) 0<br>" +
+                    "B) 1<br>" +
+                    "C) 2<br>" +
+                    "D) Depends on |χ⟩<br><br>" +
                     "Type: A / B / C / D",
                 correctAnswer: "B",
-                acceptedAnswers: ["b", "option b", "b)"],
+                acceptedAnswers: ["b", "B"],
                 hints: [
                     "Unitary means U†U = I.",
                     "Compute ⟨χ|U†U|χ⟩ in two ways."
                 ],
                 solution:
-                    "Correct option: B.\n\n" +
+                    "Correct option: B\\n\\n" +
                     "For unitary U, eigenvalues are unimodular, so |λ| = 1.",
                 topic: "Unitary Operators"
             },
             {
                 question:
-                    "MCQ: Which pair of conditions defines a projection operator P?\n\n" +
-                    "A) P² = I and P = P†\n" +
-                    "B) P² = P and P = P†\n" +
-                    "C) P†P = I and det(P)=1\n" +
-                    "D) P² = 0 and P = −P†\n\n" +
+                    "MCQ: Which pair of conditions defines a projection operator P?<br><br>" +
+                    "A) P² = I and P = P†<br>" +
+                    "B) P² = P and P = P†<br>" +
+                    "C) P†P = I and det(P)=1<br>" +
+                    "D) P² = 0 and P = −P†<br><br>" +
                     "Type: A / B / C / D",
                 correctAnswer: "B",
-                acceptedAnswers: ["b", "option b", "b)"],
+                acceptedAnswers: ["b", "B"],
                 hints: [
                     "Projection twice should be the same as projection once.",
-                    "Also, it should be Hermitian in quantum measurements."
+                    "Also, it should be Hermitian."
                 ],
                 solution:
-                    "Correct option: B.\n\n" +
-                    "A projection operator satisfies:\n" +
-                    "1) Idempotent: P² = P\n" +
+                    "Correct option: B\\n\\n" +
+                    "A projection operator satisfies:\\n" +
+                    "1) Idempotent: P² = P\\n" +
                     "2) Hermitian: P = P†",
                 topic: "Projection Operators"
             },
             {
                 question:
-                    "MCQ: In the identity [σx, σy] = 2i σ?, which Pauli matrix appears?\n\n" +
-                    "A) σx\n" +
-                    "B) σy\n" +
-                    "C) σz\n" +
-                    "D) I (identity)\n\n" +
+                    "MCQ: In the identity [σx, σy] = 2i σ?, which Pauli matrix appears?<br><br>" +
+                    "A) σx<br>" +
+                    "B) σy<br>" +
+                    "C) σz<br>" +
+                    "D) I (identity)<br><br>" +
                     "Type: A / B / C / D",
                 correctAnswer: "C",
-                acceptedAnswers: ["c", "option c", "c)"],
+                acceptedAnswers: ["c", "C"],
                 hints: [
                     "The commutator cycles x → y → z.",
                     "Standard result: [σx, σy] = 2iσz."
                 ],
                 solution:
-                    "Correct option: C.\n\n" +
+                    "Correct option: C\\n\\n" +
                     "[σx, σy] = 2iσz.",
                 topic: "Pauli Matrices"
             },
             {
                 question:
-                    "True/False: For a Hermitian operator, eigenvectors with distinct eigenvalues are orthogonal.\n\nType: True or False",
+                    "True/False: For a Hermitian operator, eigenvectors with distinct eigenvalues are orthogonal.<br><br>Type: True or False",
                 correctAnswer: "true",
-                acceptedAnswers: ["true", "t"],
+                acceptedAnswers: ["true", "True", "t", "T"],
                 hints: [
                     "Use ⟨χj|H|χi⟩ computed in two ways.",
                     "Hermitian implies ⟨χj|H|χi⟩ = ⟨Hχj|χi⟩."
                 ],
                 solution:
-                    "True.\n\n" +
+                    "True\\n\\n" +
                     "For Hermitian operators, eigenvectors corresponding to distinct eigenvalues are orthogonal.",
                 topic: "Hermitian Spectral Property"
             },
@@ -405,65 +403,27 @@
                 question:
                     "Short: What is the trace of σx, σy, and σz? (Enter a single number)",
                 correctAnswer: "0",
-                acceptedAnswers: ["0", "zero"],
+                acceptedAnswers: ["0", "zero", "Zero"],
                 hints: [
                     "Trace = sum of diagonal elements.",
                     "Each Pauli matrix has diagonals that add to zero."
                 ],
                 solution:
-                    "Tr(σx)=0, Tr(σy)=0, Tr(σz)=0.\nSo the answer is 0.",
+                    "Tr(σx)=0, Tr(σy)=0, Tr(σz)=0.\\nSo the answer is 0.",
                 topic: "Pauli Matrices"
             },
             {
                 question:
                     "Short: Eigenvalues of σz are +1 and −1. Type them in the format: 1,-1",
                 correctAnswer: "1,-1",
-                acceptedAnswers: ["1,-1", "-1,1"],
+                acceptedAnswers: ["1,-1", "-1,1", "1,−1", "−1,1"],
                 hints: [
                     "σz is diagonal with entries 1 and −1.",
                     "Diagonal entries of a diagonal matrix are its eigenvalues."
                 ],
                 solution:
-                    "σz = [[1,0],[0,−1]], so eigenvalues are 1 and −1.\nType: 1,-1",
+                    "σz = [[1,0],[0,−1]], so eigenvalues are 1 and −1.\\nType: 1,-1",
                 topic: "Pauli Matrices"
-            },
-            {
-                question:
-                    "MCQ: For σx = [[0,1],[1,0]], what is σx²?\n\n" +
-                    "A) 0\n" +
-                    "B) I (identity)\n" +
-                    "C) σx\n" +
-                    "D) σz\n\n" +
-                    "Type: A / B / C / D",
-                correctAnswer: "B",
-                acceptedAnswers: ["b", "option b", "b)"],
-                hints: [
-                    "Multiply σx by itself.",
-                    "Pauli matrices satisfy σi² = I."
-                ],
-                solution:
-                    "Correct option: B.\n\n" +
-                    "σx² = I.",
-                topic: "Pauli Matrices"
-            },
-            {
-                question:
-                    "MCQ: Is the matrix H = [[1, i], [−i, 2]] Hermitian?\n\n" +
-                    "A) Yes\n" +
-                    "B) No\n\n" +
-                    "Type: A / B",
-                correctAnswer: "A",
-                acceptedAnswers: ["a", "option a", "a)", "yes"],
-                hints: [
-                    "Hermitian means H = H† (conjugate transpose).",
-                    "Off-diagonal elements must be complex conjugates."
-                ],
-                solution:
-                    "Correct option: A.\n\n" +
-                    "H† swaps off-diagonals and complex-conjugates them:\n" +
-                    "(i)* = −i and (−i)* = i, so it matches.\n" +
-                    "Therefore H is Hermitian.",
-                topic: "Hermitian Matrices"
             }
         ];
 
@@ -473,7 +433,7 @@
         let hintIndex = 0;
 
         function normalizeAnswer(s) {
-            // Lowercase, trim, collapse multiple spaces, remove spaces around commas
+            // Lowercase, trim, collapse spaces, and normalize spaces around commas
             return s
                 .toLowerCase()
                 .trim()
@@ -495,7 +455,7 @@
                 <div class="question-card">
                     <div class="question-number">Question ${currentQuestionIndex + 1} of ${quizData.length} | Topic: ${question.topic}</div>
                     <div class="question-text">${question.question}</div>
-                    <input type="text" class="answer-input" id="answer-input" placeholder="Enter your answer here (e.g., B or 1,3 or True)..." />
+                    <input type="text" class="answer-input" id="answer-input" placeholder="Enter your answer here..." />
                     <div>
                         <button class="btn btn-primary" onclick="checkAnswer()">Submit Answer</button>
                         <button class="btn btn-secondary" onclick="skipQuestion()">Skip Question</button>
@@ -519,8 +479,8 @@
         }
 
         function formatSolution(solution) {
-            return solution.split('\n').map(line => {
-                if (line.trim().startsWith('Step') || line.trim().startsWith('•') || line.trim().match(/^\d+\./)) {
+            return solution.split('\\n').map(line => {
+                if (line.trim().startsWith('Step') || line.trim().startsWith('•') || line.trim().match(/^\\d+\\./)) {
                     return `<p style="margin: 8px 0; padding-left: 10px;"><strong>${line}</strong></p>`;
                 }
                 return `<p style="margin: 8px 0;">${line}</p>`;
@@ -528,8 +488,7 @@
         }
 
         function checkAnswer() {
-            const rawUser = document.getElementById('answer-input').value;
-            const userAnswer = normalizeAnswer(rawUser);
+            const userAnswer = normalizeAnswer(document.getElementById('answer-input').value);
             const question = quizData[currentQuestionIndex];
             const feedback = document.getElementById('feedback');
 
@@ -543,7 +502,7 @@
             attempts++;
             document.getElementById('attempts').textContent = attempts;
 
-            // Exact-match check (unique answers)
+            // Exact match only (prevents accidental partial matches)
             const isCorrect = question.acceptedAnswers
                 .map(a => normalizeAnswer(a))
                 .some(a => a === userAnswer);
@@ -553,7 +512,7 @@
                 document.getElementById('score').textContent = score;
                 feedback.className = 'feedback correct';
                 feedback.style.display = 'block';
-                feedback.innerHTML = '✅ <strong>Correct!</strong> Well done! Here\\'s the complete solution:';
+                feedback.innerHTML = "✅ <strong>Correct!</strong> Well done! Here's the complete solution:";
 
                 document.getElementById('solution').style.display = 'block';
 
@@ -570,7 +529,7 @@
                 } else {
                     feedback.className = 'feedback incorrect';
                     feedback.style.display = 'block';
-                    feedback.innerHTML = '❌ <strong>Incorrect.</strong> Here\\'s the complete solution:';
+                    feedback.innerHTML = "❌ <strong>Incorrect.</strong> Here's the complete solution:";
                     document.getElementById('solution').style.display = 'block';
 
                     document.querySelector('.btn-primary').textContent = 'Next Question →';
@@ -589,7 +548,7 @@
             const feedback = document.getElementById('feedback');
             feedback.className = 'feedback hint';
             feedback.style.display = 'block';
-            feedback.innerHTML = '⏭️ <strong>Question skipped.</strong> Here\\'s the solution for your reference:';
+            feedback.innerHTML = "⏭️ <strong>Question skipped.</strong> Here's the solution for your reference:";
             document.getElementById('solution').style.display = 'block';
 
             document.querySelector('.btn-primary').textContent = 'Next Question →';
@@ -624,6 +583,7 @@
             loadQuestion();
         }
 
+        // Initialize quiz on page load
         window.onload = function() {
             loadQuestion();
         };
