@@ -71,23 +71,47 @@
         .question-text {
             font-size: 1.1em;
             line-height: 1.6;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             color: #333;
+            white-space: pre-line;
         }
 
-        .answer-input {
+        .options {
+            margin-bottom: 10px;
+        }
+
+        .option-btn {
             width: 100%;
-            padding: 12px;
+            text-align: left;
+            background: #ffffff;
             border: 2px solid #ddd;
-            border-radius: 8px;
+            border-radius: 10px;
+            padding: 12px 14px;
             font-size: 1em;
-            margin-bottom: 15px;
-            transition: border-color 0.3s;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 10px;
         }
 
-        .answer-input:focus {
-            outline: none;
+        .option-btn:hover {
             border-color: #667eea;
+            box-shadow: 0 3px 12px rgba(102, 126, 234, 0.18);
+            transform: translateY(-1px);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        .option-btn.correct {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .option-btn.wrong {
+            border-color: #dc3545;
+            background: #f8d7da;
         }
 
         .btn {
@@ -191,402 +215,1230 @@
         .hidden {
             display: none;
         }
-
-        .math-display {
-            font-family: 'Courier New', monospace;
-            background: #f5f5f5;
-            padding: 5px 10px;
-            border-radius: 4px;
-            display: inline-block;
-            margin: 2px 0;
-        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎓 Engineering Physics Quiz</h1>
-        <div class="subtitle">BAPHY105: Linear Operators & Special Matrices</div>
+<div class="container">
+    <h1>🎓 Engineering Physics Quiz</h1>
+    <div class="subtitle">BAPHY105: Linear Operators & Special Matrices</div>
 
-        <div class="stats">
-            <div class="stat-item">
-                <div class="stat-value" id="current-question">1</div>
-                <div class="stat-label">Current Question</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" id="score">0</div>
-                <div class="stat-label">Score</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" id="attempts">0</div>
-                <div class="stat-label">Attempts</div>
-            </div>
+    <div class="stats">
+        <div class="stat-item">
+            <div class="stat-value" id="current-question">1</div>
+            <div class="stat-label">Current Question</div>
         </div>
-
-        <div class="progress-bar">
-            <div class="progress-fill" id="progress" style="width: 0%"></div>
+        <div class="stat-item">
+            <div class="stat-value" id="score">0</div>
+            <div class="stat-label">Score</div>
         </div>
-
-        <div id="quiz-content">
-            <!-- Quiz content will be injected here -->
-        </div>
-
-        <div id="completion-screen" class="hidden">
-            <h2 style="text-align: center; color: #667eea; margin-bottom: 20px;">🎉 Quiz Completed!</h2>
-            <div class="stats">
-                <div class="stat-item">
-                    <div class="stat-value" id="final-score">0</div>
-                    <div class="stat-label">Final Score</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="total-questions">0</div>
-                    <div class="stat-label">Total Questions</div>
-                </div>
-            </div>
-            <div style="text-align: center; margin-top: 20px;">
-                <button class="btn btn-primary" onclick="restartQuiz()">Restart Quiz</button>
-            </div>
+        <div class="stat-item">
+            <div class="stat-value" id="attempts">0</div>
+            <div class="stat-label">Attempts</div>
         </div>
     </div>
 
-    <script>
-        // Quiz data structure (easy answers: mostly A/B/C/D + a few numeric)
-        const quizData = [
-            {
-                question:
-                    "MCQ: Which option correctly states the condition for a linear operator A?<br><br>" +
-                    "A) A(|ψ⟩|φ⟩) = A|ψ⟩ A|φ⟩<br>" +
-                    "B) A(α|ψ⟩ + β|φ⟩) = αA|ψ⟩ + βA|φ⟩ for all α, β<br>" +
-                    "C) A|ψ⟩ = |ψ⟩ for all |ψ⟩<br>" +
-                    "D) A†A = I<br><br>" +
-                    "Type: A / B / C / D",
-                correctAnswer: "B",
-                acceptedAnswers: ["b", "B"],
-                hints: [
-                    "Linearity means the operator respects addition and scalar multiplication.",
-                    "Pick the option where α and β can be pulled out."
-                ],
-                solution:
-                    "Correct option: B\\n\\n" +
-                    "A is linear if it satisfies:\\n" +
-                    "A(α|ψ⟩ + β|φ⟩) = αA|ψ⟩ + βA|φ⟩ for all scalars α, β.\\n\\n" +
-                    "This combines additivity and homogeneity.",
-                topic: "Linear Operators"
-            },
-            {
-                question:
-                    "Numerical: For the 2×2 matrix A = [[2,1],[1,2]], enter its eigenvalues in the format: 1,3",
-                correctAnswer: "1,3",
-                acceptedAnswers: ["1,3", "3,1"],
-                hints: [
-                    "Use det(A − λI) = 0.",
-                    "You will get λ² − 4λ + 3 = 0."
-                ],
-                solution:
-                    "det(A − λI)=0 gives:\\n" +
-                    "(2−λ)² − 1 = 0 → λ² − 4λ + 3 = 0 → (λ−1)(λ−3)=0.\\n\\n" +
-                    "Eigenvalues: 1 and 3.\\nType: 1,3",
-                topic: "Eigenvalues (2×2)"
-            },
-            {
-                question:
-                    "MCQ: Which equation defines a Hermitian operator H?<br><br>" +
-                    "A) H†H = I<br>" +
-                    "B) H = H†<br>" +
-                    "C) H² = I<br>" +
-                    "D) det(H) = 1<br><br>" +
-                    "Type: A / B / C / D",
-                correctAnswer: "B",
-                acceptedAnswers: ["b", "B"],
-                hints: [
-                    "Hermitian means equal to its adjoint (conjugate transpose).",
-                    "Look for the option that says H equals H dagger."
-                ],
-                solution:
-                    "Correct option: B\\n\\n" +
-                    "Hermitian (self-adjoint) means H = H†.",
-                topic: "Hermitian Operators"
-            },
-            {
-                question:
-                    "MCQ: If A and B are Hermitian, what is the nature of the commutator [A,B] = AB − BA?<br><br>" +
-                    "A) Hermitian<br>" +
-                    "B) Anti-Hermitian (skew-Hermitian)<br>" +
-                    "C) Unitary<br>" +
-                    "D) Symmetric<br><br>" +
-                    "Type: A / B / C / D",
-                correctAnswer: "B",
-                acceptedAnswers: ["b", "B"],
-                hints: [
-                    "Take the adjoint of (AB − BA).",
-                    "Use (AB)† = B†A†, with A†=A and B†=B."
-                ],
-                solution:
-                    "Correct option: B\\n\\n" +
-                    "([A,B])† = (AB − BA)† = B†A† − A†B† = BA − AB = −[A,B].\\n" +
-                    "So [A,B] is anti-Hermitian (skew-Hermitian).",
-                topic: "Commutators"
-            },
-            {
-                question:
-                    "MCQ: If U is unitary and U|χ⟩ = λ|χ⟩, what is |λ|?<br><br>" +
-                    "A) 0<br>" +
-                    "B) 1<br>" +
-                    "C) 2<br>" +
-                    "D) Depends on |χ⟩<br><br>" +
-                    "Type: A / B / C / D",
-                correctAnswer: "B",
-                acceptedAnswers: ["b", "B"],
-                hints: [
-                    "Unitary means U†U = I.",
-                    "Compute ⟨χ|U†U|χ⟩ in two ways."
-                ],
-                solution:
-                    "Correct option: B\\n\\n" +
-                    "For unitary U, eigenvalues are unimodular, so |λ| = 1.",
-                topic: "Unitary Operators"
-            },
-            {
-                question:
-                    "MCQ: Which pair of conditions defines a projection operator P?<br><br>" +
-                    "A) P² = I and P = P†<br>" +
-                    "B) P² = P and P = P†<br>" +
-                    "C) P†P = I and det(P)=1<br>" +
-                    "D) P² = 0 and P = −P†<br><br>" +
-                    "Type: A / B / C / D",
-                correctAnswer: "B",
-                acceptedAnswers: ["b", "B"],
-                hints: [
-                    "Projection twice should be the same as projection once.",
-                    "Also, it should be Hermitian."
-                ],
-                solution:
-                    "Correct option: B\\n\\n" +
-                    "A projection operator satisfies:\\n" +
-                    "1) Idempotent: P² = P\\n" +
-                    "2) Hermitian: P = P†",
-                topic: "Projection Operators"
-            },
-            {
-                question:
-                    "MCQ: In the identity [σx, σy] = 2i σ?, which Pauli matrix appears?<br><br>" +
-                    "A) σx<br>" +
-                    "B) σy<br>" +
-                    "C) σz<br>" +
-                    "D) I (identity)<br><br>" +
-                    "Type: A / B / C / D",
-                correctAnswer: "C",
-                acceptedAnswers: ["c", "C"],
-                hints: [
-                    "The commutator cycles x → y → z.",
-                    "Standard result: [σx, σy] = 2iσz."
-                ],
-                solution:
-                    "Correct option: C\\n\\n" +
-                    "[σx, σy] = 2iσz.",
-                topic: "Pauli Matrices"
-            },
-            {
-                question:
-                    "True/False: For a Hermitian operator, eigenvectors with distinct eigenvalues are orthogonal.<br><br>Type: True or False",
-                correctAnswer: "true",
-                acceptedAnswers: ["true", "True", "t", "T"],
-                hints: [
-                    "Use ⟨χj|H|χi⟩ computed in two ways.",
-                    "Hermitian implies ⟨χj|H|χi⟩ = ⟨Hχj|χi⟩."
-                ],
-                solution:
-                    "True\\n\\n" +
-                    "For Hermitian operators, eigenvectors corresponding to distinct eigenvalues are orthogonal.",
-                topic: "Hermitian Spectral Property"
-            },
-            {
-                question:
-                    "Short: What is the trace of σx, σy, and σz? (Enter a single number)",
-                correctAnswer: "0",
-                acceptedAnswers: ["0", "zero", "Zero"],
-                hints: [
-                    "Trace = sum of diagonal elements.",
-                    "Each Pauli matrix has diagonals that add to zero."
-                ],
-                solution:
-                    "Tr(σx)=0, Tr(σy)=0, Tr(σz)=0.\\nSo the answer is 0.",
-                topic: "Pauli Matrices"
-            },
-            {
-                question:
-                    "Short: Eigenvalues of σz are +1 and −1. Type them in the format: 1,-1",
-                correctAnswer: "1,-1",
-                acceptedAnswers: ["1,-1", "-1,1", "1,−1", "−1,1"],
-                hints: [
-                    "σz is diagonal with entries 1 and −1.",
-                    "Diagonal entries of a diagonal matrix are its eigenvalues."
-                ],
-                solution:
-                    "σz = [[1,0],[0,−1]], so eigenvalues are 1 and −1.\\nType: 1,-1",
-                topic: "Pauli Matrices"
-            }
-        ];
+    <div class="progress-bar">
+        <div class="progress-fill" id="progress" style="width: 0%"></div>
+    </div>
 
-        let currentQuestionIndex = 0;
-        let score = 0;
-        let attempts = 0;
-        let hintIndex = 0;
+    <div id="quiz-content"></div>
 
-        function normalizeAnswer(s) {
-            // Lowercase, trim, collapse spaces, and normalize spaces around commas
-            return s
-                .toLowerCase()
-                .trim()
-                .replace(/\s+/g, " ")
-                .replace(/\s*,\s*/g, ",");
+    <div id="completion-screen" class="hidden">
+        <h2 style="text-align: center; color: #667eea; margin-bottom: 20px;">🎉 Quiz Completed!</h2>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="final-score">0</div>
+                <div class="stat-label">Final Score</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="total-questions">0</div>
+                <div class="stat-label">Total Questions</div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="btn btn-primary" onclick="restartQuiz()">Restart Quiz</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 10 questions per topic (6 topics) => 60 total
+    const quizData = [
+        // =========================
+        // Topic 1: Linear operators
+        // =========================
+        {
+            topic: "Linear Operators",
+            question: "Which condition defines a linear operator A?",
+            options: [
+                "A(α|ψ⟩ + β|φ⟩) = αA|ψ⟩ + βA|φ⟩ for all scalars α, β",
+                "A(|ψ⟩ + |φ⟩) = A|ψ⟩ − A|φ⟩ always",
+                "A|ψ⟩ = |ψ⟩ for all |ψ⟩",
+                "A†A = I"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Linearity means preserving addition and scalar multiplication.",
+                "Look for the rule that distributes over a linear combination."
+            ],
+            solution: "A is linear if it preserves linear combinations: A(α|ψ⟩ + β|φ⟩) = αA|ψ⟩ + βA|φ⟩."
+        },
+        {
+            topic: "Linear Operators",
+            question: "Which mapping is NOT linear (as an operator on functions f)?",
+            options: [
+                "L(f) = d f/dx",
+                "L(f) = 3f",
+                "L(f) = f + g (for fixed g)",
+                "L(f) = (f)^2"
+            ],
+            correctIndex: 3,
+            hints: [
+                "Test linearity using L(f+g) ?= L(f)+L(g).",
+                "Squaring usually breaks additivity."
+            ],
+            solution: "L(f)=f^2 is not linear because (f+g)^2 ≠ f^2 + g^2 in general."
+        },
+        {
+            topic: "Linear Operators",
+            question: "If A is linear, what is A(0) (zero vector)?",
+            options: [
+                "0",
+                "1",
+                "It depends on A",
+                "Undefined"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Use A(0) = A(0 + 0) = A(0) + A(0).",
+                "Subtract A(0) from both sides."
+            ],
+            solution: "A(0)=0 for any linear operator."
+        },
+        {
+            topic: "Linear Operators",
+            question: "If A and B are linear operators, which statement is true?",
+            options: [
+                "A + B is linear",
+                "A + B is always unitary",
+                "A + B is never linear",
+                "A + B must be Hermitian"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Check (A+B)(αx+βy).",
+                "Linearity is preserved under addition."
+            ],
+            solution: "The sum of linear operators is linear."
+        },
+        {
+            topic: "Linear Operators",
+            question: "If A and B are linear operators, which statement is true?",
+            options: [
+                "AB (composition) is linear",
+                "AB is always Hermitian",
+                "AB is always a projection",
+                "AB must equal BA"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Apply AB to a linear combination and use linearity twice.",
+                "Linearity is preserved under composition."
+            ],
+            solution: "If A and B are linear, AB is linear."
+        },
+        {
+            topic: "Linear Operators",
+            question: "The zero operator Z defined by Z|ψ⟩ = 0 is:",
+            options: [
+                "Linear",
+                "Non-linear",
+                "Unitary",
+                "Always invertible"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Check Z(α|ψ⟩+β|φ⟩).",
+                "It always returns zero."
+            ],
+            solution: "Z is linear because it satisfies Z(α|ψ⟩+β|φ⟩)=αZ|ψ⟩+βZ|φ⟩=0."
+        },
+        {
+            topic: "Linear Operators",
+            question: "Which is a correct matrix form for a linear operator on ℝ^n?",
+            options: [
+                "x ↦ Ax (matrix multiplication)",
+                "x ↦ ||x||",
+                "x ↦ x^2 (componentwise squaring, in general)",
+                "x ↦ exp(x) (componentwise exponential, in general)"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Linear maps correspond to matrices once a basis is fixed.",
+                "Matrix multiplication preserves linear combinations."
+            ],
+            solution: "A linear operator is represented (in a basis) by multiplication x ↦ Ax."
+        },
+        {
+            topic: "Linear Operators",
+            question: "If A is linear, what is A(c|ψ⟩) where c is a scalar?",
+            options: [
+                "c A|ψ⟩",
+                "A|ψ⟩ + c",
+                "A|ψ⟩/c always",
+                "No rule exists"
+            ],
+            correctIndex: 0,
+            hints: [
+                "This is the homogeneity part of linearity.",
+                "Scalars factor out."
+            ],
+            solution: "A(c|ψ⟩)=cA|ψ⟩ for linear A."
+        },
+        {
+            topic: "Linear Operators",
+            question: "If A is linear and invertible, then its inverse A⁻¹ is:",
+            options: [
+                "Linear",
+                "Always non-linear",
+                "Always a projection",
+                "Always skew-Hermitian"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Use A(A⁻¹(x))=x and test on linear combinations.",
+                "Inverse of a linear bijection is linear."
+            ],
+            solution: "A⁻¹ is linear if A is linear and invertible."
+        },
+        {
+            topic: "Linear Operators",
+            question: "Which statement is true about basis dependence?",
+            options: [
+                "The matrix of an operator depends on the chosen basis",
+                "Eigenvalues depend on the chosen basis",
+                "Linearity depends on the chosen basis",
+                "Trace depends on the chosen basis"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Coordinates change with basis.",
+                "The same operator can look different as a matrix in different bases."
+            ],
+            solution: "The matrix representation depends on basis, even though the operator itself does not."
+        },
+
+        // =========================
+        // Topic 2: Matrix algebra
+        // =========================
+        {
+            topic: "Matrix Algebra",
+            question: "Which identity property is correct for an identity matrix I?",
+            options: [
+                "AI = IA = A",
+                "AI = I only",
+                "IA = 0 always",
+                "AI = A² always"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Identity acts like the number 1 under multiplication.",
+                "It should not change A."
+            ],
+            solution: "Identity matrix satisfies AI = IA = A."
+        },
+        {
+            topic: "Matrix Algebra",
+            question: "For an invertible matrix A, the inverse A⁻¹ satisfies:",
+            options: [
+                "AA⁻¹ = A⁻¹A = I",
+                "AA⁻¹ = 0",
+                "A⁻¹A = A",
+                "A⁻¹ = Aᵀ always"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Inverse undoes multiplication by A.",
+                "Both left and right inverse coincide for invertible matrices."
+            ],
+            solution: "A⁻¹ is defined by AA⁻¹ = A⁻¹A = I."
+        },
+        {
+            topic: "Matrix Algebra",
+            question: "Which is true for determinants?",
+            options: [
+                "det(AB) = det(A) det(B)",
+                "det(AB) = det(A) + det(B)",
+                "det(A⁻¹) = det(A)",
+                "det(Aᵀ) = −det(A)"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Determinant is multiplicative.",
+                "Try simple diagonal matrices to test."
+            ],
+            solution: "det(AB)=det(A)det(B)."
+        },
+        {
+            topic: "Matrix Algebra",
+            question: "For any square matrices A and B of the same size, which is always true?",
+            options: [
+                "tr(AB) = tr(BA)",
+                "tr(AB) = tr(A) tr(B) always",
+                "tr(AB) = tr(A)+tr(B) always",
+                "tr(AB) = 0 always"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Trace is cyclic for products (of two matrices).",
+                "This identity is widely used in physics."
+            ],
+            solution: "A standard property: tr(AB)=tr(BA)."
+        },
+        {
+            topic: "Matrix Algebra",
+            question: "Transpose of a product satisfies:",
+            options: [
+                "(AB)ᵀ = Bᵀ Aᵀ",
+                "(AB)ᵀ = Aᵀ Bᵀ",
+                "(AB)ᵀ = AB",
+                "(AB)ᵀ = A + B"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Order reverses under transpose.",
+                "Test with 2×2 matrices."
+            ],
+            solution: "(AB)ᵀ = BᵀAᵀ."
+        },
+        {
+            topic: "Matrix Algebra",
+            question: "Conjugate-transpose (dagger) of a product satisfies:",
+            options: [
+                "(AB)† = B† A†",
+                "(AB)† = A† B†",
+                "(AB)† = AB",
+                "(AB)† = A + B"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Dagger is like transpose + complex conjugate, order reverses.",
+                "Same pattern as transpose."
+            ],
+            solution: "(AB)† = B†A†."
+        },
+        {
+            topic: "Matrix Algebra",
+            question: "For a 2×2 matrix [[a,b],[c,d]], det(A) equals:",
+            options: [
+                "ad − bc",
+                "ab − cd",
+                "a + d",
+                "b + c"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Use the standard 2×2 determinant formula.",
+                "Multiply diagonal and subtract off-diagonal product."
+            ],
+            solution: "det([[a,b],[c,d]]) = ad − bc."
+        },
+        {
+            topic: "Matrix Algebra",
+            question: "For any square matrix A, the trace is:",
+            options: [
+                "Sum of diagonal elements",
+                "Product of diagonal elements",
+                "Always 0",
+                "Always 1"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Trace is a simple scalar built from diagonals.",
+                "Write A = (a_ij); trace = Σ a_ii."
+            ],
+            solution: "Trace is the sum of diagonal elements."
+        },
+        {
+            topic: "Matrix Algebra",
+            question: "If A is diagonal with diagonal entries (2, 5, -1), its eigenvalues are:",
+            options: [
+                "2, 5, -1",
+                "Only 2",
+                "Only 5",
+                "2+5-1 = 6"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Diagonal matrices act independently on basis vectors.",
+                "Each diagonal entry is an eigenvalue."
+            ],
+            solution: "Eigenvalues of a diagonal matrix are its diagonal entries."
+        },
+        {
+            topic: "Matrix Algebra",
+            question: "For an orthogonal matrix Q (real case), the defining relation is:",
+            options: [
+                "QᵀQ = I",
+                "Q†Q = 0",
+                "Q = Q† always",
+                "det(Q) = 0"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Orthogonal matrices preserve dot products.",
+                "Inverse equals transpose."
+            ],
+            solution: "Orthogonal: QᵀQ=I."
+        },
+
+        // ==========================================
+        // Topic 3: Hermitian, Unitary, Projection
+        // ==========================================
+        {
+            topic: "Hermitian, Unitary & Projection",
+            question: "A Hermitian operator/matrix H satisfies:",
+            options: [
+                "H = H†",
+                "H†H = I",
+                "H² = H",
+                "det(H)=1"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Hermitian means equal to conjugate transpose.",
+                "Look for H equals H dagger."
+            ],
+            solution: "Hermitian means H = H†."
+        },
+        {
+            topic: "Hermitian, Unitary & Projection",
+            question: "A unitary operator/matrix U satisfies:",
+            options: [
+                "U†U = I",
+                "U = U†",
+                "U² = U",
+                "tr(U)=0"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Unitary preserves inner products/norm.",
+                "Inverse equals dagger."
+            ],
+            solution: "Unitary means U†U = I (equivalently U⁻¹ = U†)."
+        },
+        {
+            topic: "Hermitian, Unitary & Projection",
+            question: "A projection operator P satisfies:",
+            options: [
+                "P² = P and P = P†",
+                "P² = I and P = P†",
+                "P†P = I",
+                "P = 0 only"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Projecting twice gives the same as once.",
+                "In QM, projection operators are Hermitian."
+            ],
+            solution: "Projection: idempotent P²=P, and (in QM) Hermitian P=P†."
+        },
+        {
+            topic: "Hermitian, Unitary & Projection",
+            question: "Eigenvalues of a Hermitian operator are:",
+            options: [
+                "Real",
+                "Purely imaginary",
+                "Always 0",
+                "Always ±1"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Hermitian corresponds to observables in QM.",
+                "Measurement outcomes are real."
+            ],
+            solution: "Hermitian operators have real eigenvalues."
+        },
+        {
+            topic: "Hermitian, Unitary & Projection",
+            question: "If U is unitary and U|χ⟩ = λ|χ⟩, then |λ| equals:",
+            options: [
+                "1",
+                "0",
+                "2",
+                "Depends on |χ⟩"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Use U†U=I on an eigenvector.",
+                "Norm preservation forces |λ|=1."
+            ],
+            solution: "Eigenvalues of a unitary operator have modulus 1."
+        },
+        {
+            topic: "Hermitian, Unitary & Projection",
+            question: "For a unitary U, which is true?",
+            options: [
+                "U⁻¹ = U†",
+                "U⁻¹ = U",
+                "U⁻¹ = 0",
+                "U⁻¹ = Uᵀ always"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Multiply U†U = I.",
+                "Compare with definition of inverse."
+            ],
+            solution: "From U†U=I, U⁻¹ = U†."
+        },
+        {
+            topic: "Hermitian, Unitary & Projection",
+            question: "If H is Hermitian, the expectation value ⟨ψ|H|ψ⟩ is:",
+            options: [
+                "Real",
+                "Always imaginary",
+                "Always zero",
+                "Undefined"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Take the complex conjugate and use H=H†.",
+                "Expectation value of an observable is real."
+            ],
+            solution: "⟨ψ|H|ψ⟩ is real for Hermitian H."
+        },
+        {
+            topic: "Hermitian, Unitary & Projection",
+            question: "Eigenvalues of a projection operator P (with P²=P and P Hermitian) are:",
+            options: [
+                "Only 0 or 1",
+                "Any real number",
+                "Only ±1",
+                "Only imaginary"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Use P|v⟩=λ|v⟩ and apply P again.",
+                "You get λ²=λ."
+            ],
+            solution: "λ²=λ ⇒ λ=0 or 1."
+        },
+        {
+            topic: "Hermitian, Unitary & Projection",
+            question: "If H is Hermitian, then exp(iH) is:",
+            options: [
+                "Unitary",
+                "Hermitian",
+                "A projection",
+                "Always zero"
+            ],
+            correctIndex: 0,
+            hints: [
+                "This is a standard result: exponential of i times Hermitian is unitary.",
+                "Think of time-evolution operators."
+            ],
+            solution: "exp(iH) is unitary when H is Hermitian."
+        },
+        {
+            topic: "Hermitian, Unitary & Projection",
+            question: "If H is Hermitian and U is unitary, then UHU† is:",
+            options: [
+                "Hermitian",
+                "Always non-Hermitian",
+                "Always diagonal",
+                "Always a projection"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Take dagger: (UHU†)† = U H† U†.",
+                "Use H†=H and (U†)†=U."
+            ],
+            solution: "UHU† remains Hermitian (unitary similarity preserves Hermiticity)."
+        },
+
+        // =================================
+        // Topic 4: Eigenvalues/eigenvectors
+        // =================================
+        {
+            topic: "Eigenvalues & Eigenvectors",
+            question: "Which equation defines an eigenvector v of matrix A with eigenvalue λ?",
+            options: [
+                "Av = λv",
+                "A + v = λ",
+                "Aλ = v",
+                "det(A)=λ"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Eigenvector direction is preserved up to scaling.",
+                "Output is scalar multiple of input."
+            ],
+            solution: "Definition: Av = λv."
+        },
+        {
+            topic: "Eigenvalues & Eigenvectors",
+            question: "Eigenvalues are found by solving:",
+            options: [
+                "det(A − λI) = 0",
+                "tr(A − λI) = 0",
+                "A − λI = 0 (always)",
+                "det(A) = 0 (always)"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Characteristic polynomial comes from determinant.",
+                "Nontrivial solution requires determinant zero."
+            ],
+            solution: "Eigenvalues satisfy det(A−λI)=0."
+        },
+        {
+            topic: "Eigenvalues & Eigenvectors",
+            question: "For A = [[2,1],[1,2]], the eigenvalues are:",
+            options: [
+                "1 and 3",
+                "0 and 4",
+                "2 and 2",
+                "−1 and 5"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Solve det([[2−λ,1],[1,2−λ]])=0.",
+                "(2−λ)^2 − 1 = 0."
+            ],
+            solution: "Characteristic equation gives λ=1,3."
+        },
+        {
+            topic: "Eigenvalues & Eigenvectors",
+            question: "For A = [[2,1],[1,2]], an eigenvector for λ=3 is proportional to:",
+            options: [
+                "[1, 1]",
+                "[1, −1]",
+                "[2, 0]",
+                "[0, 2]"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Solve (A−3I)v=0.",
+                "You get v1=v2."
+            ],
+            solution: "For λ=3, eigenvector ∝ (1,1)."
+        },
+        {
+            topic: "Eigenvalues & Eigenvectors",
+            question: "For A = [[2,1],[1,2]], an eigenvector for λ=1 is proportional to:",
+            options: [
+                "[1, −1]",
+                "[1, 1]",
+                "[1, 0]",
+                "[0, 1]"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Solve (A−I)v=0.",
+                "You get v1 = −v2."
+            ],
+            solution: "For λ=1, eigenvector ∝ (1,−1)."
+        },
+        {
+            topic: "Eigenvalues & Eigenvectors",
+            question: "If A is diagonal diag(2,5), its eigenvalues are:",
+            options: [
+                "2 and 5",
+                "7 only",
+                "10 only",
+                "−3 and 3"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Diagonal entries act as scaling on basis vectors.",
+                "Each diagonal entry is an eigenvalue."
+            ],
+            solution: "Eigenvalues are 2 and 5."
+        },
+        {
+            topic: "Eigenvalues & Eigenvectors",
+            question: "For any square matrix A, the sum of eigenvalues (counting multiplicity) equals:",
+            options: [
+                "tr(A)",
+                "det(A)",
+                "rank(A)",
+                "0 always"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Trace relates to eigenvalues via characteristic polynomial.",
+                "Try diagonal matrices as a check."
+            ],
+            solution: "Sum of eigenvalues equals tr(A)."
+        },
+        {
+            topic: "Eigenvalues & Eigenvectors",
+            question: "For any square matrix A, the product of eigenvalues (counting multiplicity) equals:",
+            options: [
+                "det(A)",
+                "tr(A)",
+                "rank(A)",
+                "0 always"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Determinant relates to eigenvalues.",
+                "Check with diagonal matrices."
+            ],
+            solution: "Product of eigenvalues equals det(A)."
+        },
+        {
+            topic: "Eigenvalues & Eigenvectors",
+            question: "If A = cI (scalar matrix), its eigenvalues are:",
+            options: [
+                "All equal to c",
+                "All equal to 1",
+                "All equal to 0",
+                "c and −c only"
+            ],
+            correctIndex: 0,
+            hints: [
+                "A acts as uniform scaling.",
+                "Every vector is an eigenvector."
+            ],
+            solution: "All eigenvalues are c (with multiplicity n)."
+        },
+        {
+            topic: "Eigenvalues & Eigenvectors",
+            question: "If λ is a non-degenerate eigenvalue (multiplicity 1), then eigenvectors of A and any matrix B that commutes with A (AB=BA) can be chosen to:",
+            options: [
+                "Be common (simultaneous eigenvectors)",
+                "Be always orthogonal",
+                "Be always equal",
+                "Not exist"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Commuting operators are compatible in QM under suitable conditions.",
+                "Non-degenerate case is simplest."
+            ],
+            solution: "If AB=BA and eigenvalue is non-degenerate, B maps the eigenspace to itself, giving common eigenvectors."
+        },
+
+        // =======================
+        // Topic 5: Pauli matrices
+        // =======================
+        {
+            topic: "Pauli Matrices",
+            question: "Which matrix is σx?",
+            options: [
+                "[[0,1],[1,0]]",
+                "[[1,0],[0,-1]]",
+                "[[0,-i],[i,0]]",
+                "[[1,0],[0,1]]"
+            ],
+            correctIndex: 0,
+            hints: [
+                "σx swaps the basis states |0⟩ and |1⟩.",
+                "Look for off-diagonal ones."
+            ],
+            solution: "σx = [[0,1],[1,0]]."
+        },
+        {
+            topic: "Pauli Matrices",
+            question: "Which matrix is σy?",
+            options: [
+                "[[0,-i],[i,0]]",
+                "[[0,1],[1,0]]",
+                "[[1,0],[0,-1]]",
+                "[[1,0],[0,1]]"
+            ],
+            correctIndex: 0,
+            hints: [
+                "σy has imaginary off-diagonals.",
+                "It is Hermitian: conjugate transpose equals itself."
+            ],
+            solution: "σy = [[0,-i],[i,0]]."
+        },
+        {
+            topic: "Pauli Matrices",
+            question: "Which matrix is σz?",
+            options: [
+                "[[1,0],[0,-1]]",
+                "[[0,1],[1,0]]",
+                "[[0,-i],[i,0]]",
+                "[[1,0],[0,1]]"
+            ],
+            correctIndex: 0,
+            hints: [
+                "σz is diagonal with entries +1 and −1.",
+                "It distinguishes the basis states."
+            ],
+            solution: "σz = [[1,0],[0,-1]]."
+        },
+        {
+            topic: "Pauli Matrices",
+            question: "The eigenvalues of σz are:",
+            options: [
+                "+1 and −1",
+                "0 and 1",
+                "i and −i",
+                "2 and −2"
+            ],
+            correctIndex: 0,
+            hints: [
+                "σz is diagonal.",
+                "Diagonal entries are eigenvalues."
+            ],
+            solution: "Eigenvalues are +1 and −1."
+        },
+        {
+            topic: "Pauli Matrices",
+            question: "The trace of any Pauli matrix (σx, σy, σz) is:",
+            options: [
+                "0",
+                "1",
+                "2",
+                "−1"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Trace = sum of diagonal entries.",
+                "σx and σy have zero diagonals; σz has 1 + (−1)."
+            ],
+            solution: "Tr(σi)=0 for i=x,y,z."
+        },
+        {
+            topic: "Pauli Matrices",
+            question: "The determinant of any Pauli matrix is:",
+            options: [
+                "−1",
+                "0",
+                "+1",
+                "Depends on i"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Check σz: det([[1,0],[0,−1]]) = −1.",
+                "All Pauli matrices share det = −1."
+            ],
+            solution: "det(σi)=−1."
+        },
+        {
+            topic: "Pauli Matrices",
+            question: "Which identity is true for Pauli matrices?",
+            options: [
+                "σi² = I",
+                "σi² = 0",
+                "σi² = σi",
+                "σi² = −I"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Multiply σx by itself to check.",
+                "They square to the identity."
+            ],
+            solution: "σi² = I."
+        },
+        {
+            topic: "Pauli Matrices",
+            question: "Pauli matrices are:",
+            options: [
+                "Hermitian",
+                "Unitary but not Hermitian",
+                "Neither Hermitian nor unitary",
+                "Only projection operators"
+            ],
+            correctIndex: 0,
+            hints: [
+                "σi† = σi.",
+                "They represent observables (spin components)."
+            ],
+            solution: "Pauli matrices are Hermitian."
+        },
+        {
+            topic: "Pauli Matrices",
+            question: "The anti-commutator relation is (for i≠j):",
+            options: [
+                "{σi,σj} = 0",
+                "{σi,σj} = 2I",
+                "{σi,σj} = 2σk",
+                "{σi,σj} = I"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Distinct Pauli matrices anticommute.",
+                "σxσy = −σyσx."
+            ],
+            solution: "For i≠j, {σi,σj}=0 (and in general {σi,σj}=2δij I)."
+        },
+        {
+            topic: "Pauli Matrices",
+            question: "Which product identity is correct?",
+            options: [
+                "σx σy = i σz",
+                "σx σy = −i σz",
+                "σx σy = i I",
+                "σx σy = σz"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Use σxσy = iσz is a standard identity.",
+                "Then σyσx = −iσz."
+            ],
+            solution: "σxσy = iσz."
+        },
+
+        // ===========================
+        // Topic 6: Commutation relations
+        // ===========================
+        {
+            topic: "Commutation Relations",
+            question: "The commutator [A,B] is defined as:",
+            options: [
+                "AB − BA",
+                "AB + BA",
+                "A + B",
+                "A − B"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Commutator measures non-commutativity.",
+                "If AB=BA then [A,B]=0."
+            ],
+            solution: "[A,B]=AB−BA."
+        },
+        {
+            topic: "Commutation Relations",
+            question: "If [A,B]=0, then A and B:",
+            options: [
+                "Commute",
+                "Anti-commute",
+                "Are always Hermitian",
+                "Are always projections"
+            ],
+            correctIndex: 0,
+            hints: [
+                "[A,B]=0 means AB=BA.",
+                "That is exactly the definition of commuting."
+            ],
+            solution: "If [A,B]=0 then AB=BA, so A and B commute."
+        },
+        {
+            topic: "Commutation Relations",
+            question: "For Pauli matrices, [σx, σy] equals:",
+            options: [
+                "2i σz",
+                "i σz",
+                "2 σz",
+                "0"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Standard commutator: [σj,σk]=2i εjkl σl.",
+                "So [σx,σy]=2iσz."
+            ],
+            solution: "[σx,σy]=2iσz."
+        },
+        {
+            topic: "Commutation Relations",
+            question: "For Pauli matrices, [σy, σz] equals:",
+            options: [
+                "2i σx",
+                "2i σy",
+                "2i σz",
+                "0"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Cycle (x,y,z): [σy,σz] gives σx.",
+                "Use Levi-Civita symbol."
+            ],
+            solution: "[σy,σz]=2iσx."
+        },
+        {
+            topic: "Commutation Relations",
+            question: "For Pauli matrices, [σz, σx] equals:",
+            options: [
+                "2i σy",
+                "2i σx",
+                "2i σz",
+                "0"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Cycle (x,y,z): [σz,σx] gives σy.",
+                "Sign matches cyclic order."
+            ],
+            solution: "[σz,σx]=2iσy."
+        },
+        {
+            topic: "Commutation Relations",
+            question: "If A and B are Hermitian, then the commutator [A,B] is:",
+            options: [
+                "Anti-Hermitian (skew-Hermitian)",
+                "Hermitian",
+                "Unitary",
+                "A projection"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Take dagger: (AB−BA)† = B†A† − A†B†.",
+                "Use A†=A and B†=B to get a minus sign."
+            ],
+            solution: "([A,B])† = −[A,B], so it is anti-Hermitian."
+        },
+        {
+            topic: "Commutation Relations",
+            question: "Which commutator is always zero for any operator A?",
+            options: [
+                "[A, I]",
+                "[A, A†]",
+                "[A, B] for any B",
+                "[A, A²]"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Identity commutes with everything.",
+                "AI=IA."
+            ],
+            solution: "[A,I]=0 always."
+        },
+        {
+            topic: "Commutation Relations",
+            question: "If AB=BA, then [A,B] equals:",
+            options: [
+                "0",
+                "I",
+                "2AB",
+                "A+B"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Plug AB=BA into AB−BA.",
+                "Difference becomes zero."
+            ],
+            solution: "If AB=BA then AB−BA=0."
+        },
+        {
+            topic: "Commutation Relations",
+            question: "Canonical quantum commutator (1D) is:",
+            options: [
+                "[x, p] = iħ",
+                "[x, p] = 0",
+                "[x, p] = ħ",
+                "[x, p] = −ħ"
+            ],
+            correctIndex: 0,
+            hints: [
+                "This is the standard postulate of QM.",
+                "Position and momentum do not commute."
+            ],
+            solution: "[x,p]=iħ."
+        },
+        {
+            topic: "Commutation Relations",
+            question: "If two observables commute (and have a non-degenerate spectrum), they can be measured:",
+            options: [
+                "Simultaneously with a common eigenbasis",
+                "Only one at a time",
+                "Only if they are equal",
+                "Only if they are projections"
+            ],
+            correctIndex: 0,
+            hints: [
+                "Commuting observables are compatible.",
+                "They share eigenvectors (non-degenerate case)."
+            ],
+            solution: "Commuting observables can be simultaneously diagonalized in the non-degenerate case."
+        }
+    ];
+
+    // State
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let attempts = 0;
+    let hintIndex = 0;
+    let locked = false;
+
+    const letters = ["A", "B", "C", "D"];
+
+    function loadQuestion() {
+        if (currentQuestionIndex >= quizData.length) {
+            showCompletionScreen();
+            return;
         }
 
-        function loadQuestion() {
-            if (currentQuestionIndex >= quizData.length) {
-                showCompletionScreen();
-                return;
-            }
+        const question = quizData[currentQuestionIndex];
+        hintIndex = 0;
+        locked = false;
 
-            const question = quizData[currentQuestionIndex];
-            hintIndex = 0;
+        const optionsHTML = question.options.map((opt, i) => {
+            const label = letters[i] ? letters[i] + ") " : "";
+            return `<button class="option-btn" id="opt-${i}" onclick="selectOption(${i})">${label}${escapeHtml(opt)}</button>`;
+        }).join("");
 
-            const quizContent = document.getElementById('quiz-content');
-            quizContent.innerHTML = `
-                <div class="question-card">
-                    <div class="question-number">Question ${currentQuestionIndex + 1} of ${quizData.length} | Topic: ${question.topic}</div>
-                    <div class="question-text">${question.question}</div>
-                    <input type="text" class="answer-input" id="answer-input" placeholder="Enter your answer here..." />
-                    <div>
-                        <button class="btn btn-primary" onclick="checkAnswer()">Submit Answer</button>
-                        <button class="btn btn-secondary" onclick="skipQuestion()">Skip Question</button>
-                    </div>
-                    <div class="feedback" id="feedback"></div>
-                    <div class="solution" id="solution">
-                        <h3>📖 Full Solution</h3>
-                        <div class="solution-content">${formatSolution(question.solution)}</div>
-                    </div>
+        const quizContent = document.getElementById('quiz-content');
+        quizContent.innerHTML = `
+            <div class="question-card">
+                <div class="question-number">Question ${currentQuestionIndex + 1} of ${quizData.length} | Topic: ${escapeHtml(question.topic)}</div>
+                <div class="question-text">${question.question}</div>
+
+                <div class="options">
+                    ${optionsHTML}
                 </div>
-            `;
 
-            document.getElementById('current-question').textContent = currentQuestionIndex + 1;
-            updateProgress();
+                <div>
+                    <button class="btn btn-secondary" id="skip-btn" onclick="skipQuestion()">Skip Question</button>
+                    <button class="btn btn-primary hidden" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+                </div>
 
-            document.getElementById('answer-input').focus();
+                <div class="feedback" id="feedback"></div>
 
-            document.getElementById('answer-input').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') checkAnswer();
-            });
-        }
+                <div class="solution" id="solution">
+                    <h3>📖 Full Solution</h3>
+                    <div class="solution-content">${formatSolution(question.solution)}</div>
+                </div>
+            </div>
+        `;
 
-        function formatSolution(solution) {
-            return solution.split('\\n').map(line => {
-                if (line.trim().startsWith('Step') || line.trim().startsWith('•') || line.trim().match(/^\\d+\\./)) {
-                    return `<p style="margin: 8px 0; padding-left: 10px;"><strong>${line}</strong></p>`;
-                }
-                return `<p style="margin: 8px 0;">${line}</p>`;
-            }).join('');
-        }
+        document.getElementById('current-question').textContent = currentQuestionIndex + 1;
+        updateProgress();
+    }
 
-        function checkAnswer() {
-            const userAnswer = normalizeAnswer(document.getElementById('answer-input').value);
-            const question = quizData[currentQuestionIndex];
-            const feedback = document.getElementById('feedback');
+    function escapeHtml(str) {
+        // Only used for option/topic text; question string intentionally allows formatting if you add it.
+        return String(str)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;");
+    }
 
-            if (!userAnswer) {
-                feedback.className = 'feedback incorrect';
-                feedback.style.display = 'block';
-                feedback.innerHTML = '⚠️ Please enter an answer!';
-                return;
+    function formatSolution(solution) {
+        return solution.split('\n').map(line => {
+            if (line.trim().startsWith('Step') || line.trim().startsWith('•') || line.trim().match(/^\d+\./)) {
+                return `<p style="margin: 8px 0; padding-left: 10px;"><strong>${escapeHtml(line)}</strong></p>`;
             }
+            return `<p style="margin: 8px 0;">${escapeHtml(line)}</p>`;
+        }).join('');
+    }
 
-            attempts++;
-            document.getElementById('attempts').textContent = attempts;
+    function setButtonsDisabled(disabled) {
+        const question = quizData[currentQuestionIndex];
+        for (let i = 0; i < question.options.length; i++) {
+            const btn = document.getElementById(`opt-${i}`);
+            if (btn) btn.disabled = disabled;
+        }
+    }
 
-            // Exact match only (prevents accidental partial matches)
-            const isCorrect = question.acceptedAnswers
-                .map(a => normalizeAnswer(a))
-                .some(a => a === userAnswer);
+    function showNextOnly() {
+        const nextBtn = document.getElementById("next-btn");
+        const skipBtn = document.getElementById("skip-btn");
+        if (nextBtn) nextBtn.classList.remove("hidden");
+        if (skipBtn) skipBtn.classList.add("hidden");
+    }
 
-            if (isCorrect) {
-                score++;
-                document.getElementById('score').textContent = score;
-                feedback.className = 'feedback correct';
-                feedback.style.display = 'block';
-                feedback.innerHTML = "✅ <strong>Correct!</strong> Well done! Here's the complete solution:";
+    function selectOption(index) {
+        if (locked) return;
 
-                document.getElementById('solution').style.display = 'block';
+        const question = quizData[currentQuestionIndex];
+        const feedback = document.getElementById('feedback');
 
-                document.querySelector('.btn-primary').textContent = 'Next Question →';
-                document.querySelector('.btn-primary').onclick = nextQuestion;
-                document.querySelector('.btn-secondary').style.display = 'none';
+        attempts++;
+        document.getElementById('attempts').textContent = attempts;
 
-            } else {
-                if (hintIndex < question.hints.length) {
-                    feedback.className = 'feedback hint';
-                    feedback.style.display = 'block';
-                    feedback.innerHTML = `💡 <strong>Hint ${hintIndex + 1}:</strong> ${question.hints[hintIndex]}`;
-                    hintIndex++;
-                } else {
-                    feedback.className = 'feedback incorrect';
-                    feedback.style.display = 'block';
-                    feedback.innerHTML = "❌ <strong>Incorrect.</strong> Here's the complete solution:";
-                    document.getElementById('solution').style.display = 'block';
+        const clickedBtn = document.getElementById(`opt-${index}`);
 
-                    document.querySelector('.btn-primary').textContent = 'Next Question →';
-                    document.querySelector('.btn-primary').onclick = nextQuestion;
-                    document.querySelector('.btn-secondary').style.display = 'none';
-                }
-            }
+        if (index === question.correctIndex) {
+            locked = true;
+            score++;
+            document.getElementById('score').textContent = score;
+
+            if (clickedBtn) clickedBtn.classList.add("correct");
+
+            feedback.className = 'feedback correct';
+            feedback.style.display = 'block';
+            feedback.innerHTML = '✅ <strong>Correct!</strong> Well done! Here is the complete solution:';
+
+            document.getElementById('solution').style.display = 'block';
+            setButtonsDisabled(true);
+            showNextOnly();
+            return;
         }
 
-        function nextQuestion() {
-            currentQuestionIndex++;
-            loadQuestion();
-        }
+        // Wrong answer
+        if (clickedBtn) clickedBtn.classList.add("wrong");
 
-        function skipQuestion() {
-            const feedback = document.getElementById('feedback');
+        if (hintIndex < question.hints.length) {
             feedback.className = 'feedback hint';
             feedback.style.display = 'block';
-            feedback.innerHTML = "⏭️ <strong>Question skipped.</strong> Here's the solution for your reference:";
+            feedback.innerHTML = `💡 <strong>Hint ${hintIndex + 1}:</strong> ${escapeHtml(question.hints[hintIndex])}`;
+            hintIndex++;
+        } else {
+            locked = true;
+            feedback.className = 'feedback incorrect';
+            feedback.style.display = 'block';
+            feedback.innerHTML = '❌ <strong>Incorrect.</strong> Here is the complete solution:';
+
+            // highlight correct option
+            const correctBtn = document.getElementById(`opt-${question.correctIndex}`);
+            if (correctBtn) correctBtn.classList.add("correct");
+
             document.getElementById('solution').style.display = 'block';
-
-            document.querySelector('.btn-primary').textContent = 'Next Question →';
-            document.querySelector('.btn-primary').onclick = nextQuestion;
-            document.querySelector('.btn-secondary').style.display = 'none';
+            setButtonsDisabled(true);
+            showNextOnly();
         }
+    }
 
-        function updateProgress() {
-            const progress = ((currentQuestionIndex) / quizData.length) * 100;
-            document.getElementById('progress').style.width = progress + '%';
-        }
+    function nextQuestion() {
+        currentQuestionIndex++;
+        loadQuestion();
+    }
 
-        function showCompletionScreen() {
-            document.getElementById('quiz-content').classList.add('hidden');
-            document.getElementById('completion-screen').classList.remove('hidden');
-            document.getElementById('final-score').textContent = score;
-            document.getElementById('total-questions').textContent = quizData.length;
-            document.getElementById('progress').style.width = '100%';
-        }
+    function skipQuestion() {
+        if (locked) return;
 
-        function restartQuiz() {
-            currentQuestionIndex = 0;
-            score = 0;
-            attempts = 0;
-            hintIndex = 0;
+        const feedback = document.getElementById('feedback');
+        feedback.className = 'feedback hint';
+        feedback.style.display = 'block';
+        feedback.innerHTML = '⏭️ <strong>Question skipped.</strong> Here is the solution for your reference:';
 
-            document.getElementById('score').textContent = '0';
-            document.getElementById('attempts').textContent = '0';
-            document.getElementById('quiz-content').classList.remove('hidden');
-            document.getElementById('completion-screen').classList.add('hidden');
+        const question = quizData[currentQuestionIndex];
+        const correctBtn = document.getElementById(`opt-${question.correctIndex}`);
+        if (correctBtn) correctBtn.classList.add("correct");
 
-            loadQuestion();
-        }
+        document.getElementById('solution').style.display = 'block';
+        locked = true;
+        setButtonsDisabled(true);
+        showNextOnly();
+    }
 
-        // Initialize quiz on page load
-        window.onload = function() {
-            loadQuestion();
-        };
-    </script>
+    function updateProgress() {
+        const progress = (currentQuestionIndex / quizData.length) * 100;
+        document.getElementById('progress').style.width = progress + '%';
+    }
+
+    function showCompletionScreen() {
+        document.getElementById('quiz-content').classList.add('hidden');
+        document.getElementById('completion-screen').classList.remove('hidden');
+        document.getElementById('final-score').textContent = score;
+        document.getElementById('total-questions').textContent = quizData.length;
+        document.getElementById('progress').style.width = '100%';
+    }
+
+    function restartQuiz() {
+        currentQuestionIndex = 0;
+        score = 0;
+        attempts = 0;
+        hintIndex = 0;
+        locked = false;
+
+        document.getElementById('score').textContent = '0';
+        document.getElementById('attempts').textContent = '0';
+        document.getElementById('quiz-content').classList.remove('hidden');
+        document.getElementById('completion-screen').classList.add('hidden');
+
+        loadQuestion();
+    }
+
+    window.onload = function() {
+        loadQuestion();
+    };
+</script>
 </body>
 </html>
