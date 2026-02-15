@@ -345,6 +345,7 @@
       </div>
 
       <iframe id="slides-frame" class="slides-frame" src="" loading="lazy" title="PDF.js slides viewer"></iframe>
+      <div class="note">If the viewer shows an error, confirm <code>pdfjs/web/viewer.html</code> exists in your repo and PDFs are in <code>references/</code>.</div>
     </div>
   </div>
 
@@ -448,7 +449,19 @@
       options: ["L(f)=f^2", "L(f)=d f/dx", "L(f)=3f", "L(f)=x f(x)"],
       correctIndex: 0,
       hints: ["Test L(f+g) ?= L(f)+L(g).", "Squaring usually breaks additivity."],
-      solution: "L(f)=f^2 is not linear because (f+g)^2 ≠ f^2+g^2 in general."
+      solution:
+`Step 1: Recall the linearity (additivity) test.
+A linear operator L must satisfy L(f+g) = L(f) + L(g) for all functions f,g.
+
+Step 2: Test L(f)=f^2 using additivity.
+L(f+g) = (f+g)^2 = f^2 + 2fg + g^2.
+
+Step 3: Compare with L(f)+L(g).
+L(f)+L(g) = f^2 + g^2.
+
+Step 4: Conclude.
+Since (f+g)^2 ≠ f^2 + g^2 in general (the cross term 2fg is extra), L(f)=f^2 is NOT linear.
+Therefore the correct option is L(f)=f^2.`
     },
     {
       topic: "Operators & Special Operators",
@@ -456,7 +469,20 @@
       options: ["A†A is Hermitian", "A is Hermitian", "A commutes with every operator", "A is invertible"],
       correctIndex: 0,
       hints: ["Take the dagger: (A†A)† = A†(A†)†.", "That becomes A†A."],
-      solution: "A†A is always Hermitian since (A†A)† = A†A."
+      solution:
+`Step 1: Use the definition of Hermitian.
+An operator H is Hermitian if H† = H.
+
+Step 2: Compute the adjoint of A†A.
+(A†A)† = A†† A† = A A†?  Be careful: (XY)† = Y† X†.
+So (A†A)† = A†† (A†) = A A†? Actually:
+Let X = A† and Y = A, then (XY)† = Y† X† = A† (A†)† = A† A.
+
+Step 3: Conclude.
+(A†A)† = A†A, hence A†A is Hermitian for any A.
+
+Step 4: Why other options fail.
+A itself need not be Hermitian; A need not commute with all operators; A need not be invertible.`
     },
     {
       topic: "Operators & Special Operators",
@@ -464,7 +490,17 @@
       options: ["H = H†", "H†H = I", "H^2 = H", "det(H)=1"],
       correctIndex: 0,
       hints: ["Hermitian means equal to its conjugate transpose.", "Unitary and projector are different conditions."],
-      solution: "Hermitian means H = H†."
+      solution:
+`Step 1: Write the definition.
+Hermitian (self-adjoint) means H equals its adjoint: H = H†.
+
+Step 2: Interpret the distractors.
+H†H = I is the unitary condition.
+H^2 = H is the idempotent (projector-like) condition (not sufficient alone in QM).
+det(H)=1 is unrelated to being Hermitian.
+
+Step 3: Conclude.
+Therefore, the Hermitian condition is H = H†.`
     },
     {
       topic: "Operators & Special Operators",
@@ -472,7 +508,21 @@
       options: ["U†U = I", "U = U†", "U^2 = U", "tr(U)=0"],
       correctIndex: 0,
       hints: ["Unitary means inverse equals dagger.", "So U†U must be identity."],
-      solution: "Unitary means U†U = I (equivalently U⁻¹ = U†)."
+      solution:
+`Step 1: Start from the definition.
+U is unitary if it preserves inner products (norms), equivalently U−1 = U†.
+
+Step 2: Convert to an algebraic condition.
+If U−1 = U†, then multiplying by U on the right gives U†U = I.
+(Also UU† = I for unitary operators.)
+
+Step 3: Check distractors.
+U = U† is Hermitian, not unitary in general.
+U^2 = U is projector-like (idempotent).
+tr(U)=0 is not a defining property.
+
+Step 4: Conclude.
+Therefore the unitary condition is U†U = I.`
     },
     {
       topic: "Operators & Special Operators",
@@ -480,7 +530,22 @@
       options: ["P^2 = P and P = P†", "P^2 = I and P = P†", "P†P = I", "P = 0 only"],
       correctIndex: 0,
       hints: ["Project twice = project once.", "Projectors are Hermitian in QM."],
-      solution: "Projector: P^2=P and P=P†."
+      solution:
+`Step 1: Use the meaning of “projection”.
+Projecting twice gives the same result as projecting once, so P is idempotent:
+P^2 = P.
+
+Step 2: QM projection operators are also Hermitian.
+In QM, projectors correspond to observables (yes/no outcomes), so P must satisfy:
+P† = P.
+
+Step 3: Compare with other options.
+P^2 = I describes an involution (e.g., reflection), not a projector.
+P†P = I describes unitarity.
+P = 0 is only one trivial projector, not “must”.
+
+Step 4: Conclude.
+A projection operator must satisfy P^2 = P and P = P†.`
     },
     {
       topic: "Operators & Special Operators",
@@ -488,7 +553,19 @@
       options: ["When ⟨u|u⟩ = 1", "When ⟨u|u⟩ = 0", "Always, for any |u⟩", "Only if |u⟩ is an eigenvector of every operator"],
       correctIndex: 0,
       hints: ["Check P^2 = |u⟩⟨u|u⟩⟨u|.", "You need ⟨u|u⟩ = 1 for idempotence."],
-      solution: "P^2 = |u⟩⟨u|u⟩⟨u| = (⟨u|u⟩)P, so P^2=P requires ⟨u|u⟩=1."
+      solution:
+`Step 1: Compute P^2.
+P^2 = (|u⟩⟨u|)(|u⟩⟨u|) = |u⟩(⟨u|u⟩)⟨u| = (⟨u|u⟩) |u⟩⟨u|.
+
+Step 2: Impose the projector condition P^2 = P.
+We need (⟨u|u⟩) P = P.
+
+Step 3: Conclude the condition on |u⟩.
+This requires ⟨u|u⟩ = 1 (assuming P is not the zero operator).
+
+Step 4: Quick checks.
+If ⟨u|u⟩ = 0 then |u⟩ is the zero vector, giving P = 0 (trivial).
+So the correct condition for a nontrivial projector is ⟨u|u⟩ = 1.`
     },
     {
       topic: "Operators & Special Operators",
@@ -496,7 +573,21 @@
       options: ["PQ", "P + Q (always)", "P − Q (always)", "P + Q − I (always)"],
       correctIndex: 0,
       hints: ["Check (PQ)^2 when P^2=P and Q^2=Q.", "Commuting matters."],
-      solution: "If P,Q are projectors and commute, then (PQ)^2 = P(QP)Q = P(PQ)Q = (P^2)(Q^2)=PQ, and (PQ)†=PQ."
+      solution:
+`Step 1: Use the projector properties of P and Q.
+P^2 = P and Q^2 = Q, and (in QM) P† = P and Q† = Q.
+
+Step 2: Check idempotence for PQ.
+(PQ)^2 = PQPQ.
+If P and Q commute, PQ = QP, then:
+(PQ)^2 = P(QP)Q = P(PQ)Q = (P^2)(Q^2) = PQ.
+
+Step 3: Check Hermitian property.
+(PQ)† = Q† P† = QP = PQ (since they commute).
+So PQ is Hermitian.
+
+Step 4: Conclude.
+Thus PQ satisfies (PQ)^2 = PQ and (PQ)† = PQ, so PQ is also a projection operator.`
     },
     {
       topic: "Operators & Special Operators",
@@ -504,7 +595,23 @@
       options: ["Anti-Hermitian (skew-Hermitian)", "Hermitian", "Unitary", "A projection"],
       correctIndex: 0,
       hints: ["Compute (AB−BA)†.", "You get a minus sign."],
-      solution: "([A,B])† = (AB−BA)† = B†A† − A†B† = BA−AB = −[A,B], so it is anti-Hermitian."
+      solution:
+`Step 1: Start with the definition of the commutator.
+[A,B] = AB − BA.
+
+Step 2: Take the adjoint.
+([A,B])† = (AB − BA)† = (AB)† − (BA)†.
+
+Step 3: Use (XY)† = Y† X† and A†=A, B†=B (Hermitian).
+(AB)† = B†A† = BA.
+(BA)† = A†B† = AB.
+
+Step 4: Substitute.
+([A,B])† = BA − AB = −(AB − BA) = −[A,B].
+
+Step 5: Conclude.
+An operator K with K† = −K is anti-Hermitian (skew-Hermitian).
+So [A,B] is anti-Hermitian.`
     },
     {
       topic: "Operators & Special Operators",
@@ -512,7 +619,21 @@
       options: ["|λ| = 1", "λ must be real", "λ must be 0", "λ must be ±2"],
       correctIndex: 0,
       hints: ["Unitary preserves norm: ||U|χ⟩|| = |||χ⟩||.", "So |λ| must be 1."],
-      solution: "From ||U|χ⟩||^2 = ⟨χ|U†U|χ⟩ = ⟨χ|χ⟩, but also ||U|χ⟩||^2 = ||λ|χ⟩||^2 = |λ|^2⟨χ|χ⟩, hence |λ|=1."
+      solution:
+`Step 1: Use the property of unitary operators.
+Unitary means U†U = I, so norms are preserved:
+||U|χ⟩||^2 = ⟨χ|U†U|χ⟩ = ⟨χ|χ⟩.
+
+Step 2: Use the eigenvalue equation.
+If U|χ⟩ = λ|χ⟩, then:
+||U|χ⟩||^2 = ||λ|χ⟩||^2 = |λ|^2 ⟨χ|χ⟩.
+
+Step 3: Compare Step 1 and Step 2.
+|λ|^2 ⟨χ|χ⟩ = ⟨χ|χ⟩.
+
+Step 4: Conclude.
+For nonzero |χ⟩, ⟨χ|χ⟩ ≠ 0, hence |λ|^2 = 1 ⇒ |λ| = 1.
+So unitary eigenvalues lie on the unit circle (not necessarily real).`
     },
     {
       topic: "Operators & Special Operators",
@@ -520,7 +641,23 @@
       options: ["[f(A),B]=0 for any polynomial f", "[A,B]=I", "A and B must be equal", "A must be unitary"],
       correctIndex: 0,
       hints: ["If AB=BA, then A^nB = BA^n.", "So any polynomial in A also commutes with B."],
-      solution: "From AB=BA it follows A^nB = BA^n for all n, hence any polynomial f(A) commutes with B."
+      solution:
+`Step 1: Translate the commutator condition.
+[A,B]=0 means AB − BA = 0, i.e., AB = BA.
+
+Step 2: Show powers of A commute with B.
+From AB=BA:
+A^2B = A(AB) = A(BA) = (AB)A = (BA)A = BA^2.
+By induction, A^n B = B A^n for all integers n ≥ 1.
+
+Step 3: Use a polynomial f(A).
+If f(A) = c0 I + c1 A + c2 A^2 + ... + ck A^k, then:
+f(A)B = (c0 I)B + c1 AB + c2 A^2B + ... + ck A^kB
+      = B(c0 I) + c1 BA + c2 BA^2 + ... + ck BA^k
+      = B f(A).
+
+Step 4: Conclude.
+So [f(A),B] = f(A)B − Bf(A) = 0 for any polynomial f.`
     },
 
     // ==============
@@ -532,7 +669,15 @@
       options: ["ad − bc", "ab − cd", "a + d", "b + c"],
       correctIndex: 0,
       hints: ["Use the standard 2×2 determinant formula.", "Diagonal product minus off-diagonal product."],
-      solution: "det(A)=ad−bc."
+      solution:
+`Step 1: Recall the determinant of a 2×2 matrix.
+For A = [[a,b],[c,d]], det(A) = a d − b c.
+
+Step 2: Quick reasoning.
+Determinant measures (signed) area scaling; the formula comes from expansion along a row/column.
+
+Step 3: Conclude.
+Therefore det(A) = ad − bc.`
     },
     {
       topic: "Matrix Algebra",
@@ -540,7 +685,18 @@
       options: ["tr(AB)=tr(BA)", "det(A+B)=det(A)+det(B)", "(A+B)^2 = A^2 + B^2", "AB=BA always"],
       correctIndex: 0,
       hints: ["Trace has cyclic property for products.", "Commutativity of matrices is not guaranteed."],
-      solution: "A standard identity: tr(AB)=tr(BA)."
+      solution:
+`Step 1: Use the cyclic property of trace.
+For compatible matrices, trace is invariant under cyclic permutations:
+tr(AB) = tr(BA).
+
+Step 2: Why the other statements fail.
+det(A+B) generally ≠ det(A)+det(B).
+(A+B)^2 = A^2 + AB + BA + B^2, which equals A^2+B^2 only if AB+BA=0.
+AB=BA is not true for general matrices.
+
+Step 3: Conclude.
+The always-true identity is tr(AB)=tr(BA).`
     },
     {
       topic: "Matrix Algebra",
@@ -548,7 +704,16 @@
       options: ["(AB)^T = B^T A^T", "(AB)^T = A^T B^T", "(AB)^T = AB", "(AB)^T = A + B"],
       correctIndex: 0,
       hints: ["Order reverses under transpose.", "Try a 2×2 example to verify."],
-      solution: "(AB)^T = B^T A^T."
+      solution:
+`Step 1: Recall the rule.
+Transpose reverses the order of multiplication:
+(AB)^T = B^T A^T.
+
+Step 2: Why the order reverses.
+Because (AB)_{ij} = Σ_k A_{ik} B_{kj}, then transposing swaps i and j, effectively swapping the factors.
+
+Step 3: Conclude.
+So (AB)^T = B^T A^T.`
     },
     {
       topic: "Matrix Algebra",
@@ -556,7 +721,16 @@
       options: ["(AB)† = B† A†", "(AB)† = A† B†", "(AB)† = AB", "(AB)† = A + B"],
       correctIndex: 0,
       hints: ["Dagger reverses order like transpose.", "Also complex-conjugates entries."],
-      solution: "(AB)† = B†A†."
+      solution:
+`Step 1: Dagger means conjugate transpose.
+So it both transposes (which reverses order) and complex-conjugates entries.
+
+Step 2: Apply the product rule.
+(AB)† = (AB)̄^T = (B̄ Ā)^T = (Ā)^T (B̄)^T? In standard operator notation:
+(AB)† = B† A†.
+
+Step 3: Conclude.
+Therefore (AB)† = B† A†.`
     },
     {
       topic: "Matrix Algebra",
@@ -564,7 +738,18 @@
       options: ["x = 2/3", "x = 3/2", "x = -2/3", "x = 0"],
       correctIndex: 0,
       hints: ["det = 3x − 2.", "Set 3x − 2 = 0."],
-      solution: "det = 3x − 2 = 0 ⇒ x=2/3."
+      solution:
+`Step 1: Compute the determinant.
+det([[x,1],[2,3]]) = x·3 − 1·2 = 3x − 2.
+
+Step 2: Set determinant to zero.
+3x − 2 = 0.
+
+Step 3: Solve.
+3x = 2 ⇒ x = 2/3.
+
+Step 4: Conclude.
+So the correct value is x = 2/3.`
     },
     {
       topic: "Matrix Algebra",
@@ -572,7 +757,19 @@
       options: ["Q^{-1} = Q^T", "Q^{-1} = Q", "Q^TQ = 0", "det(Q)=0 always"],
       correctIndex: 0,
       hints: ["Orthogonal means Q^T Q = I.", "So multiply both sides appropriately."],
-      solution: "From Q^TQ=I, Q^{-1}=Q^T."
+      solution:
+`Step 1: Start from the definition of orthogonal.
+A real matrix Q is orthogonal if Q^T Q = I.
+
+Step 2: Compare with the definition of inverse.
+By definition, Q^{-1} is the matrix such that Q^{-1}Q = I.
+
+Step 3: Identify Q^{-1}.
+Since Q^T Q = I, we can read off that Q^T acts as the inverse of Q:
+Q^{-1} = Q^T.
+
+Step 4: Note.
+Orthogonal matrices have det(Q)=±1, not necessarily 0.`
     },
     {
       topic: "Matrix Algebra",
@@ -580,7 +777,19 @@
       options: ["det(A) ≠ 0", "tr(A) ≠ 0", "A must be diagonal", "A must be symmetric"],
       correctIndex: 0,
       hints: ["Invertibility is tied to determinant for square matrices.", "Trace can be zero even if invertible."],
-      solution: "A is invertible iff det(A)≠0."
+      solution:
+`Step 1: Use a key theorem for square matrices.
+A is invertible ⇔ det(A) ≠ 0.
+
+Step 2: Intuition.
+det(A)=0 means A squashes volume to zero, so it cannot have an inverse.
+
+Step 3: Check distractors.
+tr(A) can be 0 even for invertible matrices (e.g., [[1,0],[0,−1]]).
+Invertible matrices need not be diagonal or symmetric.
+
+Step 4: Conclude.
+So the true statement is det(A) ≠ 0.`
     },
     {
       topic: "Matrix Algebra",
@@ -588,7 +797,15 @@
       options: ["AI = IA = A", "AI = I", "IA = 0", "AI = A^2"],
       correctIndex: 0,
       hints: ["Identity behaves like multiplying by 1.", "It should not change A."],
-      solution: "AI=IA=A."
+      solution:
+`Step 1: Recall the role of the identity matrix.
+I acts like the multiplicative identity: multiplying by I leaves a matrix unchanged.
+
+Step 2: Apply on both sides.
+AI = A and IA = A.
+
+Step 3: Conclude.
+Therefore AI = IA = A is always true.`
     },
     {
       topic: "Matrix Algebra",
@@ -596,7 +813,19 @@
       options: ["U^{-1} = U†", "U = U†", "U^2 = U", "det(U)=0"],
       correctIndex: 0,
       hints: ["Definition: U†U=I.", "Compare with inverse definition."],
-      solution: "U^{-1}=U† for unitary U."
+      solution:
+`Step 1: Start from the unitary definition.
+Unitary means U†U = I (and also UU† = I).
+
+Step 2: Compare with inverse definition.
+U^{-1} is defined by U^{-1}U = I.
+
+Step 3: Identify the inverse.
+Since U†U = I, U† serves as the left-inverse; for square matrices it is the inverse:
+U^{-1} = U†.
+
+Step 4: Conclude.
+So U^{-1} = U† is always true for a unitary matrix.`
     },
     {
       topic: "Matrix Algebra",
@@ -604,7 +833,18 @@
       options: ["tr(A)", "det(A)", "rank(A)", "0 always"],
       correctIndex: 0,
       hints: ["Trace is invariant under similarity transforms.", "Try A diagonal and S change-of-basis."],
-      solution: "tr(S^{-1}AS)=tr(A)."
+      solution:
+`Step 1: Use cyclicity of trace.
+tr(XY) = tr(YX). More generally, tr(XYZ) = tr(ZXY).
+
+Step 2: Apply to tr(S^{-1}AS).
+tr(S^{-1}AS) = tr(A S S^{-1}) by cycling the factors.
+
+Step 3: Simplify.
+SS^{-1} = I, so tr(A S S^{-1}) = tr(AI) = tr(A).
+
+Step 4: Conclude.
+Thus tr(S^{-1}AS) = tr(A).`
     },
 
     // ==========================
@@ -616,7 +856,18 @@
       options: ["det(A − λI)=0", "tr(A − λI)=0", "A − λI = 0 (always)", "det(A)=0 (always)"],
       correctIndex: 0,
       hints: ["Characteristic polynomial comes from determinant.", "Nontrivial solutions require determinant zero."],
-      solution: "Solve det(A−λI)=0."
+      solution:
+`Step 1: Start from the eigenvalue equation.
+Av = λv for some nonzero vector v.
+
+Step 2: Rearrange.
+(A − λI)v = 0.
+
+Step 3: Nontrivial solutions condition.
+A homogeneous system (A − λI)v = 0 has a nonzero solution iff det(A − λI) = 0.
+
+Step 4: Conclude.
+So eigenvalues satisfy det(A − λI)=0 (the characteristic equation).`
     },
     {
       topic: "Eigenvalues & Eigenvectors",
@@ -624,7 +875,22 @@
       options: ["1 and 3", "0 and 4", "2 and 2", "-1 and 5"],
       correctIndex: 0,
       hints: ["det([[2−λ,1],[1,2−λ]])=(2−λ)^2−1.", "Set to 0."],
-      solution: "(2−λ)^2−1=0 ⇒ 2−λ=±1 ⇒ λ=1,3."
+      solution:
+`Step 1: Form A − λI.
+A − λI = [[2−λ, 1],[1, 2−λ]].
+
+Step 2: Compute determinant.
+det(A − λI) = (2−λ)(2−λ) − 1·1 = (2−λ)^2 − 1.
+
+Step 3: Set to zero.
+(2−λ)^2 − 1 = 0 ⇒ (2−λ)^2 = 1 ⇒ 2−λ = ±1.
+
+Step 4: Solve.
+If 2−λ = 1 ⇒ λ = 1.
+If 2−λ = −1 ⇒ λ = 3.
+
+Step 5: Conclude.
+Eigenvalues are 1 and 3.`
     },
     {
       topic: "Eigenvalues & Eigenvectors",
@@ -632,7 +898,19 @@
       options: ["(1,1)", "(1,−1)", "(2,0)", "(0,2)"],
       correctIndex: 0,
       hints: ["Solve (A−3I)v=0.", "You get v1=v2."],
-      solution: "For λ=3, (A−3I) gives v1=v2, so v∝(1,1)."
+      solution:
+`Step 1: Use (A − λI)v = 0 with λ=3.
+A − 3I = [[2−3, 1],[1, 2−3]] = [[−1, 1],[1, −1]].
+
+Step 2: Solve the linear system.
+[[−1, 1],[1, −1]] [v1, v2]^T = 0 gives:
+−v1 + v2 = 0 ⇒ v2 = v1.
+
+Step 3: Write an eigenvector.
+Take v1=1 ⇒ v2=1, so v ∝ (1,1).
+
+Step 4: Conclude.
+Therefore the eigenvector for λ=3 is proportional to (1,1).`
     },
     {
       topic: "Eigenvalues & Eigenvectors",
@@ -640,7 +918,16 @@
       options: ["2, 5, −1", "Only 2", "Only 5", "2+5−1 = 6"],
       correctIndex: 0,
       hints: ["Diagonal matrices scale basis vectors.", "Each diagonal entry is an eigenvalue."],
-      solution: "Eigenvalues are the diagonal entries: 2,5,−1."
+      solution:
+`Step 1: Recognize a diagonal matrix.
+A = diag(2,5,−1) acts on standard basis vectors e1,e2,e3 by scaling:
+Ae1 = 2e1, Ae2 = 5e2, Ae3 = (−1)e3.
+
+Step 2: Read eigenpairs.
+Each basis vector is an eigenvector and the scaling factor is its eigenvalue.
+
+Step 3: Conclude.
+Eigenvalues are exactly the diagonal entries: 2, 5, and −1.`
     },
     {
       topic: "Eigenvalues & Eigenvectors",
@@ -648,7 +935,20 @@
       options: ["λ^2 v", "2λ v", "λ v", "v/λ"],
       correctIndex: 0,
       hints: ["Apply A again to Av.", "A(Av)=A(λv)=λ(Av)=λ(λv)."],
-      solution: "A^2v = A(Av)=A(λv)=λAv=λ(λv)=λ^2v."
+      solution:
+`Step 1: Start with Av = λv.
+
+Step 2: Apply A again.
+A^2 v = A(Av) = A(λv).
+
+Step 3: Use linearity (scalar can be pulled out).
+A(λv) = λ A v.
+
+Step 4: Substitute Av again.
+λ A v = λ (λ v) = λ^2 v.
+
+Step 5: Conclude.
+So A^2 v = λ^2 v.`
     },
     {
       topic: "Eigenvalues & Eigenvectors",
@@ -656,7 +956,20 @@
       options: ["(1/λ) v", "λ v", "0", "Undefined"],
       correctIndex: 0,
       hints: ["Multiply Av=λv by A^{-1} on the left.", "You get v = λ A^{-1} v."],
-      solution: "A^{-1}v = (1/λ)v."
+      solution:
+`Step 1: Start from Av = λv and assume λ≠0.
+
+Step 2: Multiply by A^{-1} on the left.
+A^{-1}Av = A^{-1}(λv).
+
+Step 3: Simplify.
+A^{-1}A = I, so v = λ (A^{-1}v).
+
+Step 4: Solve for A^{-1}v.
+A^{-1}v = (1/λ) v.
+
+Step 5: Conclude.
+So v is also an eigenvector of A^{-1} with eigenvalue 1/λ.`
     },
     {
       topic: "Eigenvalues & Eigenvectors",
@@ -664,7 +977,18 @@
       options: ["tr(A)", "det(A)", "rank(A)", "0 always"],
       correctIndex: 0,
       hints: ["Check for diagonal matrices first.", "Trace matches sum of diagonal entries."],
-      solution: "Sum of eigenvalues equals tr(A)."
+      solution:
+`Step 1: Use the characteristic polynomial fact.
+The characteristic polynomial det(A − λI) has coefficients related to trace and determinant.
+
+Step 2: Key result.
+For an n×n matrix, the sum of eigenvalues (counting algebraic multiplicity) equals tr(A).
+
+Step 3: Quick sanity check.
+If A is diagonal, eigenvalues are diagonal entries, and tr(A) is also the sum of diagonal entries.
+
+Step 4: Conclude.
+Therefore, sum of eigenvalues = tr(A).`
     },
     {
       topic: "Eigenvalues & Eigenvectors",
@@ -672,7 +996,18 @@
       options: ["det(A)", "tr(A)", "rank(A)", "1 always"],
       correctIndex: 0,
       hints: ["Check for diagonal matrices first.", "Determinant multiplies diagonal entries."],
-      solution: "Product of eigenvalues equals det(A)."
+      solution:
+`Step 1: Use the characteristic polynomial at λ=0.
+det(A − 0·I) = det(A).
+
+Step 2: Key result.
+The determinant equals the product of eigenvalues (counting multiplicity).
+
+Step 3: Quick sanity check.
+For diagonal A, det(A) is the product of diagonal entries, which are also eigenvalues.
+
+Step 4: Conclude.
+Therefore, product of eigenvalues = det(A).`
     },
     {
       topic: "Eigenvalues & Eigenvectors",
@@ -680,7 +1015,22 @@
       options: ["Orthogonal", "Always equal", "Always non-orthogonal", "Always complex"],
       correctIndex: 0,
       hints: ["This is a key theorem for Hermitian operators.", "It underpins orthonormal eigenbases."],
-      solution: "Hermitian operators have orthogonal eigenvectors for different eigenvalues."
+      solution:
+`Step 1: Let H be Hermitian and take two eigenpairs.
+Hv1 = λ1 v1 and Hv2 = λ2 v2 with λ1 ≠ λ2.
+
+Step 2: Take inner products in two ways.
+Compute ⟨v1|Hv2⟩ = ⟨v1| (λ2 v2)⟩ = λ2 ⟨v1|v2⟩.
+
+Step 3: Use Hermiticity to move H to the bra side.
+Since H† = H, ⟨v1|Hv2⟩ = ⟨H v1|v2⟩ = ⟨λ1 v1|v2⟩ = λ1 ⟨v1|v2⟩.
+
+Step 4: Equate the two expressions.
+λ1 ⟨v1|v2⟩ = λ2 ⟨v1|v2⟩ ⇒ (λ1 − λ2) ⟨v1|v2⟩ = 0.
+
+Step 5: Conclude.
+Because λ1 ≠ λ2, we must have ⟨v1|v2⟩ = 0.
+So eigenvectors for distinct eigenvalues are orthogonal.`
     },
     {
       topic: "Eigenvalues & Eigenvectors",
@@ -688,7 +1038,24 @@
       options: ["A and B can share eigenvectors (simultaneous eigenbasis)", "A and B must be equal", "B must be a projection", "A cannot be diagonalized"],
       correctIndex: 0,
       hints: ["Commuting + non-degenerate implies shared eigenvectors.", "This is the standard compatibility statement."],
-      solution: "If A is non-degenerate and commutes with B, eigenvectors of A can be chosen as eigenvectors of B too."
+      solution:
+`Step 1: Start from commutation.
+[A,B]=0 implies AB=BA.
+
+Step 2: Take an eigenvector of A.
+Let Av = λv. Apply A to (Bv):
+A(Bv) = (AB)v = (BA)v = B(Av) = B(λv) = λ(Bv).
+
+Step 3: Interpret Step 2.
+So Bv is also an eigenvector of A with the same eigenvalue λ.
+
+Step 4: Use non-degeneracy.
+If λ is non-degenerate, the eigenspace for λ is 1-dimensional, so Bv must be proportional to v:
+Bv = μv for some μ.
+
+Step 5: Conclude.
+Thus v is simultaneously an eigenvector of both A and B.
+So A and B can share eigenvectors (simultaneous eigenbasis).`
     },
 
     // =============
@@ -700,7 +1067,17 @@
       options: ["[[0,1],[1,0]]", "[[1,0],[0,−1]]", "[[0,−i],[i,0]]", "[[1,0],[0,1]]"],
       correctIndex: 0,
       hints: ["σx swaps basis states.", "It has ones off-diagonal."],
-      solution: "σx = [[0,1],[1,0]]."
+      solution:
+`Step 1: Recall the standard Pauli matrices.
+σx = [[0,1],[1,0]],
+σy = [[0,−i],[i,0]],
+σz = [[1,0],[0,−1]].
+
+Step 2: Identify the one with 1’s off-diagonal and zeros on the diagonal.
+That is [[0,1],[1,0]].
+
+Step 3: Conclude.
+So σx = [[0,1],[1,0]].`
     },
     {
       topic: "Pauli Matrices",
@@ -708,7 +1085,16 @@
       options: ["[[0,−i],[i,0]]", "[[0,1],[1,0]]", "[[1,0],[0,−1]]", "[[1,0],[0,1]]"],
       correctIndex: 0,
       hints: ["σy has imaginary off-diagonals.", "It is Hermitian."],
-      solution: "σy = [[0,−i],[i,0]]."
+      solution:
+`Step 1: Recall σy.
+σy is the Pauli matrix with purely imaginary off-diagonal entries:
+σy = [[0,−i],[i,0]].
+
+Step 2: Check Hermiticity quickly.
+Conjugate transpose of [[0,−i],[i,0]] gives itself, so it is Hermitian.
+
+Step 3: Conclude.
+Therefore σy = [[0,−i],[i,0]].`
     },
     {
       topic: "Pauli Matrices",
@@ -716,7 +1102,16 @@
       options: ["[[1,0],[0,−1]]", "[[0,1],[1,0]]", "[[0,−i],[i,0]]", "[[1,0],[0,1]]"],
       correctIndex: 0,
       hints: ["σz is diagonal.", "Entries are +1 and −1."],
-      solution: "σz = [[1,0],[0,−1]]."
+      solution:
+`Step 1: Recall σz.
+σz is diagonal with entries +1 and −1:
+σz = [[1,0],[0,−1]].
+
+Step 2: Identify the matching option.
+The matrix [[1,0],[0,−1]] matches exactly.
+
+Step 3: Conclude.
+So σz = [[1,0],[0,−1]].`
     },
     {
       topic: "Pauli Matrices",
@@ -724,7 +1119,15 @@
       options: ["+1 and −1", "0 and 1", "i and −i", "2 and −2"],
       correctIndex: 0,
       hints: ["σz is diagonal.", "Diagonal entries are eigenvalues."],
-      solution: "Eigenvalues are +1 and −1."
+      solution:
+`Step 1: Write σz explicitly.
+σz = [[1,0],[0,−1]].
+
+Step 2: Use the fact for diagonal matrices.
+For a diagonal matrix, eigenvalues are the diagonal entries.
+
+Step 3: Conclude.
+Eigenvalues are +1 and −1.`
     },
     {
       topic: "Pauli Matrices",
@@ -732,7 +1135,18 @@
       options: ["σxσy = iσz", "σxσy = −iσz", "σxσy = σz", "σxσy = iI"],
       correctIndex: 0,
       hints: ["Standard Pauli multiplication.", "Order matters: σyσx = −iσz."],
-      solution: "σxσy = iσz."
+      solution:
+`Step 1: Use the standard Pauli multiplication rule.
+σi σj = δij I + i εijk σk.
+
+Step 2: Apply for i=x, j=y (distinct indices).
+δxy = 0, and εxyz = +1.
+
+Step 3: Therefore.
+σxσy = i σz.
+
+Step 4: Note about order.
+Reversing the order gives σyσx = −iσz, showing non-commutativity.`
     },
     {
       topic: "Pauli Matrices",
@@ -740,7 +1154,16 @@
       options: ["2iσz", "iσz", "2σz", "0"],
       correctIndex: 0,
       hints: ["Use [σi,σj]=2i εijk σk.", "So x,y gives z."],
-      solution: "[σx,σy]=2iσz."
+      solution:
+`Step 1: Use the Pauli commutator identity.
+[σi,σj] = 2i εijk σk.
+
+Step 2: Plug in i=x, j=y.
+εxyz = +1, so:
+[σx,σy] = 2i σz.
+
+Step 3: Conclude.
+Therefore [σx,σy] = 2iσz.`
     },
     {
       topic: "Pauli Matrices",
@@ -748,7 +1171,15 @@
       options: ["0", "2I", "2σk", "I"],
       correctIndex: 0,
       hints: ["Distinct Pauli matrices anticommute.", "σxσy = −σyσx."],
-      solution: "{σi,σj}=0 for i≠j."
+      solution:
+`Step 1: Recall the anti-commutator identity for Pauli matrices.
+{σi,σj} = 2 δij I.
+
+Step 2: Use i≠j.
+If i≠j then δij = 0.
+
+Step 3: Conclude.
+So {σi,σj} = 0 for i≠j.`
     },
     {
       topic: "Pauli Matrices",
@@ -756,7 +1187,16 @@
       options: ["σi^2 = I", "σi^2 = 0", "σi^2 = σi", "σi^2 = −I"],
       correctIndex: 0,
       hints: ["Check σxσx.", "It becomes identity."],
-      solution: "σi^2 = I."
+      solution:
+`Step 1: Use σi σj = δij I + i εijk σk.
+Set i=j.
+
+Step 2: Evaluate.
+δii = 1 and εiik = 0 (because antisymmetric in i,i),
+so σi^2 = I.
+
+Step 3: Conclude.
+Therefore σi^2 = I for i = x,y,z.`
     },
     {
       topic: "Pauli Matrices",
@@ -764,7 +1204,17 @@
       options: ["0", "1", "2", "−1"],
       correctIndex: 0,
       hints: ["Trace is sum of diagonal entries.", "σx and σy have 0 diagonals; σz has 1+(−1)."],
-      solution: "Tr(σi)=0."
+      solution:
+`Step 1: Use trace definition.
+tr(M) = sum of diagonal entries.
+
+Step 2: Compute each.
+σx has diagonal (0,0) ⇒ tr(σx)=0.
+σy has diagonal (0,0) ⇒ tr(σy)=0.
+σz has diagonal (1,−1) ⇒ tr(σz)=1 + (−1)=0.
+
+Step 3: Conclude.
+Thus tr(σx)=tr(σy)=tr(σz)=0.`
     },
     {
       topic: "Pauli Matrices",
@@ -772,7 +1222,18 @@
       options: ["−1", "+1", "0", "Depends on i"],
       correctIndex: 0,
       hints: ["Compute det(σz)=det([[1,0],[0,−1]])=−1.", "Same for others."],
-      solution: "det(σi)=−1."
+      solution:
+`Step 1: Compute a representative case (σz).
+σz = [[1,0],[0,−1]] ⇒ det(σz) = (1)(−1) − 0 = −1.
+
+Step 2: Check σx quickly.
+σx = [[0,1],[1,0]] ⇒ det(σx) = 0·0 − 1·1 = −1.
+
+Step 3: Check σy quickly.
+σy = [[0,−i],[i,0]] ⇒ det(σy) = 0·0 − (−i)(i) = −(−i^2) = −(1) = −1.
+
+Step 4: Conclude.
+All Pauli matrices have determinant −1.`
     },
 
     // ======================
@@ -784,7 +1245,16 @@
       options: ["AB − BA", "AB + BA", "A + B", "A − B"],
       correctIndex: 0,
       hints: ["Commutator measures non-commutativity.", "If AB=BA, commutator is zero."],
-      solution: "[A,B]=AB−BA."
+      solution:
+`Step 1: Definition.
+The commutator of A and B is defined by:
+[A,B] = AB − BA.
+
+Step 2: Interpretation.
+If AB=BA, then [A,B]=0 and the operators commute.
+
+Step 3: Conclude.
+So the correct definition is AB − BA.`
     },
     {
       topic: "Commutation Relations",
@@ -792,7 +1262,20 @@
       options: ["[A, I]", "[A, A†]", "[A, B] for any B", "[A, A^2]"],
       correctIndex: 0,
       hints: ["Identity commutes with everything.", "AI=IA."],
-      solution: "[A,I]=0 always."
+      solution:
+`Step 1: Use the identity property.
+For any operator A, AI = IA = A.
+
+Step 2: Compute the commutator.
+[A,I] = AI − IA = A − A = 0.
+
+Step 3: Why others are not always zero.
+[A,A†] need not be zero.
+[A,B] is not zero for arbitrary B.
+[A,A^2] happens to be zero (since A commutes with its powers), but the universally standard statement is that I commutes with everything; [A,I]=0 always.
+
+Step 4: Conclude.
+So [A,I]=0 is always true.`
     },
     {
       topic: "Commutation Relations",
@@ -800,7 +1283,18 @@
       options: ["AB = BA", "AB = 0", "A = B", "A must be Hermitian"],
       correctIndex: 0,
       hints: ["Just rewrite the definition.", "[A,B]=AB−BA."],
-      solution: "[A,B]=0 ⇒ AB−BA=0 ⇒ AB=BA."
+      solution:
+`Step 1: Start from the definition.
+[A,B] = AB − BA.
+
+Step 2: Set it equal to zero.
+[A,B]=0 ⇒ AB − BA = 0.
+
+Step 3: Rearrange.
+AB = BA.
+
+Step 4: Conclude.
+So if [A,B]=0, then AB = BA.`
     },
     {
       topic: "Commutation Relations",
@@ -808,7 +1302,22 @@
       options: ["[A,BC] = [A,B]C + B[A,C]", "[A,BC] = [A,B] + [A,C]", "[A,BC] = [A,B][A,C]", "[A,BC] = 0 always"],
       correctIndex: 0,
       hints: ["Expand A(BC) − (BC)A.", "Then regroup terms."],
-      solution: "[A,BC]=ABC−BCA=(AB−BA)C + B(AC−CA)=[A,B]C + B[A,C]."
+      solution:
+`Step 1: Start from the definition.
+[A,BC] = A(BC) − (BC)A = ABC − BCA.
+
+Step 2: Add and subtract BAC (a standard trick).
+ABC − BCA = (ABC − BAC) + (BAC − BCA).
+
+Step 3: Factor each group.
+ABC − BAC = (AB − BA)C = [A,B]C.
+BAC − BCA = B(AC − CA) = B[A,C].
+
+Step 4: Combine.
+[A,BC] = [A,B]C + B[A,C].
+
+Step 5: Conclude.
+So the correct product rule is [A,BC] = [A,B]C + B[A,C].`
     },
     {
       topic: "Commutation Relations",
@@ -816,7 +1325,16 @@
       options: ["[A,[B,C]] + [B,[C,A]] + [C,[A,B]] = 0", "[A,B] + [B,C] + [C,A] = 0", "[A,B] = [B,A]", "[A,[A,B]] = 0 always"],
       correctIndex: 0,
       hints: ["This is the standard triple-commutator identity.", "It sums to zero."],
-      solution: "Jacobi identity: [A,[B,C]]+[B,[C,A]]+[C,[A,B]]=0."
+      solution:
+`Step 1: State the identity.
+The Jacobi identity for commutators is:
+[A,[B,C]] + [B,[C,A]] + [C,[A,B]] = 0.
+
+Step 2: Interpretation.
+It is analogous to the Jacobi identity for Lie brackets and ensures consistent algebraic structure.
+
+Step 3: Conclude.
+So the correct option is [A,[B,C]] + [B,[C,A]] + [C,[A,B]] = 0.`
     },
     {
       topic: "Commutation Relations",
@@ -824,7 +1342,16 @@
       options: ["[x,p] = iħ", "[x,p] = 0", "[x,p] = ħ", "[x,p] = −ħ"],
       correctIndex: 0,
       hints: ["This is a postulate of QM.", "Position and momentum do not commute."],
-      solution: "[x,p]=iħ."
+      solution:
+`Step 1: Recall the canonical commutation relation in quantum mechanics.
+In 1D, the fundamental relation is:
+[x,p] = iħ.
+
+Step 2: Why it matters.
+This nonzero commutator underlies the Heisenberg uncertainty relation between position and momentum.
+
+Step 3: Conclude.
+Therefore the canonical commutator is [x,p] = iħ.`
     },
     {
       topic: "Commutation Relations",
@@ -832,7 +1359,19 @@
       options: ["2iħ P", "iħ P^2", "0", "−2iħ P"],
       correctIndex: 0,
       hints: ["Use [A,BC]=[A,B]C + B[A,C].", "So [X,P^2]=[X,P]P + P[X,P]."],
-      solution: "[X,P^2]=[X,P]P + P[X,P] = (iħ)P + P(iħ) = 2iħ P."
+      solution:
+`Step 1: Use the product rule for commutators.
+[X,P^2] = [X,PP] = [X,P]P + P[X,P].
+
+Step 2: Substitute the given commutator.
+Given [X,P] = iħ, so:
+[X,P^2] = (iħ)P + P(iħ).
+
+Step 3: Simplify (iħ is a scalar and commutes with P).
+(iħ)P + P(iħ) = iħ P + iħ P = 2 iħ P.
+
+Step 4: Conclude.
+Therefore [X, P^2] = 2iħ P.`
     },
     {
       topic: "Commutation Relations",
@@ -840,7 +1379,21 @@
       options: ["[A,B]=0", "A=B", "A must be unitary", "B must be a projector"],
       correctIndex: 0,
       hints: ["(AB)† = B†A† = BA.", "If AB is Hermitian, AB=(AB)†."],
-      solution: "If AB is Hermitian, AB=(AB)†=BA ⇒ AB=BA ⇒ [A,B]=0."
+      solution:
+`Step 1: Use “AB is Hermitian”.
+If AB is Hermitian, then (AB)† = AB.
+
+Step 2: Take the adjoint of AB.
+(AB)† = B† A†.
+
+Step 3: Use A and B Hermitian.
+A†=A and B†=B, so (AB)† = BA.
+
+Step 4: Equate Step 1 and Step 3.
+AB = (AB)† = BA.
+
+Step 5: Conclude.
+AB=BA ⇒ [A,B]=AB−BA=0.`
     },
     {
       topic: "Commutation Relations",
@@ -848,7 +1401,19 @@
       options: ["Simultaneously diagonalized (common eigenbasis)", "Measured only one at a time", "Equal to identity", "Only anti-Hermitian"],
       correctIndex: 0,
       hints: ["Commuting + non-degenerate implies shared eigenvectors.", "This is compatibility in QM."],
-      solution: "Commuting observables can share a common eigenbasis when the spectrum is non-degenerate."
+      solution:
+`Step 1: Use commutation as compatibility.
+If two observables (Hermitian operators) commute, they are compatible.
+
+Step 2: Add non-degeneracy.
+If A has a non-degenerate spectrum, each eigenvalue corresponds to a unique eigenvector direction.
+
+Step 3: Show invariance of eigenspaces.
+From [A,B]=0, B maps eigenvectors of A to eigenvectors of A with the same eigenvalue.
+With non-degeneracy, that means B keeps each eigenvector direction (up to scalar).
+
+Step 4: Conclude.
+So there exists a basis of simultaneous eigenvectors; equivalently, they can be simultaneously diagonalized.`
     },
     {
       topic: "Commutation Relations",
@@ -856,7 +1421,19 @@
       options: ["[A, B^n] = 0 for all integers n ≥ 1", "[A,B] = I", "[A,B] = 2AB", "A must be a projection"],
       correctIndex: 0,
       hints: ["If AB=BA then AB^n=B^nA.", "Induction works."],
-      solution: "From AB=BA it follows AB^n=B^nA, so [A,B^n]=0."
+      solution:
+`Step 1: Start from AB = BA.
+
+Step 2: Prove the statement for n=1.
+B^1 = B, so [A,B]=0 (given).
+
+Step 3: Induction step.
+Assume AB^n = B^nA.
+Then:
+AB^{n+1} = A(B^n B) = (AB^n)B = (B^n A)B = B^n(AB) = B^n(BA) = (B^n B)A = B^{n+1}A.
+
+Step 4: Conclude.
+So AB^n = B^nA for all n≥1, hence [A,B^n] = 0 for all n≥1.`
     }
   ];
 
@@ -959,7 +1536,6 @@
         <div class="topic-actions">
           <button class="btn btn-primary btn-small" type="button" data-action="start">Start Quiz</button>
           <button class="btn btn-secondary btn-small" type="button" data-action="view" ${hasSlides ? "" : "disabled"}>View Slides</button>
-          <a class="btn btn-secondary btn-small" data-action="download" href="${hasSlides ? pdfPath : "#"}" ${hasSlides ? "download" : ""} ${hasSlides ? "" : "aria-disabled=\"true\""} style="${hasSlides ? "" : "pointer-events:none;"}">Download</a>
         </div>
       `;
 
