@@ -91,30 +91,34 @@
       .topic-grid { grid-template-columns: 1fr 1fr; }
     }
 
-    .topic-btn {
-      width: 100%;
-      text-align: left;
+    /* Topic card (replaces clickable single button) */
+    .topic-card {
       background: #ffffff;
       border: 2px solid #ddd;
       border-radius: 12px;
       padding: 14px 16px;
-      cursor: pointer;
       transition: all 0.2s ease;
-      font-size: 1em;
     }
 
-    .topic-btn:hover {
+    .topic-card:hover {
       border-color: #667eea;
       box-shadow: 0 3px 12px rgba(102, 126, 234, 0.18);
       transform: translateY(-1px);
     }
 
-    .topic-btn .meta {
+    .topic-card .meta {
       display: block;
       color: #666;
       margin-top: 6px;
       font-size: 0.9em;
       line-height: 1.35em;
+    }
+
+    .topic-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
     }
 
     /* Quiz card */
@@ -178,6 +182,13 @@
       margin-top: 10px;
     }
 
+    .btn-small {
+      padding: 10px 14px;
+      margin-right: 0;
+      margin-top: 0;
+      font-size: 0.95em;
+    }
+
     .btn-primary {
       background: linear-gradient(135deg, #667eea, #764ba2);
       color: white;
@@ -190,6 +201,13 @@
 
     .btn-secondary { background: #6c757d; color: white; }
     .btn-secondary:hover { background: #5a6268; }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
 
     .feedback {
       padding: 15px;
@@ -223,6 +241,51 @@
       font-weight: 600;
       font-size: 0.9em;
       margin-left: 6px;
+    }
+
+    /* Slides panel */
+    .slides-panel {
+      margin-top: 18px;
+      background: #ffffff;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .slides-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .slides-title {
+      color: #333;
+      font-size: 1.05em;
+      font-weight: 700;
+    }
+
+    .slides-subtitle {
+      color: #666;
+      font-size: 0.92em;
+      margin-top: 2px;
+    }
+
+    .slides-frame {
+      width: 100%;
+      height: 650px;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      background: #f8f9fa;
+    }
+
+    .note {
+      color: #666;
+      font-size: 0.9em;
+      margin-top: 8px;
+      text-align: center;
     }
   </style>
 </head>
@@ -259,10 +322,30 @@
   <div id="topic-screen" class="topic-screen">
     <div class="topic-title">Choose a topic</div>
     <div class="topic-subtitle">Each topic has 10 questions. Options are shuffled every time.</div>
+
     <div id="topic-buttons" class="topic-grid"></div>
+
     <div style="text-align:center;">
       <button class="btn btn-primary" id="start-all-btn">Start Full Quiz (All Topics)</button>
       <button class="btn btn-secondary" id="reset-scores-btn">Reset Saved Scores</button>
+    </div>
+
+    <!-- PDF.js slides viewer -->
+    <div id="slides-panel" class="slides-panel hidden">
+      <div class="slides-header">
+        <div>
+          <div class="slides-title">Slides Viewer</div>
+          <div class="slides-subtitle" id="slides-topic">—</div>
+        </div>
+        <div class="topic-actions" style="margin-top:0;">
+          <a class="btn btn-primary btn-small" id="slides-download" href="#" download>Download PDF</a>
+          <a class="btn btn-secondary btn-small" id="slides-open-pdf" href="#" target="_blank" rel="noopener">Open PDF</a>
+          <button class="btn btn-secondary btn-small" id="slides-close-btn" type="button">Close</button>
+        </div>
+      </div>
+
+      <iframe id="slides-frame" class="slides-frame" src="" loading="lazy" title="PDF.js slides viewer"></iframe>
+      <div class="note">If the viewer shows an error, confirm <code>pdfjs/web/viewer.html</code> exists in your repo and PDFs are in <code>references/</code>.</div>
     </div>
   </div>
 
@@ -301,7 +384,7 @@
 
 <script>
   /***********************
-   * Topics (updated)
+   * Topics
    ***********************/
   const TOPICS = [
     { key: "Operators & Special Operators", label: "Linear + Hermitian/Unitary/Projection (Clubbed)" },
@@ -310,6 +393,47 @@
     { key: "Pauli Matrices", label: "Pauli matrices" },
     { key: "Commutation Relations", label: "Commutation relations" }
   ];
+
+  /***********************
+   * Slides mapping (EDIT THESE FILENAMES)
+   * Keep PDFs inside: references/
+   ***********************/
+  const TOPIC_SLIDES = {
+    "Operators & Special Operators": "references/BPHY-Lecture-10.pdf",
+    "Matrix Algebra": "references/Lecture-11.pdf",
+    "Eigenvalues & Eigenvectors": "",
+    "Pauli Matrices": "",
+    "Commutation Relations": ""
+  };
+
+  function pdfJsViewerUrl(pdfPath) {
+    const absolutePdfUrl = new URL(pdfPath, window.location.href).href;
+    return "pdfjs/web/viewer.html?file=" + encodeURIComponent(absolutePdfUrl);
+  }
+
+  function openSlides(topicKey) {
+    const pdfPath = TOPIC_SLIDES[topicKey];
+    if (!pdfPath) {
+      alert("Slides not linked for this topic yet. Add the PDF filename in TOPIC_SLIDES.");
+      return;
+    }
+
+    const panel = document.getElementById("slides-panel");
+    panel.classList.remove("hidden");
+
+    document.getElementById("slides-topic").textContent = `${topicKey} — ${pdfPath.split("/").pop()}`;
+    document.getElementById("slides-frame").src = pdfJsViewerUrl(pdfPath);
+    document.getElementById("slides-download").href = pdfPath;
+    document.getElementById("slides-open-pdf").href = pdfPath;
+
+    panel.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function closeSlides() {
+    const panel = document.getElementById("slides-panel");
+    document.getElementById("slides-frame").src = "";
+    panel.classList.add("hidden");
+  }
 
   /***********************
    * Question bank (50)
@@ -322,161 +446,81 @@
     {
       topic: "Operators & Special Operators",
       question: "Which mapping is NOT linear (operator on functions f)?",
-      options: [
-        "L(f)=f^2",
-        "L(f)=d f/dx",
-        "L(f)=3f",
-        "L(f)=x f(x)"
-      ],
+      options: ["L(f)=f^2", "L(f)=d f/dx", "L(f)=3f", "L(f)=x f(x)"],
       correctIndex: 0,
-      hints: [
-        "Test L(f+g) ?= L(f)+L(g).",
-        "Squaring usually breaks additivity."
-      ],
+      hints: ["Test L(f+g) ?= L(f)+L(g).", "Squaring usually breaks additivity."],
       solution: "L(f)=f^2 is not linear because (f+g)^2 ≠ f^2+g^2 in general."
     },
     {
       topic: "Operators & Special Operators",
       question: "Which statement is always true for any operator A?",
-      options: [
-        "A†A is Hermitian",
-        "A is Hermitian",
-        "A commutes with every operator",
-        "A is invertible"
-      ],
+      options: ["A†A is Hermitian", "A is Hermitian", "A commutes with every operator", "A is invertible"],
       correctIndex: 0,
-      hints: [
-        "Take the dagger: (A†A)† = A†(A†)†.",
-        "That becomes A†A."
-      ],
+      hints: ["Take the dagger: (A†A)† = A†(A†)†.", "That becomes A†A."],
       solution: "A†A is always Hermitian since (A†A)† = A†A."
     },
     {
       topic: "Operators & Special Operators",
       question: "Hermitian condition (matrix/operator H) is:",
-      options: [
-        "H = H†",
-        "H†H = I",
-        "H^2 = H",
-        "det(H)=1"
-      ],
+      options: ["H = H†", "H†H = I", "H^2 = H", "det(H)=1"],
       correctIndex: 0,
-      hints: [
-        "Hermitian means equal to its conjugate transpose.",
-        "Unitary and projector are different conditions."
-      ],
+      hints: ["Hermitian means equal to its conjugate transpose.", "Unitary and projector are different conditions."],
       solution: "Hermitian means H = H†."
     },
     {
       topic: "Operators & Special Operators",
       question: "Unitary condition (matrix/operator U) is:",
-      options: [
-        "U†U = I",
-        "U = U†",
-        "U^2 = U",
-        "tr(U)=0"
-      ],
+      options: ["U†U = I", "U = U†", "U^2 = U", "tr(U)=0"],
       correctIndex: 0,
-      hints: [
-        "Unitary means inverse equals dagger.",
-        "So U†U must be identity."
-      ],
+      hints: ["Unitary means inverse equals dagger.", "So U†U must be identity."],
       solution: "Unitary means U†U = I (equivalently U⁻¹ = U†)."
     },
     {
       topic: "Operators & Special Operators",
       question: "A projection operator P (in QM sense) must satisfy:",
-      options: [
-        "P^2 = P and P = P†",
-        "P^2 = I and P = P†",
-        "P†P = I",
-        "P = 0 only"
-      ],
+      options: ["P^2 = P and P = P†", "P^2 = I and P = P†", "P†P = I", "P = 0 only"],
       correctIndex: 0,
-      hints: [
-        "Project twice = project once.",
-        "Projectors are Hermitian in QM."
-      ],
+      hints: ["Project twice = project once.", "Projectors are Hermitian in QM."],
       solution: "Projector: P^2=P and P=P†."
     },
     {
       topic: "Operators & Special Operators",
       question: "Let P = |u⟩⟨u|. When is P a projection operator?",
-      options: [
-        "When ⟨u|u⟩ = 1",
-        "When ⟨u|u⟩ = 0",
-        "Always, for any |u⟩",
-        "Only if |u⟩ is an eigenvector of every operator"
-      ],
+      options: ["When ⟨u|u⟩ = 1", "When ⟨u|u⟩ = 0", "Always, for any |u⟩", "Only if |u⟩ is an eigenvector of every operator"],
       correctIndex: 0,
-      hints: [
-        "Check P^2 = |u⟩⟨u|u⟩⟨u|.",
-        "You need ⟨u|u⟩ = 1 for idempotence."
-      ],
+      hints: ["Check P^2 = |u⟩⟨u|u⟩⟨u|.", "You need ⟨u|u⟩ = 1 for idempotence."],
       solution: "P^2 = |u⟩⟨u|u⟩⟨u| = (⟨u|u⟩)P, so P^2=P requires ⟨u|u⟩=1."
     },
     {
       topic: "Operators & Special Operators",
       question: "If P and Q are projection operators and PQ = QP, then which is also a projection operator?",
-      options: [
-        "PQ",
-        "P + Q (always)",
-        "P − Q (always)",
-        "P + Q − I (always)"
-      ],
+      options: ["PQ", "P + Q (always)", "P − Q (always)", "P + Q − I (always)"],
       correctIndex: 0,
-      hints: [
-        "Check (PQ)^2 when P^2=P and Q^2=Q.",
-        "Commuting matters."
-      ],
+      hints: ["Check (PQ)^2 when P^2=P and Q^2=Q.", "Commuting matters."],
       solution: "If P,Q are projectors and commute, then (PQ)^2 = P(QP)Q = P(PQ)Q = (P^2)(Q^2)=PQ, and (PQ)†=PQ."
     },
     {
       topic: "Operators & Special Operators",
       question: "If A and B are Hermitian, then the commutator [A,B] is:",
-      options: [
-        "Anti-Hermitian (skew-Hermitian)",
-        "Hermitian",
-        "Unitary",
-        "A projection"
-      ],
+      options: ["Anti-Hermitian (skew-Hermitian)", "Hermitian", "Unitary", "A projection"],
       correctIndex: 0,
-      hints: [
-        "Compute (AB−BA)†.",
-        "You get a minus sign."
-      ],
+      hints: ["Compute (AB−BA)†.", "You get a minus sign."],
       solution: "([A,B])† = (AB−BA)† = B†A† − A†B† = BA−AB = −[A,B], so it is anti-Hermitian."
     },
     {
       topic: "Operators & Special Operators",
       question: "If U is unitary and U|χ⟩=λ|χ⟩, then:",
-      options: [
-        "|λ| = 1",
-        "λ must be real",
-        "λ must be 0",
-        "λ must be ±2"
-      ],
+      options: ["|λ| = 1", "λ must be real", "λ must be 0", "λ must be ±2"],
       correctIndex: 0,
-      hints: [
-        "Unitary preserves norm: ||U|χ⟩|| = |||χ⟩||.",
-        "So |λ| must be 1."
-      ],
+      hints: ["Unitary preserves norm: ||U|χ⟩|| = |||χ⟩||.", "So |λ| must be 1."],
       solution: "From ||U|χ⟩||^2 = ⟨χ|U†U|χ⟩ = ⟨χ|χ⟩, but also ||U|χ⟩||^2 = ||λ|χ⟩||^2 = |λ|^2⟨χ|χ⟩, hence |λ|=1."
     },
     {
       topic: "Operators & Special Operators",
       question: "If [A,B]=0, then which is true?",
-      options: [
-        "[f(A),B]=0 for any polynomial f",
-        "[A,B]=I",
-        "A and B must be equal",
-        "A must be unitary"
-      ],
+      options: ["[f(A),B]=0 for any polynomial f", "[A,B]=I", "A and B must be equal", "A must be unitary"],
       correctIndex: 0,
-      hints: [
-        "If AB=BA, then A^nB = BA^n.",
-        "So any polynomial in A also commutes with B."
-      ],
+      hints: ["If AB=BA, then A^nB = BA^n.", "So any polynomial in A also commutes with B."],
       solution: "From AB=BA it follows A^nB = BA^n for all n, hence any polynomial f(A) commutes with B."
     },
 
@@ -486,161 +530,81 @@
     {
       topic: "Matrix Algebra",
       question: "For a 2×2 matrix A = [[a,b],[c,d]], det(A) equals:",
-      options: [
-        "ad − bc",
-        "ab − cd",
-        "a + d",
-        "b + c"
-      ],
+      options: ["ad − bc", "ab − cd", "a + d", "b + c"],
       correctIndex: 0,
-      hints: [
-        "Use the standard 2×2 determinant formula.",
-        "Diagonal product minus off-diagonal product."
-      ],
+      hints: ["Use the standard 2×2 determinant formula.", "Diagonal product minus off-diagonal product."],
       solution: "det(A)=ad−bc."
     },
     {
       topic: "Matrix Algebra",
       question: "Which identity is always true (same-size matrices A,B)?",
-      options: [
-        "tr(AB)=tr(BA)",
-        "det(A+B)=det(A)+det(B)",
-        "(A+B)^2 = A^2 + B^2",
-        "AB=BA always"
-      ],
+      options: ["tr(AB)=tr(BA)", "det(A+B)=det(A)+det(B)", "(A+B)^2 = A^2 + B^2", "AB=BA always"],
       correctIndex: 0,
-      hints: [
-        "Trace has cyclic property for products.",
-        "Commutativity of matrices is not guaranteed."
-      ],
+      hints: ["Trace has cyclic property for products.", "Commutativity of matrices is not guaranteed."],
       solution: "A standard identity: tr(AB)=tr(BA)."
     },
     {
       topic: "Matrix Algebra",
       question: "Transpose of a product satisfies:",
-      options: [
-        "(AB)^T = B^T A^T",
-        "(AB)^T = A^T B^T",
-        "(AB)^T = AB",
-        "(AB)^T = A + B"
-      ],
+      options: ["(AB)^T = B^T A^T", "(AB)^T = A^T B^T", "(AB)^T = AB", "(AB)^T = A + B"],
       correctIndex: 0,
-      hints: [
-        "Order reverses under transpose.",
-        "Try a 2×2 example to verify."
-      ],
+      hints: ["Order reverses under transpose.", "Try a 2×2 example to verify."],
       solution: "(AB)^T = B^T A^T."
     },
     {
       topic: "Matrix Algebra",
       question: "Conjugate-transpose (dagger) of a product satisfies:",
-      options: [
-        "(AB)† = B† A†",
-        "(AB)† = A† B†",
-        "(AB)† = AB",
-        "(AB)† = A + B"
-      ],
+      options: ["(AB)† = B† A†", "(AB)† = A† B†", "(AB)† = AB", "(AB)† = A + B"],
       correctIndex: 0,
-      hints: [
-        "Dagger reverses order like transpose.",
-        "Also complex-conjugates entries."
-      ],
+      hints: ["Dagger reverses order like transpose.", "Also complex-conjugates entries."],
       solution: "(AB)† = B†A†."
     },
     {
       topic: "Matrix Algebra",
       question: "Find x such that det([[x,1],[2,3]]) = 0.",
-      options: [
-        "x = 2/3",
-        "x = 3/2",
-        "x = -2/3",
-        "x = 0"
-      ],
+      options: ["x = 2/3", "x = 3/2", "x = -2/3", "x = 0"],
       correctIndex: 0,
-      hints: [
-        "det = 3x − 2.",
-        "Set 3x − 2 = 0."
-      ],
+      hints: ["det = 3x − 2.", "Set 3x − 2 = 0."],
       solution: "det = 3x − 2 = 0 ⇒ x=2/3."
     },
     {
       topic: "Matrix Algebra",
       question: "If Q is an orthogonal matrix (real), then:",
-      options: [
-        "Q^{-1} = Q^T",
-        "Q^{-1} = Q",
-        "Q^TQ = 0",
-        "det(Q)=0 always"
-      ],
+      options: ["Q^{-1} = Q^T", "Q^{-1} = Q", "Q^TQ = 0", "det(Q)=0 always"],
       correctIndex: 0,
-      hints: [
-        "Orthogonal means Q^T Q = I.",
-        "So multiply both sides appropriately."
-      ],
+      hints: ["Orthogonal means Q^T Q = I.", "So multiply both sides appropriately."],
       solution: "From Q^TQ=I, Q^{-1}=Q^T."
     },
     {
       topic: "Matrix Algebra",
       question: "If A is invertible, which statement is true?",
-      options: [
-        "det(A) ≠ 0",
-        "tr(A) ≠ 0",
-        "A must be diagonal",
-        "A must be symmetric"
-      ],
+      options: ["det(A) ≠ 0", "tr(A) ≠ 0", "A must be diagonal", "A must be symmetric"],
       correctIndex: 0,
-      hints: [
-        "Invertibility is tied to determinant for square matrices.",
-        "Trace can be zero even if invertible."
-      ],
+      hints: ["Invertibility is tied to determinant for square matrices.", "Trace can be zero even if invertible."],
       solution: "A is invertible iff det(A)≠0."
     },
     {
       topic: "Matrix Algebra",
       question: "Which is always true for identity matrix I?",
-      options: [
-        "AI = IA = A",
-        "AI = I",
-        "IA = 0",
-        "AI = A^2"
-      ],
+      options: ["AI = IA = A", "AI = I", "IA = 0", "AI = A^2"],
       correctIndex: 0,
-      hints: [
-        "Identity behaves like multiplying by 1.",
-        "It should not change A."
-      ],
+      hints: ["Identity behaves like multiplying by 1.", "It should not change A."],
       solution: "AI=IA=A."
     },
     {
       topic: "Matrix Algebra",
       question: "If U is unitary, which statement is always true?",
-      options: [
-        "U^{-1} = U†",
-        "U = U†",
-        "U^2 = U",
-        "det(U)=0"
-      ],
+      options: ["U^{-1} = U†", "U = U†", "U^2 = U", "det(U)=0"],
       correctIndex: 0,
-      hints: [
-        "Definition: U†U=I.",
-        "Compare with inverse definition."
-      ],
+      hints: ["Definition: U†U=I.", "Compare with inverse definition."],
       solution: "U^{-1}=U† for unitary U."
     },
     {
       topic: "Matrix Algebra",
       question: "Trace under similarity transform: for invertible S, tr(S^{-1}AS) equals:",
-      options: [
-        "tr(A)",
-        "det(A)",
-        "rank(A)",
-        "0 always"
-      ],
+      options: ["tr(A)", "det(A)", "rank(A)", "0 always"],
       correctIndex: 0,
-      hints: [
-        "Trace is invariant under similarity transforms.",
-        "Try A diagonal and S change-of-basis."
-      ],
+      hints: ["Trace is invariant under similarity transforms.", "Try A diagonal and S change-of-basis."],
       solution: "tr(S^{-1}AS)=tr(A)."
     },
 
@@ -650,161 +614,81 @@
     {
       topic: "Eigenvalues & Eigenvectors",
       question: "Eigenvalues λ of A are found from:",
-      options: [
-        "det(A − λI)=0",
-        "tr(A − λI)=0",
-        "A − λI = 0 (always)",
-        "det(A)=0 (always)"
-      ],
+      options: ["det(A − λI)=0", "tr(A − λI)=0", "A − λI = 0 (always)", "det(A)=0 (always)"],
       correctIndex: 0,
-      hints: [
-        "Characteristic polynomial comes from determinant.",
-        "Nontrivial solutions require determinant zero."
-      ],
+      hints: ["Characteristic polynomial comes from determinant.", "Nontrivial solutions require determinant zero."],
       solution: "Solve det(A−λI)=0."
     },
     {
       topic: "Eigenvalues & Eigenvectors",
       question: "For A = [[2,1],[1,2]], eigenvalues are:",
-      options: [
-        "1 and 3",
-        "0 and 4",
-        "2 and 2",
-        "-1 and 5"
-      ],
+      options: ["1 and 3", "0 and 4", "2 and 2", "-1 and 5"],
       correctIndex: 0,
-      hints: [
-        "det([[2−λ,1],[1,2−λ]])=(2−λ)^2−1.",
-        "Set to 0."
-      ],
+      hints: ["det([[2−λ,1],[1,2−λ]])=(2−λ)^2−1.", "Set to 0."],
       solution: "(2−λ)^2−1=0 ⇒ 2−λ=±1 ⇒ λ=1,3."
     },
     {
       topic: "Eigenvalues & Eigenvectors",
       question: "For A = [[2,1],[1,2]], an eigenvector for λ=3 is proportional to:",
-      options: [
-        "(1,1)",
-        "(1,−1)",
-        "(2,0)",
-        "(0,2)"
-      ],
+      options: ["(1,1)", "(1,−1)", "(2,0)", "(0,2)"],
       correctIndex: 0,
-      hints: [
-        "Solve (A−3I)v=0.",
-        "You get v1=v2."
-      ],
+      hints: ["Solve (A−3I)v=0.", "You get v1=v2."],
       solution: "For λ=3, (A−3I) gives v1=v2, so v∝(1,1)."
     },
     {
       topic: "Eigenvalues & Eigenvectors",
       question: "For diagonal matrix diag(2,5,−1), the eigenvalues are:",
-      options: [
-        "2, 5, −1",
-        "Only 2",
-        "Only 5",
-        "2+5−1 = 6"
-      ],
+      options: ["2, 5, −1", "Only 2", "Only 5", "2+5−1 = 6"],
       correctIndex: 0,
-      hints: [
-        "Diagonal matrices scale basis vectors.",
-        "Each diagonal entry is an eigenvalue."
-      ],
+      hints: ["Diagonal matrices scale basis vectors.", "Each diagonal entry is an eigenvalue."],
       solution: "Eigenvalues are the diagonal entries: 2,5,−1."
     },
     {
       topic: "Eigenvalues & Eigenvectors",
       question: "If Av=λv, then A^2 v equals:",
-      options: [
-        "λ^2 v",
-        "2λ v",
-        "λ v",
-        "v/λ"
-      ],
+      options: ["λ^2 v", "2λ v", "λ v", "v/λ"],
       correctIndex: 0,
-      hints: [
-        "Apply A again to Av.",
-        "A(Av)=A(λv)=λ(Av)=λ(λv)."
-      ],
+      hints: ["Apply A again to Av.", "A(Av)=A(λv)=λ(Av)=λ(λv)."],
       solution: "A^2v = A(Av)=A(λv)=λAv=λ(λv)=λ^2v."
     },
     {
       topic: "Eigenvalues & Eigenvectors",
       question: "If A is invertible and Av=λv (λ≠0), then A^{-1}v equals:",
-      options: [
-        "(1/λ) v",
-        "λ v",
-        "0",
-        "Undefined"
-      ],
+      options: ["(1/λ) v", "λ v", "0", "Undefined"],
       correctIndex: 0,
-      hints: [
-        "Multiply Av=λv by A^{-1} on the left.",
-        "You get v = λ A^{-1} v."
-      ],
+      hints: ["Multiply Av=λv by A^{-1} on the left.", "You get v = λ A^{-1} v."],
       solution: "A^{-1}v = (1/λ)v."
     },
     {
       topic: "Eigenvalues & Eigenvectors",
       question: "For any square matrix A, the sum of eigenvalues (with multiplicity) equals:",
-      options: [
-        "tr(A)",
-        "det(A)",
-        "rank(A)",
-        "0 always"
-      ],
+      options: ["tr(A)", "det(A)", "rank(A)", "0 always"],
       correctIndex: 0,
-      hints: [
-        "Check for diagonal matrices first.",
-        "Trace matches sum of diagonal entries."
-      ],
+      hints: ["Check for diagonal matrices first.", "Trace matches sum of diagonal entries."],
       solution: "Sum of eigenvalues equals tr(A)."
     },
     {
       topic: "Eigenvalues & Eigenvectors",
       question: "For any square matrix A, the product of eigenvalues (with multiplicity) equals:",
-      options: [
-        "det(A)",
-        "tr(A)",
-        "rank(A)",
-        "1 always"
-      ],
+      options: ["det(A)", "tr(A)", "rank(A)", "1 always"],
       correctIndex: 0,
-      hints: [
-        "Check for diagonal matrices first.",
-        "Determinant multiplies diagonal entries."
-      ],
+      hints: ["Check for diagonal matrices first.", "Determinant multiplies diagonal entries."],
       solution: "Product of eigenvalues equals det(A)."
     },
     {
       topic: "Eigenvalues & Eigenvectors",
       question: "For Hermitian operator H, eigenvectors corresponding to distinct eigenvalues are:",
-      options: [
-        "Orthogonal",
-        "Always equal",
-        "Always non-orthogonal",
-        "Always complex"
-      ],
+      options: ["Orthogonal", "Always equal", "Always non-orthogonal", "Always complex"],
       correctIndex: 0,
-      hints: [
-        "This is a key theorem for Hermitian operators.",
-        "It underpins orthonormal eigenbases."
-      ],
+      hints: ["This is a key theorem for Hermitian operators.", "It underpins orthonormal eigenbases."],
       solution: "Hermitian operators have orthogonal eigenvectors for different eigenvalues."
     },
     {
       topic: "Eigenvalues & Eigenvectors",
       question: "If [A,B]=0 and A is Hermitian with non-degenerate eigenvalues, then:",
-      options: [
-        "A and B can share eigenvectors (simultaneous eigenbasis)",
-        "A and B must be equal",
-        "B must be a projection",
-        "A cannot be diagonalized"
-      ],
+      options: ["A and B can share eigenvectors (simultaneous eigenbasis)", "A and B must be equal", "B must be a projection", "A cannot be diagonalized"],
       correctIndex: 0,
-      hints: [
-        "Commuting + non-degenerate implies shared eigenvectors.",
-        "This is the standard compatibility statement."
-      ],
+      hints: ["Commuting + non-degenerate implies shared eigenvectors.", "This is the standard compatibility statement."],
       solution: "If A is non-degenerate and commutes with B, eigenvectors of A can be chosen as eigenvectors of B too."
     },
 
@@ -814,12 +698,7 @@
     {
       topic: "Pauli Matrices",
       question: "Which matrix is σx?",
-      options: [
-        "[[0,1],[1,0]]",
-        "[[1,0],[0,−1]]",
-        "[[0,−i],[i,0]]",
-        "[[1,0],[0,1]]"
-      ],
+      options: ["[[0,1],[1,0]]", "[[1,0],[0,−1]]", "[[0,−i],[i,0]]", "[[1,0],[0,1]]"],
       correctIndex: 0,
       hints: ["σx swaps basis states.", "It has ones off-diagonal."],
       solution: "σx = [[0,1],[1,0]]."
@@ -827,12 +706,7 @@
     {
       topic: "Pauli Matrices",
       question: "Which matrix is σy?",
-      options: [
-        "[[0,−i],[i,0]]",
-        "[[0,1],[1,0]]",
-        "[[1,0],[0,−1]]",
-        "[[1,0],[0,1]]"
-      ],
+      options: ["[[0,−i],[i,0]]", "[[0,1],[1,0]]", "[[1,0],[0,−1]]", "[[1,0],[0,1]]"],
       correctIndex: 0,
       hints: ["σy has imaginary off-diagonals.", "It is Hermitian."],
       solution: "σy = [[0,−i],[i,0]]."
@@ -840,12 +714,7 @@
     {
       topic: "Pauli Matrices",
       question: "Which matrix is σz?",
-      options: [
-        "[[1,0],[0,−1]]",
-        "[[0,1],[1,0]]",
-        "[[0,−i],[i,0]]",
-        "[[1,0],[0,1]]"
-      ],
+      options: ["[[1,0],[0,−1]]", "[[0,1],[1,0]]", "[[0,−i],[i,0]]", "[[1,0],[0,1]]"],
       correctIndex: 0,
       hints: ["σz is diagonal.", "Entries are +1 and −1."],
       solution: "σz = [[1,0],[0,−1]]."
@@ -853,12 +722,7 @@
     {
       topic: "Pauli Matrices",
       question: "Eigenvalues of σz are:",
-      options: [
-        "+1 and −1",
-        "0 and 1",
-        "i and −i",
-        "2 and −2"
-      ],
+      options: ["+1 and −1", "0 and 1", "i and −i", "2 and −2"],
       correctIndex: 0,
       hints: ["σz is diagonal.", "Diagonal entries are eigenvalues."],
       solution: "Eigenvalues are +1 and −1."
@@ -866,12 +730,7 @@
     {
       topic: "Pauli Matrices",
       question: "Which product identity is correct?",
-      options: [
-        "σxσy = iσz",
-        "σxσy = −iσz",
-        "σxσy = σz",
-        "σxσy = iI"
-      ],
+      options: ["σxσy = iσz", "σxσy = −iσz", "σxσy = σz", "σxσy = iI"],
       correctIndex: 0,
       hints: ["Standard Pauli multiplication.", "Order matters: σyσx = −iσz."],
       solution: "σxσy = iσz."
@@ -879,12 +738,7 @@
     {
       topic: "Pauli Matrices",
       question: "The commutator [σx,σy] equals:",
-      options: [
-        "2iσz",
-        "iσz",
-        "2σz",
-        "0"
-      ],
+      options: ["2iσz", "iσz", "2σz", "0"],
       correctIndex: 0,
       hints: ["Use [σi,σj]=2i εijk σk.", "So x,y gives z."],
       solution: "[σx,σy]=2iσz."
@@ -892,12 +746,7 @@
     {
       topic: "Pauli Matrices",
       question: "For i≠j, the anti-commutator {σi,σj} equals:",
-      options: [
-        "0",
-        "2I",
-        "2σk",
-        "I"
-      ],
+      options: ["0", "2I", "2σk", "I"],
       correctIndex: 0,
       hints: ["Distinct Pauli matrices anticommute.", "σxσy = −σyσx."],
       solution: "{σi,σj}=0 for i≠j."
@@ -905,12 +754,7 @@
     {
       topic: "Pauli Matrices",
       question: "Which identity is always true?",
-      options: [
-        "σi^2 = I",
-        "σi^2 = 0",
-        "σi^2 = σi",
-        "σi^2 = −I"
-      ],
+      options: ["σi^2 = I", "σi^2 = 0", "σi^2 = σi", "σi^2 = −I"],
       correctIndex: 0,
       hints: ["Check σxσx.", "It becomes identity."],
       solution: "σi^2 = I."
@@ -918,12 +762,7 @@
     {
       topic: "Pauli Matrices",
       question: "Trace of σx, σy, σz is:",
-      options: [
-        "0",
-        "1",
-        "2",
-        "−1"
-      ],
+      options: ["0", "1", "2", "−1"],
       correctIndex: 0,
       hints: ["Trace is sum of diagonal entries.", "σx and σy have 0 diagonals; σz has 1+(−1)."],
       solution: "Tr(σi)=0."
@@ -931,12 +770,7 @@
     {
       topic: "Pauli Matrices",
       question: "Determinant of any Pauli matrix is:",
-      options: [
-        "−1",
-        "+1",
-        "0",
-        "Depends on i"
-      ],
+      options: ["−1", "+1", "0", "Depends on i"],
       correctIndex: 0,
       hints: ["Compute det(σz)=det([[1,0],[0,−1]])=−1.", "Same for others."],
       solution: "det(σi)=−1."
@@ -948,12 +782,7 @@
     {
       topic: "Commutation Relations",
       question: "The commutator [A,B] is defined as:",
-      options: [
-        "AB − BA",
-        "AB + BA",
-        "A + B",
-        "A − B"
-      ],
+      options: ["AB − BA", "AB + BA", "A + B", "A − B"],
       correctIndex: 0,
       hints: ["Commutator measures non-commutativity.", "If AB=BA, commutator is zero."],
       solution: "[A,B]=AB−BA."
@@ -961,12 +790,7 @@
     {
       topic: "Commutation Relations",
       question: "Which commutator is always zero for any operator A?",
-      options: [
-        "[A, I]",
-        "[A, A†]",
-        "[A, B] for any B",
-        "[A, A^2]"
-      ],
+      options: ["[A, I]", "[A, A†]", "[A, B] for any B", "[A, A^2]"],
       correctIndex: 0,
       hints: ["Identity commutes with everything.", "AI=IA."],
       solution: "[A,I]=0 always."
@@ -974,12 +798,7 @@
     {
       topic: "Commutation Relations",
       question: "If [A,B]=0, then:",
-      options: [
-        "AB = BA",
-        "AB = 0",
-        "A = B",
-        "A must be Hermitian"
-      ],
+      options: ["AB = BA", "AB = 0", "A = B", "A must be Hermitian"],
       correctIndex: 0,
       hints: ["Just rewrite the definition.", "[A,B]=AB−BA."],
       solution: "[A,B]=0 ⇒ AB−BA=0 ⇒ AB=BA."
@@ -987,12 +806,7 @@
     {
       topic: "Commutation Relations",
       question: "Product rule for commutators is:",
-      options: [
-        "[A,BC] = [A,B]C + B[A,C]",
-        "[A,BC] = [A,B] + [A,C]",
-        "[A,BC] = [A,B][A,C]",
-        "[A,BC] = 0 always"
-      ],
+      options: ["[A,BC] = [A,B]C + B[A,C]", "[A,BC] = [A,B] + [A,C]", "[A,BC] = [A,B][A,C]", "[A,BC] = 0 always"],
       correctIndex: 0,
       hints: ["Expand A(BC) − (BC)A.", "Then regroup terms."],
       solution: "[A,BC]=ABC−BCA=(AB−BA)C + B(AC−CA)=[A,B]C + B[A,C]."
@@ -1000,12 +814,7 @@
     {
       topic: "Commutation Relations",
       question: "Jacobi identity is:",
-      options: [
-        "[A,[B,C]] + [B,[C,A]] + [C,[A,B]] = 0",
-        "[A,B] + [B,C] + [C,A] = 0",
-        "[A,B] = [B,A]",
-        "[A,[A,B]] = 0 always"
-      ],
+      options: ["[A,[B,C]] + [B,[C,A]] + [C,[A,B]] = 0", "[A,B] + [B,C] + [C,A] = 0", "[A,B] = [B,A]", "[A,[A,B]] = 0 always"],
       correctIndex: 0,
       hints: ["This is the standard triple-commutator identity.", "It sums to zero."],
       solution: "Jacobi identity: [A,[B,C]]+[B,[C,A]]+[C,[A,B]]=0."
@@ -1013,12 +822,7 @@
     {
       topic: "Commutation Relations",
       question: "Canonical commutator (1D) is:",
-      options: [
-        "[x,p] = iħ",
-        "[x,p] = 0",
-        "[x,p] = ħ",
-        "[x,p] = −ħ"
-      ],
+      options: ["[x,p] = iħ", "[x,p] = 0", "[x,p] = ħ", "[x,p] = −ħ"],
       correctIndex: 0,
       hints: ["This is a postulate of QM.", "Position and momentum do not commute."],
       solution: "[x,p]=iħ."
@@ -1026,12 +830,7 @@
     {
       topic: "Commutation Relations",
       question: "Given [X,P] = iħ, what is [X, P^2]?",
-      options: [
-        "2iħ P",
-        "iħ P^2",
-        "0",
-        "−2iħ P"
-      ],
+      options: ["2iħ P", "iħ P^2", "0", "−2iħ P"],
       correctIndex: 0,
       hints: ["Use [A,BC]=[A,B]C + B[A,C].", "So [X,P^2]=[X,P]P + P[X,P]."],
       solution: "[X,P^2]=[X,P]P + P[X,P] = (iħ)P + P(iħ) = 2iħ P."
@@ -1039,12 +838,7 @@
     {
       topic: "Commutation Relations",
       question: "If A and B are Hermitian and AB is also Hermitian, then:",
-      options: [
-        "[A,B]=0",
-        "A=B",
-        "A must be unitary",
-        "B must be a projector"
-      ],
+      options: ["[A,B]=0", "A=B", "A must be unitary", "B must be a projector"],
       correctIndex: 0,
       hints: ["(AB)† = B†A† = BA.", "If AB is Hermitian, AB=(AB)†."],
       solution: "If AB is Hermitian, AB=(AB)†=BA ⇒ AB=BA ⇒ [A,B]=0."
@@ -1052,12 +846,7 @@
     {
       topic: "Commutation Relations",
       question: "If two observables commute and A is non-degenerate, then they can be:",
-      options: [
-        "Simultaneously diagonalized (common eigenbasis)",
-        "Measured only one at a time",
-        "Equal to identity",
-        "Only anti-Hermitian"
-      ],
+      options: ["Simultaneously diagonalized (common eigenbasis)", "Measured only one at a time", "Equal to identity", "Only anti-Hermitian"],
       correctIndex: 0,
       hints: ["Commuting + non-degenerate implies shared eigenvectors.", "This is compatibility in QM."],
       solution: "Commuting observables can share a common eigenbasis when the spectrum is non-degenerate."
@@ -1065,12 +854,7 @@
     {
       topic: "Commutation Relations",
       question: "If A and B commute, then which is true?",
-      options: [
-        "[A, B^n] = 0 for all integers n ≥ 1",
-        "[A,B] = I",
-        "[A,B] = 2AB",
-        "A must be a projection"
-      ],
+      options: ["[A, B^n] = 0 for all integers n ≥ 1", "[A,B] = I", "[A,B] = 2AB", "A must be a projection"],
       correctIndex: 0,
       hints: ["If AB=BA then AB^n=B^nA.", "Induction works."],
       solution: "From AB=BA it follows AB^n=B^nA, so [A,B^n]=0."
@@ -1090,7 +874,6 @@
       .replaceAll(">", "&gt;");
   }
 
-  // Fisher–Yates shuffle (in-place)
   function shuffleArray(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -1099,12 +882,8 @@
     return arr;
   }
 
-  // Shuffle options and keep correctIndex consistent
   function shuffledQuestionView(q) {
-    const items = q.options.map((text, idx) => ({
-      text,
-      isCorrect: idx === q.correctIndex
-    }));
+    const items = q.options.map((text, idx) => ({ text, isCorrect: idx === q.correctIndex }));
     shuffleArray(items);
     const options = items.map(x => x.text);
     const correctIndex = items.findIndex(x => x.isCorrect);
@@ -1142,16 +921,14 @@
   let activeQuestions = [];         // chosen set, shuffled order
   let currentQuestionIndex = 0;
 
-  let score = 0;                   // correct questions count
-  let attempts = 0;                // number of option clicks
+  let score = 0;
+  let attempts = 0;
   let hintIndex = 0;
   let locked = false;
 
-  // Per-question shuffled view (so the correct button is not fixed)
   let viewOptions = [];
   let viewCorrectIndex = -1;
 
-  // Scorecard persists per topic
   let scorecard = loadScorecard();
 
   /***********************
@@ -1168,17 +945,33 @@
       const last = (typeof sc.lastScore === "number") ? `${sc.lastScore}/${sc.lastTotal}` : "—";
       const best = (typeof sc.bestScore === "number") ? `${sc.bestScore}/${sc.bestTotal}` : "—";
 
-      const btn = document.createElement("button");
-      btn.className = "topic-btn";
-      btn.innerHTML = `
-        <div><strong>${escapeHtml(t.label)}</strong> <span class="pill">${count} Q</span></div>
+      const pdfPath = TOPIC_SLIDES[t.key] || "";
+      const hasSlides = !!pdfPath;
+
+      const card = document.createElement("div");
+      card.className = "topic-card";
+      card.innerHTML = `
+        <div>
+          <strong>${escapeHtml(t.label)}</strong>
+          <span class="pill">${count} Q</span>
+        </div>
         <span class="meta">Last: ${escapeHtml(last)} | Best: ${escapeHtml(best)}</span>
+        <span class="meta">Slides: ${hasSlides ? escapeHtml(pdfPath.split("/").pop()) : "Not linked"}</span>
+        <div class="topic-actions">
+          <button class="btn btn-primary btn-small" type="button" data-action="start">Start Quiz</button>
+          <button class="btn btn-secondary btn-small" type="button" data-action="view" ${hasSlides ? "" : "disabled"}>View Slides</button>
+          <a class="btn btn-secondary btn-small" data-action="download" href="${hasSlides ? pdfPath : "#"}" ${hasSlides ? "download" : ""} ${hasSlides ? "" : "aria-disabled=\"true\""} style="${hasSlides ? "" : "pointer-events:none;"}">Download</a>
+        </div>
       `;
-      btn.addEventListener("click", () => startTopic(t.key));
-      wrap.appendChild(btn);
+
+      card.querySelector('[data-action="start"]').addEventListener("click", () => startTopic(t.key));
+      card.querySelector('[data-action="view"]').addEventListener("click", () => openSlides(t.key));
+
+      wrap.appendChild(card);
     });
 
     document.getElementById("start-all-btn").onclick = startAllTopics;
+
     document.getElementById("reset-scores-btn").onclick = () => {
       if (confirm("Reset all saved topic scores?")) {
         resetScorecard();
@@ -1212,6 +1005,8 @@
   }
 
   function startTopic(topicKey) {
+    closeSlides();
+
     activeTopicKey = topicKey;
     activeQuestions = QUESTIONS.filter(q => q.topic === topicKey);
     shuffleArray(activeQuestions);
@@ -1223,6 +1018,8 @@
   }
 
   function startAllTopics() {
+    closeSlides();
+
     activeTopicKey = "__ALL__";
     activeQuestions = [...QUESTIONS];
     shuffleArray(activeQuestions);
@@ -1279,7 +1076,6 @@
     hintIndex = 0;
     locked = false;
 
-    // Shuffle options every time question is shown
     const view = shuffledQuestionView(q);
     viewOptions = view.options;
     viewCorrectIndex = view.correctIndex;
@@ -1363,7 +1159,6 @@
       return;
     }
 
-    // Wrong click
     if (clickedBtn) clickedBtn.classList.add("wrong");
 
     if (hintIndex < q.hints.length) {
@@ -1412,7 +1207,6 @@
    * Completion + scorecard
    ***********************/
   function updateScorecardOnFinish() {
-    // Only store topic-wise results when a single topic quiz is taken
     if (activeTopicKey === "__ALL__") return;
 
     const topic = activeTopicKey;
@@ -1460,10 +1254,10 @@
    * Boot
    ***********************/
   window.onload = function () {
-    // Quick sanity: ensure 10 questions per topic
-    // (If you edit the question bank, keep 10 per topic for the menu.)
     buildTopicMenu();
     showTopicScreen();
+
+    document.getElementById("slides-close-btn").addEventListener("click", closeSlides);
   };
 </script>
 </body>
