@@ -1,1147 +1,1470 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Engineering Physics Quiz - Linear Operators & Special Matrices</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Engineering Physics Quiz - Operators & Special Matrices</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            padding: 30px;
-        }
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      padding: 30px;
+    }
 
-        h1 {
-            color: #667eea;
-            text-align: center;
-            margin-bottom: 10px;
-        }
+    h1 { color: #667eea; text-align: center; margin-bottom: 10px; }
+    .subtitle { text-align: center; color: #666; margin-bottom: 18px; font-size: 0.95em; }
 
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 18px;
-            font-size: 0.9em;
-        }
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 16px 0 20px 0;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
 
-        .progress-bar {
-            background: #f0f0f0;
-            height: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
+    .stat-item { text-align: center; min-width: 140px; }
+    .stat-value { font-size: 1.8em; font-weight: bold; color: #667eea; }
+    .stat-label { color: #666; font-size: 0.9em; }
 
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            transition: width 0.3s ease;
-        }
+    .progress-bar {
+      background: #f0f0f0;
+      height: 10px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
 
-        .question-card {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border-left: 5px solid #667eea;
-        }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      transition: width 0.3s ease;
+    }
 
-        .question-number {
-            color: #667eea;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
+    .hidden { display: none; }
 
-        .question-text {
-            font-size: 1.1em;
-            line-height: 1.6;
-            margin-bottom: 18px;
-            color: #333;
-            white-space: pre-line;
-        }
+    /* Topic menu */
+    .topic-screen {
+      background: #f8f9fa;
+      padding: 22px;
+      border-radius: 12px;
+      border-left: 5px solid #667eea;
+      margin-bottom: 20px;
+    }
 
-        .options {
-            margin-bottom: 10px;
-        }
+    .topic-title {
+      color: #333;
+      font-size: 1.2em;
+      margin-bottom: 8px;
+      text-align: center;
+    }
 
-        .option-btn {
-            width: 100%;
-            text-align: left;
-            background: #ffffff;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            padding: 12px 14px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-bottom: 10px;
-        }
+    .topic-subtitle {
+      color: #666;
+      text-align: center;
+      margin-bottom: 16px;
+      font-size: 0.95em;
+    }
 
-        .option-btn:hover {
-            border-color: #667eea;
-            box-shadow: 0 3px 12px rgba(102, 126, 234, 0.18);
-            transform: translateY(-1px);
-        }
+    .topic-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
 
-        .option-btn:disabled {
-            cursor: not-allowed;
-            opacity: 0.85;
-        }
+    @media (min-width: 780px) {
+      .topic-grid { grid-template-columns: 1fr 1fr; }
+    }
 
-        .option-btn.correct {
-            border-color: #28a745;
-            background: #d4edda;
-        }
+    .topic-btn {
+      width: 100%;
+      text-align: left;
+      background: #ffffff;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 1em;
+    }
 
-        .option-btn.wrong {
-            border-color: #dc3545;
-            background: #f8d7da;
-        }
+    .topic-btn:hover {
+      border-color: #667eea;
+      box-shadow: 0 3px 12px rgba(102, 126, 234, 0.18);
+      transform: translateY(-1px);
+    }
 
-        .btn {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 600;
-            transition: all 0.3s;
-            margin-right: 10px;
-            margin-top: 10px;
-        }
+    .topic-btn .meta {
+      display: block;
+      color: #666;
+      margin-top: 6px;
+      font-size: 0.9em;
+      line-height: 1.35em;
+    }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-        }
+    /* Quiz card */
+    .question-card {
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      border-left: 5px solid #667eea;
+    }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
+    .question-number {
+      color: #667eea;
+      font-weight: bold;
+      margin-bottom: 10px;
+      line-height: 1.4em;
+    }
 
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
+    .question-text {
+      font-size: 1.1em;
+      line-height: 1.6;
+      margin-bottom: 18px;
+      color: #333;
+      white-space: pre-line;
+    }
 
-        .btn-secondary:hover {
-            background: #5a6268;
-        }
+    .options { margin-bottom: 10px; }
 
-        .feedback {
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-            display: none;
-        }
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      background: #ffffff;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 10px;
+    }
 
-        .feedback.correct {
-            background: #d4edda;
-            border: 2px solid #28a745;
-            color: #155724;
-        }
+    .option-btn:hover {
+      border-color: #667eea;
+      box-shadow: 0 3px 12px rgba(102, 126, 234, 0.18);
+      transform: translateY(-1px);
+    }
 
-        .feedback.incorrect {
-            background: #f8d7da;
-            border: 2px solid #dc3545;
-            color: #721c24;
-        }
+    .option-btn:disabled { cursor: not-allowed; opacity: 0.88; }
+    .option-btn.correct { border-color: #28a745; background: #d4edda; }
+    .option-btn.wrong { border-color: #dc3545; background: #f8d7da; }
 
-        .feedback.hint {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            color: #856404;
-        }
+    .btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      font-weight: 600;
+      transition: all 0.3s;
+      margin-right: 10px;
+      margin-top: 10px;
+    }
 
-        .solution {
-            background: #e7f3ff;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 15px;
-            border-left: 5px solid #2196F3;
-            display: none;
-        }
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
 
-        .solution h3 {
-            color: #2196F3;
-            margin-bottom: 10px;
-        }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
 
-        .solution-content {
-            line-height: 1.8;
-            color: #333;
-        }
+    .btn-secondary { background: #6c757d; color: white; }
+    .btn-secondary:hover { background: #5a6268; }
 
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            margin: 16px 0 20px 0;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
+    .feedback {
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 15px;
+      display: none;
+    }
 
-        .stat-item {
-            text-align: center;
-        }
+    .feedback.correct { background: #d4edda; border: 2px solid #28a745; color: #155724; }
+    .feedback.incorrect { background: #f8d7da; border: 2px solid #dc3545; color: #721c24; }
+    .feedback.hint { background: #fff3cd; border: 2px solid #ffc107; color: #856404; }
 
-        .stat-value {
-            font-size: 2em;
-            font-weight: bold;
-            color: #667eea;
-        }
+    .solution {
+      background: #e7f3ff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 15px;
+      border-left: 5px solid #2196F3;
+      display: none;
+    }
 
-        .stat-label {
-            color: #666;
-            font-size: 0.9em;
-        }
+    .solution h3 { color: #2196F3; margin-bottom: 10px; }
+    .solution-content { line-height: 1.75; color: #333; }
 
-        .hidden {
-            display: none;
-        }
-
-        /* Topic menu */
-        .topic-screen {
-            background: #f8f9fa;
-            padding: 22px;
-            border-radius: 12px;
-            border-left: 5px solid #667eea;
-            margin-bottom: 20px;
-        }
-
-        .topic-title {
-            color: #333;
-            font-size: 1.2em;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-
-        .topic-subtitle {
-            color: #666;
-            text-align: center;
-            margin-bottom: 16px;
-            font-size: 0.95em;
-        }
-
-        .topic-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-            margin-top: 10px;
-        }
-
-        @media (min-width: 700px) {
-            .topic-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        .topic-btn {
-            width: 100%;
-            text-align: left;
-            background: #ffffff;
-            border: 2px solid #ddd;
-            border-radius: 12px;
-            padding: 14px 16px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 1em;
-        }
-
-        .topic-btn:hover {
-            border-color: #667eea;
-            box-shadow: 0 3px 12px rgba(102, 126, 234, 0.18);
-            transform: translateY(-1px);
-        }
-
-        .topic-btn small {
-            display: block;
-            color: #666;
-            margin-top: 6px;
-        }
-    </style>
+    .pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #3b4cca;
+      font-weight: 600;
+      font-size: 0.9em;
+      margin-left: 6px;
+    }
+  </style>
 </head>
+
 <body>
 <div class="container">
-    <h1>🎓 Engineering Physics Quiz</h1>
-    <div class="subtitle">BAPHY105: Linear Operators & Special Matrices</div>
+  <h1>🎓 Engineering Physics Quiz</h1>
+  <div class="subtitle">BAPHY105: Operators, Matrices, Eigenvalues, Pauli & Commutators</div>
+
+  <div class="stats">
+    <div class="stat-item">
+      <div class="stat-value" id="stat-topic">—</div>
+      <div class="stat-label">Current Topic</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" id="stat-q">—</div>
+      <div class="stat-label">Question</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" id="stat-score">0</div>
+      <div class="stat-label">Score</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" id="stat-attempts">0</div>
+      <div class="stat-label">Attempts</div>
+    </div>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress" style="width: 0%"></div>
+  </div>
+
+  <!-- Topic selection -->
+  <div id="topic-screen" class="topic-screen">
+    <div class="topic-title">Choose a topic</div>
+    <div class="topic-subtitle">Each topic has 10 questions. Options are shuffled every time.</div>
+    <div id="topic-buttons" class="topic-grid"></div>
+    <div style="text-align:center;">
+      <button class="btn btn-primary" id="start-all-btn">Start Full Quiz (All Topics)</button>
+      <button class="btn btn-secondary" id="reset-scores-btn">Reset Saved Scores</button>
+    </div>
+  </div>
+
+  <!-- Quiz content -->
+  <div id="quiz-content" class="hidden"></div>
+
+  <!-- Completion -->
+  <div id="completion-screen" class="hidden">
+    <h2 style="text-align: center; color: #667eea; margin-bottom: 12px;">🎉 Quiz Completed!</h2>
 
     <div class="stats">
-        <div class="stat-item">
-            <div class="stat-value" id="current-question">-</div>
-            <div class="stat-label">Current Question</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value" id="score">0</div>
-            <div class="stat-label">Score</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value" id="attempts">0</div>
-            <div class="stat-label">Attempts</div>
-        </div>
+      <div class="stat-item">
+        <div class="stat-value" id="final-topic">—</div>
+        <div class="stat-label">Topic</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="final-score">0</div>
+        <div class="stat-label">Score</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="final-total">0</div>
+        <div class="stat-label">Total Questions</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="final-accuracy">0%</div>
+        <div class="stat-label">Accuracy</div>
+      </div>
     </div>
 
-    <div class="progress-bar">
-        <div class="progress-fill" id="progress" style="width: 0%"></div>
+    <div style="text-align:center; margin-top: 6px;">
+      <button class="btn btn-secondary" onclick="backToTopics()">Back to Topics</button>
+      <button class="btn btn-primary" onclick="restartSameTopic()">Retry Same Topic</button>
     </div>
-
-    <!-- Topic selection screen -->
-    <div id="topic-screen" class="topic-screen">
-        <div class="topic-title">Choose a topic</div>
-        <div class="topic-subtitle">Click a topic to attempt its 10-question quiz.</div>
-        <div id="topic-buttons" class="topic-grid"></div>
-        <div style="text-align:center;">
-            <button class="btn btn-primary" id="start-all-btn">Start Full Quiz (All Topics)</button>
-        </div>
-    </div>
-
-    <div id="quiz-content" class="hidden">
-        <!-- Quiz content will be injected here -->
-    </div>
-
-    <div id="completion-screen" class="hidden">
-        <h2 style="text-align: center; color: #667eea; margin-bottom: 20px;">🎉 Quiz Completed!</h2>
-        <div class="stats">
-            <div class="stat-item">
-                <div class="stat-value" id="final-score">0</div>
-                <div class="stat-label">Final Score</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" id="total-questions">0</div>
-                <div class="stat-label">Total Questions</div>
-            </div>
-        </div>
-        <div style="text-align: center; margin-top: 10px;">
-            <button class="btn btn-secondary" onclick="backToTopics()">Back to Topics</button>
-            <button class="btn btn-primary" onclick="restartSameTopic()">Retry Same Topic</button>
-        </div>
-    </div>
+  </div>
 </div>
 
 <script>
-    // ==========================================================
-    // Questions: 10 per topic (6 topics) => 60 total.
-    // Each question has: topic, question, options (4), correctIndex, hints, solution
-    // ==========================================================
-    const quizData = [
-        // =========================
-        // Topic 1: Linear Operators
-        // =========================
-        {
-            topic: "Linear Operators",
-            question: "Which condition defines a linear operator A?",
-            options: [
-                "A(α|ψ⟩ + β|φ⟩) = αA|ψ⟩ + βA|φ⟩ for all scalars α, β",
-                "A(|ψ⟩ + |φ⟩) = A|ψ⟩ − A|φ⟩ always",
-                "A|ψ⟩ = |ψ⟩ for all |ψ⟩",
-                "A†A = I"
-            ],
-            correctIndex: 0,
-            hints: [
-                "Linearity means preserving addition and scalar multiplication.",
-                "Look for the rule that distributes over a linear combination."
-            ],
-            solution: "A is linear if it preserves linear combinations: A(α|ψ⟩ + β|φ⟩) = αA|ψ⟩ + βA|φ⟩."
-        },
-        {
-            topic: "Linear Operators",
-            question: "Which mapping is NOT linear (as an operator on functions f)?",
-            options: [
-                "L(f) = d f/dx",
-                "L(f) = 3f",
-                "L(f) = f + g (for fixed g)",
-                "L(f) = (f)^2"
-            ],
-            correctIndex: 3,
-            hints: [
-                "Test linearity using L(f+g) ?= L(f)+L(g).",
-                "Squaring usually breaks additivity."
-            ],
-            solution: "L(f)=f^2 is not linear because (f+g)^2 ≠ f^2 + g^2 in general."
-        },
-        {
-            topic: "Linear Operators",
-            question: "If A is linear, what is A(0) (zero vector)?",
-            options: ["0", "1", "It depends on A", "Undefined"],
-            correctIndex: 0,
-            hints: [
-                "Use A(0) = A(0 + 0) = A(0) + A(0).",
-                "Subtract A(0) from both sides."
-            ],
-            solution: "A(0)=0 for any linear operator."
-        },
-        {
-            topic: "Linear Operators",
-            question: "If A and B are linear operators, which statement is true?",
-            options: ["A + B is linear", "A + B is always unitary", "A + B is never linear", "A + B must be Hermitian"],
-            correctIndex: 0,
-            hints: [
-                "Check (A+B)(αx+βy).",
-                "Linearity is preserved under addition."
-            ],
-            solution: "The sum of linear operators is linear."
-        },
-        {
-            topic: "Linear Operators",
-            question: "If A and B are linear operators, which statement is true?",
-            options: ["AB (composition) is linear", "AB is always Hermitian", "AB is always a projection", "AB must equal BA"],
-            correctIndex: 0,
-            hints: [
-                "Apply AB to a linear combination and use linearity twice.",
-                "Linearity is preserved under composition."
-            ],
-            solution: "If A and B are linear, AB is linear."
-        },
-        {
-            topic: "Linear Operators",
-            question: "The zero operator Z defined by Z|ψ⟩ = 0 is:",
-            options: ["Linear", "Non-linear", "Unitary", "Always invertible"],
-            correctIndex: 0,
-            hints: ["Check Z(α|ψ⟩+β|φ⟩).", "It always returns zero."],
-            solution: "Z is linear because it satisfies Z(α|ψ⟩+β|φ⟩)=αZ|ψ⟩+βZ|φ⟩=0."
-        },
-        {
-            topic: "Linear Operators",
-            question: "Which is a correct matrix form for a linear operator on ℝ^n?",
-            options: ["x ↦ Ax (matrix multiplication)", "x ↦ ||x||", "x ↦ x^2 (componentwise squaring, in general)", "x ↦ exp(x) (componentwise exponential, in general)"],
-            correctIndex: 0,
-            hints: ["Linear maps correspond to matrices once a basis is fixed.", "Matrix multiplication preserves linear combinations."],
-            solution: "A linear operator is represented (in a basis) by multiplication x ↦ Ax."
-        },
-        {
-            topic: "Linear Operators",
-            question: "If A is linear, what is A(c|ψ⟩) where c is a scalar?",
-            options: ["c A|ψ⟩", "A|ψ⟩ + c", "A|ψ⟩/c always", "No rule exists"],
-            correctIndex: 0,
-            hints: ["This is the homogeneity part of linearity.", "Scalars factor out."],
-            solution: "A(c|ψ⟩)=cA|ψ⟩ for linear A."
-        },
-        {
-            topic: "Linear Operators",
-            question: "If A is linear and invertible, then its inverse A⁻¹ is:",
-            options: ["Linear", "Always non-linear", "Always a projection", "Always skew-Hermitian"],
-            correctIndex: 0,
-            hints: ["Use A(A⁻¹(x))=x and test on linear combinations.", "Inverse of a linear bijection is linear."],
-            solution: "A⁻¹ is linear if A is linear and invertible."
-        },
-        {
-            topic: "Linear Operators",
-            question: "Which statement is true about basis dependence?",
-            options: ["The matrix of an operator depends on the chosen basis", "Eigenvalues depend on the chosen basis", "Linearity depends on the chosen basis", "Trace depends on the chosen basis"],
-            correctIndex: 0,
-            hints: ["Coordinates change with basis.", "The same operator can look different as a matrix in different bases."],
-            solution: "The matrix representation depends on basis, even though the operator itself does not."
-        },
+  /***********************
+   * Topics (updated)
+   ***********************/
+  const TOPICS = [
+    { key: "Operators & Special Operators", label: "Linear + Hermitian/Unitary/Projection (Clubbed)" },
+    { key: "Matrix Algebra", label: "Matrix algebra" },
+    { key: "Eigenvalues & Eigenvectors", label: "Eigenvalues and eigenvectors" },
+    { key: "Pauli Matrices", label: "Pauli matrices" },
+    { key: "Commutation Relations", label: "Commutation relations" }
+  ];
 
-        // ======================
-        // Topic 2: Matrix Algebra
-        // ======================
-        {
-            topic: "Matrix Algebra",
-            question: "Which identity property is correct for an identity matrix I?",
-            options: ["AI = IA = A", "AI = I only", "IA = 0 always", "AI = A² always"],
-            correctIndex: 0,
-            hints: ["Identity acts like the number 1 under multiplication.", "It should not change A."],
-            solution: "Identity matrix satisfies AI = IA = A."
-        },
-        {
-            topic: "Matrix Algebra",
-            question: "For an invertible matrix A, the inverse A⁻¹ satisfies:",
-            options: ["AA⁻¹ = A⁻¹A = I", "AA⁻¹ = 0", "A⁻¹A = A", "A⁻¹ = Aᵀ always"],
-            correctIndex: 0,
-            hints: ["Inverse undoes multiplication by A.", "Both left and right inverse coincide for invertible matrices."],
-            solution: "A⁻¹ is defined by AA⁻¹ = A⁻¹A = I."
-        },
-        {
-            topic: "Matrix Algebra",
-            question: "Which is true for determinants?",
-            options: ["det(AB) = det(A) det(B)", "det(AB) = det(A) + det(B)", "det(A⁻¹) = det(A)", "det(Aᵀ) = −det(A)"],
-            correctIndex: 0,
-            hints: ["Determinant is multiplicative.", "Try simple diagonal matrices to test."],
-            solution: "det(AB)=det(A)det(B)."
-        },
-        {
-            topic: "Matrix Algebra",
-            question: "For any square matrices A and B of the same size, which is always true?",
-            options: ["tr(AB) = tr(BA)", "tr(AB) = tr(A) tr(B) always", "tr(AB) = tr(A)+tr(B) always", "tr(AB) = 0 always"],
-            correctIndex: 0,
-            hints: ["Trace is cyclic for products (of two matrices).", "This identity is widely used in physics."],
-            solution: "A standard property: tr(AB)=tr(BA)."
-        },
-        {
-            topic: "Matrix Algebra",
-            question: "Transpose of a product satisfies:",
-            options: ["(AB)ᵀ = Bᵀ Aᵀ", "(AB)ᵀ = Aᵀ Bᵀ", "(AB)ᵀ = AB", "(AB)ᵀ = A + B"],
-            correctIndex: 0,
-            hints: ["Order reverses under transpose.", "Test with 2×2 matrices."],
-            solution: "(AB)ᵀ = BᵀAᵀ."
-        },
-        {
-            topic: "Matrix Algebra",
-            question: "Conjugate-transpose (dagger) of a product satisfies:",
-            options: ["(AB)† = B† A†", "(AB)† = A† B†", "(AB)† = AB", "(AB)† = A + B"],
-            correctIndex: 0,
-            hints: ["Dagger is like transpose + complex conjugate, order reverses.", "Same pattern as transpose."],
-            solution: "(AB)† = B†A†."
-        },
-        {
-            topic: "Matrix Algebra",
-            question: "For a 2×2 matrix [[a,b],[c,d]], det(A) equals:",
-            options: ["ad − bc", "ab − cd", "a + d", "b + c"],
-            correctIndex: 0,
-            hints: ["Use the standard 2×2 determinant formula.", "Multiply diagonal and subtract off-diagonal product."],
-            solution: "det([[a,b],[c,d]]) = ad − bc."
-        },
-        {
-            topic: "Matrix Algebra",
-            question: "For any square matrix A, the trace is:",
-            options: ["Sum of diagonal elements", "Product of diagonal elements", "Always 0", "Always 1"],
-            correctIndex: 0,
-            hints: ["Trace is a simple scalar built from diagonals.", "Write A = (a_ij); trace = Σ a_ii."],
-            solution: "Trace is the sum of diagonal elements."
-        },
-        {
-            topic: "Matrix Algebra",
-            question: "If A is diagonal with diagonal entries (2, 5, -1), its eigenvalues are:",
-            options: ["2, 5, -1", "Only 2", "Only 5", "2+5-1 = 6"],
-            correctIndex: 0,
-            hints: ["Diagonal matrices act independently on basis vectors.", "Each diagonal entry is an eigenvalue."],
-            solution: "Eigenvalues of a diagonal matrix are its diagonal entries."
-        },
-        {
-            topic: "Matrix Algebra",
-            question: "For an orthogonal matrix Q (real case), the defining relation is:",
-            options: ["QᵀQ = I", "Q†Q = 0", "Q = Q† always", "det(Q) = 0"],
-            correctIndex: 0,
-            hints: ["Orthogonal matrices preserve dot products.", "Inverse equals transpose."],
-            solution: "Orthogonal: QᵀQ=I."
-        },
+  /***********************
+   * Question bank (50)
+   * 10 questions per topic
+   ***********************/
+  const QUESTIONS = [
+    // ==============================
+    // Operators & Special Operators
+    // ==============================
+    {
+      topic: "Operators & Special Operators",
+      question: "Which mapping is NOT linear (operator on functions f)?",
+      options: [
+        "L(f)=f^2",
+        "L(f)=d f/dx",
+        "L(f)=3f",
+        "L(f)=x f(x)"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Test L(f+g) ?= L(f)+L(g).",
+        "Squaring usually breaks additivity."
+      ],
+      solution: "L(f)=f^2 is not linear because (f+g)^2 ≠ f^2+g^2 in general."
+    },
+    {
+      topic: "Operators & Special Operators",
+      question: "Which statement is always true for any operator A?",
+      options: [
+        "A†A is Hermitian",
+        "A is Hermitian",
+        "A commutes with every operator",
+        "A is invertible"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Take the dagger: (A†A)† = A†(A†)†.",
+        "That becomes A†A."
+      ],
+      solution: "A†A is always Hermitian since (A†A)† = A†A."
+    },
+    {
+      topic: "Operators & Special Operators",
+      question: "Hermitian condition (matrix/operator H) is:",
+      options: [
+        "H = H†",
+        "H†H = I",
+        "H^2 = H",
+        "det(H)=1"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Hermitian means equal to its conjugate transpose.",
+        "Unitary and projector are different conditions."
+      ],
+      solution: "Hermitian means H = H†."
+    },
+    {
+      topic: "Operators & Special Operators",
+      question: "Unitary condition (matrix/operator U) is:",
+      options: [
+        "U†U = I",
+        "U = U†",
+        "U^2 = U",
+        "tr(U)=0"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Unitary means inverse equals dagger.",
+        "So U†U must be identity."
+      ],
+      solution: "Unitary means U†U = I (equivalently U⁻¹ = U†)."
+    },
+    {
+      topic: "Operators & Special Operators",
+      question: "A projection operator P (in QM sense) must satisfy:",
+      options: [
+        "P^2 = P and P = P†",
+        "P^2 = I and P = P†",
+        "P†P = I",
+        "P = 0 only"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Project twice = project once.",
+        "Projectors are Hermitian in QM."
+      ],
+      solution: "Projector: P^2=P and P=P†."
+    },
+    {
+      topic: "Operators & Special Operators",
+      question: "Let P = |u⟩⟨u|. When is P a projection operator?",
+      options: [
+        "When ⟨u|u⟩ = 1",
+        "When ⟨u|u⟩ = 0",
+        "Always, for any |u⟩",
+        "Only if |u⟩ is an eigenvector of every operator"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Check P^2 = |u⟩⟨u|u⟩⟨u|.",
+        "You need ⟨u|u⟩ = 1 for idempotence."
+      ],
+      solution: "P^2 = |u⟩⟨u|u⟩⟨u| = (⟨u|u⟩)P, so P^2=P requires ⟨u|u⟩=1."
+    },
+    {
+      topic: "Operators & Special Operators",
+      question: "If P and Q are projection operators and PQ = QP, then which is also a projection operator?",
+      options: [
+        "PQ",
+        "P + Q (always)",
+        "P − Q (always)",
+        "P + Q − I (always)"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Check (PQ)^2 when P^2=P and Q^2=Q.",
+        "Commuting matters."
+      ],
+      solution: "If P,Q are projectors and commute, then (PQ)^2 = P(QP)Q = P(PQ)Q = (P^2)(Q^2)=PQ, and (PQ)†=PQ."
+    },
+    {
+      topic: "Operators & Special Operators",
+      question: "If A and B are Hermitian, then the commutator [A,B] is:",
+      options: [
+        "Anti-Hermitian (skew-Hermitian)",
+        "Hermitian",
+        "Unitary",
+        "A projection"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Compute (AB−BA)†.",
+        "You get a minus sign."
+      ],
+      solution: "([A,B])† = (AB−BA)† = B†A† − A†B† = BA−AB = −[A,B], so it is anti-Hermitian."
+    },
+    {
+      topic: "Operators & Special Operators",
+      question: "If U is unitary and U|χ⟩=λ|χ⟩, then:",
+      options: [
+        "|λ| = 1",
+        "λ must be real",
+        "λ must be 0",
+        "λ must be ±2"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Unitary preserves norm: ||U|χ⟩|| = |||χ⟩||.",
+        "So |λ| must be 1."
+      ],
+      solution: "From ||U|χ⟩||^2 = ⟨χ|U†U|χ⟩ = ⟨χ|χ⟩, but also ||U|χ⟩||^2 = ||λ|χ⟩||^2 = |λ|^2⟨χ|χ⟩, hence |λ|=1."
+    },
+    {
+      topic: "Operators & Special Operators",
+      question: "If [A,B]=0, then which is true?",
+      options: [
+        "[f(A),B]=0 for any polynomial f",
+        "[A,B]=I",
+        "A and B must be equal",
+        "A must be unitary"
+      ],
+      correctIndex: 0,
+      hints: [
+        "If AB=BA, then A^nB = BA^n.",
+        "So any polynomial in A also commutes with B."
+      ],
+      solution: "From AB=BA it follows A^nB = BA^n for all n, hence any polynomial f(A) commutes with B."
+    },
 
-        // ==========================================
-        // Topic 3: Hermitian, Unitary & Projection
-        // ==========================================
-        {
-            topic: "Hermitian, Unitary & Projection",
-            question: "A Hermitian operator/matrix H satisfies:",
-            options: ["H = H†", "H†H = I", "H² = H", "det(H)=1"],
-            correctIndex: 0,
-            hints: ["Hermitian means equal to conjugate transpose.", "Look for H equals H dagger."],
-            solution: "Hermitian means H = H†."
-        },
-        {
-            topic: "Hermitian, Unitary & Projection",
-            question: "A unitary operator/matrix U satisfies:",
-            options: ["U†U = I", "U = U†", "U² = U", "tr(U)=0"],
-            correctIndex: 0,
-            hints: ["Unitary preserves inner products/norm.", "Inverse equals dagger."],
-            solution: "Unitary means U†U = I (equivalently U⁻¹ = U†)."
-        },
-        {
-            topic: "Hermitian, Unitary & Projection",
-            question: "A projection operator P satisfies:",
-            options: ["P² = P and P = P†", "P² = I and P = P†", "P†P = I", "P = 0 only"],
-            correctIndex: 0,
-            hints: ["Projecting twice gives the same as once.", "In QM, projection operators are Hermitian."],
-            solution: "Projection: idempotent P²=P, and (in QM) Hermitian P=P†."
-        },
-        {
-            topic: "Hermitian, Unitary & Projection",
-            question: "Eigenvalues of a Hermitian operator are:",
-            options: ["Real", "Purely imaginary", "Always 0", "Always ±1"],
-            correctIndex: 0,
-            hints: ["Hermitian corresponds to observables in QM.", "Measurement outcomes are real."],
-            solution: "Hermitian operators have real eigenvalues."
-        },
-        {
-            topic: "Hermitian, Unitary & Projection",
-            question: "If U is unitary and U|χ⟩ = λ|χ⟩, then |λ| equals:",
-            options: ["1", "0", "2", "Depends on |χ⟩"],
-            correctIndex: 0,
-            hints: ["Use U†U=I on an eigenvector.", "Norm preservation forces |λ|=1."],
-            solution: "Eigenvalues of a unitary operator have modulus 1."
-        },
-        {
-            topic: "Hermitian, Unitary & Projection",
-            question: "For a unitary U, which is true?",
-            options: ["U⁻¹ = U†", "U⁻¹ = U", "U⁻¹ = 0", "U⁻¹ = Uᵀ always"],
-            correctIndex: 0,
-            hints: ["Multiply U†U = I.", "Compare with definition of inverse."],
-            solution: "From U†U=I, U⁻¹ = U†."
-        },
-        {
-            topic: "Hermitian, Unitary & Projection",
-            question: "If H is Hermitian, the expectation value ⟨ψ|H|ψ⟩ is:",
-            options: ["Real", "Always imaginary", "Always zero", "Undefined"],
-            correctIndex: 0,
-            hints: ["Take the complex conjugate and use H=H†.", "Expectation value of an observable is real."],
-            solution: "⟨ψ|H|ψ⟩ is real for Hermitian H."
-        },
-        {
-            topic: "Hermitian, Unitary & Projection",
-            question: "Eigenvalues of a projection operator P (with P²=P and P Hermitian) are:",
-            options: ["Only 0 or 1", "Any real number", "Only ±1", "Only imaginary"],
-            correctIndex: 0,
-            hints: ["Use P|v⟩=λ|v⟩ and apply P again.", "You get λ²=λ."],
-            solution: "λ²=λ ⇒ λ=0 or 1."
-        },
-        {
-            topic: "Hermitian, Unitary & Projection",
-            question: "If H is Hermitian, then exp(iH) is:",
-            options: ["Unitary", "Hermitian", "A projection", "Always zero"],
-            correctIndex: 0,
-            hints: ["Exponential of i times Hermitian is unitary.", "Think of time-evolution operators."],
-            solution: "exp(iH) is unitary when H is Hermitian."
-        },
-        {
-            topic: "Hermitian, Unitary & Projection",
-            question: "If H is Hermitian and U is unitary, then UHU† is:",
-            options: ["Hermitian", "Always non-Hermitian", "Always diagonal", "Always a projection"],
-            correctIndex: 0,
-            hints: ["Take dagger: (UHU†)† = U H† U†.", "Use H†=H and (U†)†=U."],
-            solution: "UHU† remains Hermitian (unitary similarity preserves Hermiticity)."
-        },
-
-        // =================================
-        // Topic 4: Eigenvalues & Eigenvectors
-        // =================================
-        {
-            topic: "Eigenvalues & Eigenvectors",
-            question: "Which equation defines an eigenvector v of matrix A with eigenvalue λ?",
-            options: ["Av = λv", "A + v = λ", "Aλ = v", "det(A)=λ"],
-            correctIndex: 0,
-            hints: ["Eigenvector direction is preserved up to scaling.", "Output is scalar multiple of input."],
-            solution: "Definition: Av = λv."
-        },
-        {
-            topic: "Eigenvalues & Eigenvectors",
-            question: "Eigenvalues are found by solving:",
-            options: ["det(A − λI) = 0", "tr(A − λI) = 0", "A − λI = 0 (always)", "det(A) = 0 (always)"],
-            correctIndex: 0,
-            hints: ["Characteristic polynomial comes from determinant.", "Nontrivial solution requires determinant zero."],
-            solution: "Eigenvalues satisfy det(A−λI)=0."
-        },
-        {
-            topic: "Eigenvalues & Eigenvectors",
-            question: "For A = [[2,1],[1,2]], the eigenvalues are:",
-            options: ["1 and 3", "0 and 4", "2 and 2", "−1 and 5"],
-            correctIndex: 0,
-            hints: ["Solve det([[2−λ,1],[1,2−λ]])=0.", "(2−λ)^2 − 1 = 0."],
-            solution: "Characteristic equation gives λ=1,3."
-        },
-        {
-            topic: "Eigenvalues & Eigenvectors",
-            question: "For A = [[2,1],[1,2]], an eigenvector for λ=3 is proportional to:",
-            options: ["[1, 1]", "[1, −1]", "[2, 0]", "[0, 2]"],
-            correctIndex: 0,
-            hints: ["Solve (A−3I)v=0.", "You get v1=v2."],
-            solution: "For λ=3, eigenvector ∝ (1,1)."
-        },
-        {
-            topic: "Eigenvalues & Eigenvectors",
-            question: "For A = [[2,1],[1,2]], an eigenvector for λ=1 is proportional to:",
-            options: ["[1, −1]", "[1, 1]", "[1, 0]", "[0, 1]"],
-            correctIndex: 0,
-            hints: ["Solve (A−I)v=0.", "You get v1 = −v2."],
-            solution: "For λ=1, eigenvector ∝ (1,−1)."
-        },
-        {
-            topic: "Eigenvalues & Eigenvectors",
-            question: "If A is diagonal diag(2,5), its eigenvalues are:",
-            options: ["2 and 5", "7 only", "10 only", "−3 and 3"],
-            correctIndex: 0,
-            hints: ["Diagonal entries act as scaling on basis vectors.", "Each diagonal entry is an eigenvalue."],
-            solution: "Eigenvalues are 2 and 5."
-        },
-        {
-            topic: "Eigenvalues & Eigenvectors",
-            question: "For any square matrix A, the sum of eigenvalues (counting multiplicity) equals:",
-            options: ["tr(A)", "det(A)", "rank(A)", "0 always"],
-            correctIndex: 0,
-            hints: ["Trace relates to eigenvalues.", "Try diagonal matrices as a check."],
-            solution: "Sum of eigenvalues equals tr(A)."
-        },
-        {
-            topic: "Eigenvalues & Eigenvectors",
-            question: "For any square matrix A, the product of eigenvalues (counting multiplicity) equals:",
-            options: ["det(A)", "tr(A)", "rank(A)", "0 always"],
-            correctIndex: 0,
-            hints: ["Determinant relates to eigenvalues.", "Check with diagonal matrices."],
-            solution: "Product of eigenvalues equals det(A)."
-        },
-        {
-            topic: "Eigenvalues & Eigenvectors",
-            question: "If A = cI (scalar matrix), its eigenvalues are:",
-            options: ["All equal to c", "All equal to 1", "All equal to 0", "c and −c only"],
-            correctIndex: 0,
-            hints: ["A acts as uniform scaling.", "Every vector is an eigenvector."],
-            solution: "All eigenvalues are c (with multiplicity n)."
-        },
-        {
-            topic: "Eigenvalues & Eigenvectors",
-            question: "If AB=BA and A has a non-degenerate eigenvalue λ, then eigenvectors can be chosen to:",
-            options: ["Be common (simultaneous eigenvectors)", "Be always orthogonal", "Be always equal", "Not exist"],
-            correctIndex: 0,
-            hints: ["Commuting operators are compatible (non-degenerate case is simplest).", "B maps the λ-eigenspace to itself."],
-            solution: "If AB=BA and λ is non-degenerate, one can choose common eigenvectors."
-        },
-
-        // =======================
-        // Topic 5: Pauli Matrices
-        // =======================
-        {
-            topic: "Pauli Matrices",
-            question: "Which matrix is σx?",
-            options: ["[[0,1],[1,0]]", "[[1,0],[0,-1]]", "[[0,-i],[i,0]]", "[[1,0],[0,1]]"],
-            correctIndex: 0,
-            hints: ["σx swaps the basis states.", "Look for off-diagonal ones."],
-            solution: "σx = [[0,1],[1,0]]."
-        },
-        {
-            topic: "Pauli Matrices",
-            question: "Which matrix is σy?",
-            options: ["[[0,-i],[i,0]]", "[[0,1],[1,0]]", "[[1,0],[0,-1]]", "[[1,0],[0,1]]"],
-            correctIndex: 0,
-            hints: ["σy has imaginary off-diagonals.", "It is Hermitian."],
-            solution: "σy = [[0,-i],[i,0]]."
-        },
-        {
-            topic: "Pauli Matrices",
-            question: "Which matrix is σz?",
-            options: ["[[1,0],[0,-1]]", "[[0,1],[1,0]]", "[[0,-i],[i,0]]", "[[1,0],[0,1]]"],
-            correctIndex: 0,
-            hints: ["σz is diagonal with entries +1 and −1.", "It distinguishes basis states."],
-            solution: "σz = [[1,0],[0,-1]]."
-        },
-        {
-            topic: "Pauli Matrices",
-            question: "The eigenvalues of σz are:",
-            options: ["+1 and −1", "0 and 1", "i and −i", "2 and −2"],
-            correctIndex: 0,
-            hints: ["σz is diagonal.", "Diagonal entries are eigenvalues."],
-            solution: "Eigenvalues are +1 and −1."
-        },
-        {
-            topic: "Pauli Matrices",
-            question: "The trace of any Pauli matrix (σx, σy, σz) is:",
-            options: ["0", "1", "2", "−1"],
-            correctIndex: 0,
-            hints: ["Trace = sum of diagonal entries.", "σz has 1 + (−1) = 0."],
-            solution: "Tr(σi)=0 for i=x,y,z."
-        },
-        {
-            topic: "Pauli Matrices",
-            question: "The determinant of any Pauli matrix is:",
-            options: ["−1", "0", "+1", "Depends on i"],
-            correctIndex: 0,
-            hints: ["Check σz: det=−1.", "All Pauli matrices share det = −1."],
-            solution: "det(σi)=−1."
-        },
-        {
-            topic: "Pauli Matrices",
-            question: "Which identity is true for Pauli matrices?",
-            options: ["σi² = I", "σi² = 0", "σi² = σi", "σi² = −I"],
-            correctIndex: 0,
-            hints: ["Multiply σx by itself to check.", "They square to the identity."],
-            solution: "σi² = I."
-        },
-        {
-            topic: "Pauli Matrices",
-            question: "Pauli matrices are:",
-            options: ["Hermitian", "Unitary but not Hermitian", "Neither Hermitian nor unitary", "Only projection operators"],
-            correctIndex: 0,
-            hints: ["σi† = σi.", "They represent observables (spin components)."],
-            solution: "Pauli matrices are Hermitian."
-        },
-        {
-            topic: "Pauli Matrices",
-            question: "For i≠j, which anti-commutator relation is correct?",
-            options: ["{σi,σj} = 0", "{σi,σj} = 2I", "{σi,σj} = 2σk", "{σi,σj} = I"],
-            correctIndex: 0,
-            hints: ["Distinct Pauli matrices anticommute.", "σxσy = −σyσx."],
-            solution: "For i≠j, {σi,σj}=0 (and generally {σi,σj}=2δij I)."
-        },
-        {
-            topic: "Pauli Matrices",
-            question: "Which product identity is correct?",
-            options: ["σx σy = i σz", "σx σy = −i σz", "σx σy = i I", "σx σy = σz"],
-            correctIndex: 0,
-            hints: ["Standard identity: σxσy = iσz.", "Then σyσx = −iσz."],
-            solution: "σxσy = iσz."
-        },
-
-        // ===========================
-        // Topic 6: Commutation Relations
-        // ===========================
-        {
-            topic: "Commutation Relations",
-            question: "The commutator [A,B] is defined as:",
-            options: ["AB − BA", "AB + BA", "A + B", "A − B"],
-            correctIndex: 0,
-            hints: ["Commutator measures non-commutativity.", "If AB=BA then [A,B]=0."],
-            solution: "[A,B]=AB−BA."
-        },
-        {
-            topic: "Commutation Relations",
-            question: "If [A,B]=0, then A and B:",
-            options: ["Commute", "Anti-commute", "Are always Hermitian", "Are always projections"],
-            correctIndex: 0,
-            hints: ["[A,B]=0 means AB=BA.", "That is exactly commuting."],
-            solution: "If [A,B]=0 then AB=BA, so A and B commute."
-        },
-        {
-            topic: "Commutation Relations",
-            question: "For Pauli matrices, [σx, σy] equals:",
-            options: ["2i σz", "i σz", "2 σz", "0"],
-            correctIndex: 0,
-            hints: ["Standard commutator: [σj,σk]=2i εjkl σl.", "So [σx,σy]=2iσz."],
-            solution: "[σx,σy]=2iσz."
-        },
-        {
-            topic: "Commutation Relations",
-            question: "For Pauli matrices, [σy, σz] equals:",
-            options: ["2i σx", "2i σy", "2i σz", "0"],
-            correctIndex: 0,
-            hints: ["Cycle (x,y,z): [σy,σz] gives σx.", "Use Levi-Civita symbol."],
-            solution: "[σy,σz]=2iσx."
-        },
-        {
-            topic: "Commutation Relations",
-            question: "For Pauli matrices, [σz, σx] equals:",
-            options: ["2i σy", "2i σx", "2i σz", "0"],
-            correctIndex: 0,
-            hints: ["Cycle (x,y,z): [σz,σx] gives σy.", "Sign matches cyclic order."],
-            solution: "[σz,σx]=2iσy."
-        },
-        {
-            topic: "Commutation Relations",
-            question: "If A and B are Hermitian, then the commutator [A,B] is:",
-            options: ["Anti-Hermitian (skew-Hermitian)", "Hermitian", "Unitary", "A projection"],
-            correctIndex: 0,
-            hints: ["Take dagger: (AB−BA)† = B†A† − A†B†.", "Use A†=A and B†=B to get a minus sign."],
-            solution: "([A,B])† = −[A,B], so it is anti-Hermitian."
-        },
-        {
-            topic: "Commutation Relations",
-            question: "Which commutator is always zero for any operator A?",
-            options: ["[A, I]", "[A, A†]", "[A, B] for any B", "[A, A²]"],
-            correctIndex: 0,
-            hints: ["Identity commutes with everything.", "AI=IA."],
-            solution: "[A,I]=0 always."
-        },
-        {
-            topic: "Commutation Relations",
-            question: "If AB=BA, then [A,B] equals:",
-            options: ["0", "I", "2AB", "A+B"],
-            correctIndex: 0,
-            hints: ["Plug AB=BA into AB−BA.", "Difference becomes zero."],
-            solution: "If AB=BA then AB−BA=0."
-        },
-        {
-            topic: "Commutation Relations",
-            question: "Canonical quantum commutator (1D) is:",
-            options: ["[x, p] = iħ", "[x, p] = 0", "[x, p] = ħ", "[x, p] = −ħ"],
-            correctIndex: 0,
-            hints: ["Standard postulate of QM.", "Position and momentum do not commute."],
-            solution: "[x,p]=iħ."
-        },
-        {
-            topic: "Commutation Relations",
-            question: "If two observables commute (and have a non-degenerate spectrum), they can be measured:",
-            options: ["Simultaneously with a common eigenbasis", "Only one at a time", "Only if they are equal", "Only if they are projections"],
-            correctIndex: 0,
-            hints: ["Commuting observables are compatible.", "They share eigenvectors (non-degenerate case)."],
-            solution: "Commuting observables can be simultaneously diagonalized in the non-degenerate case."
-        }
-    ];
+    // ==============
+    // Matrix Algebra
+    // ==============
+    {
+      topic: "Matrix Algebra",
+      question: "For a 2×2 matrix A = [[a,b],[c,d]], det(A) equals:",
+      options: [
+        "ad − bc",
+        "ab − cd",
+        "a + d",
+        "b + c"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Use the standard 2×2 determinant formula.",
+        "Diagonal product minus off-diagonal product."
+      ],
+      solution: "det(A)=ad−bc."
+    },
+    {
+      topic: "Matrix Algebra",
+      question: "Which identity is always true (same-size matrices A,B)?",
+      options: [
+        "tr(AB)=tr(BA)",
+        "det(A+B)=det(A)+det(B)",
+        "(A+B)^2 = A^2 + B^2",
+        "AB=BA always"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Trace has cyclic property for products.",
+        "Commutativity of matrices is not guaranteed."
+      ],
+      solution: "A standard identity: tr(AB)=tr(BA)."
+    },
+    {
+      topic: "Matrix Algebra",
+      question: "Transpose of a product satisfies:",
+      options: [
+        "(AB)^T = B^T A^T",
+        "(AB)^T = A^T B^T",
+        "(AB)^T = AB",
+        "(AB)^T = A + B"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Order reverses under transpose.",
+        "Try a 2×2 example to verify."
+      ],
+      solution: "(AB)^T = B^T A^T."
+    },
+    {
+      topic: "Matrix Algebra",
+      question: "Conjugate-transpose (dagger) of a product satisfies:",
+      options: [
+        "(AB)† = B† A†",
+        "(AB)† = A† B†",
+        "(AB)† = AB",
+        "(AB)† = A + B"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Dagger reverses order like transpose.",
+        "Also complex-conjugates entries."
+      ],
+      solution: "(AB)† = B†A†."
+    },
+    {
+      topic: "Matrix Algebra",
+      question: "Find x such that det([[x,1],[2,3]]) = 0.",
+      options: [
+        "x = 2/3",
+        "x = 3/2",
+        "x = -2/3",
+        "x = 0"
+      ],
+      correctIndex: 0,
+      hints: [
+        "det = 3x − 2.",
+        "Set 3x − 2 = 0."
+      ],
+      solution: "det = 3x − 2 = 0 ⇒ x=2/3."
+    },
+    {
+      topic: "Matrix Algebra",
+      question: "If Q is an orthogonal matrix (real), then:",
+      options: [
+        "Q^{-1} = Q^T",
+        "Q^{-1} = Q",
+        "Q^TQ = 0",
+        "det(Q)=0 always"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Orthogonal means Q^T Q = I.",
+        "So multiply both sides appropriately."
+      ],
+      solution: "From Q^TQ=I, Q^{-1}=Q^T."
+    },
+    {
+      topic: "Matrix Algebra",
+      question: "If A is invertible, which statement is true?",
+      options: [
+        "det(A) ≠ 0",
+        "tr(A) ≠ 0",
+        "A must be diagonal",
+        "A must be symmetric"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Invertibility is tied to determinant for square matrices.",
+        "Trace can be zero even if invertible."
+      ],
+      solution: "A is invertible iff det(A)≠0."
+    },
+    {
+      topic: "Matrix Algebra",
+      question: "Which is always true for identity matrix I?",
+      options: [
+        "AI = IA = A",
+        "AI = I",
+        "IA = 0",
+        "AI = A^2"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Identity behaves like multiplying by 1.",
+        "It should not change A."
+      ],
+      solution: "AI=IA=A."
+    },
+    {
+      topic: "Matrix Algebra",
+      question: "If U is unitary, which statement is always true?",
+      options: [
+        "U^{-1} = U†",
+        "U = U†",
+        "U^2 = U",
+        "det(U)=0"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Definition: U†U=I.",
+        "Compare with inverse definition."
+      ],
+      solution: "U^{-1}=U† for unitary U."
+    },
+    {
+      topic: "Matrix Algebra",
+      question: "Trace under similarity transform: for invertible S, tr(S^{-1}AS) equals:",
+      options: [
+        "tr(A)",
+        "det(A)",
+        "rank(A)",
+        "0 always"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Trace is invariant under similarity transforms.",
+        "Try A diagonal and S change-of-basis."
+      ],
+      solution: "tr(S^{-1}AS)=tr(A)."
+    },
 
     // ==========================
-    // Topic menu config
+    // Eigenvalues & Eigenvectors
     // ==========================
-    const TOPICS = [
-        { key: "Linear Operators", label: "Linear operators" },
-        { key: "Matrix Algebra", label: "Matrix algebra" },
-        { key: "Hermitian, Unitary & Projection", label: "Hermitian, Unitary and Projection operators" },
-        { key: "Eigenvalues & Eigenvectors", label: "Eigenvalues and eigenvectors" },
-        { key: "Pauli Matrices", label: "Pauli matrices" },
-        { key: "Commutation Relations", label: "Commutation relations" }
-    ];
+    {
+      topic: "Eigenvalues & Eigenvectors",
+      question: "Eigenvalues λ of A are found from:",
+      options: [
+        "det(A − λI)=0",
+        "tr(A − λI)=0",
+        "A − λI = 0 (always)",
+        "det(A)=0 (always)"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Characteristic polynomial comes from determinant.",
+        "Nontrivial solutions require determinant zero."
+      ],
+      solution: "Solve det(A−λI)=0."
+    },
+    {
+      topic: "Eigenvalues & Eigenvectors",
+      question: "For A = [[2,1],[1,2]], eigenvalues are:",
+      options: [
+        "1 and 3",
+        "0 and 4",
+        "2 and 2",
+        "-1 and 5"
+      ],
+      correctIndex: 0,
+      hints: [
+        "det([[2−λ,1],[1,2−λ]])=(2−λ)^2−1.",
+        "Set to 0."
+      ],
+      solution: "(2−λ)^2−1=0 ⇒ 2−λ=±1 ⇒ λ=1,3."
+    },
+    {
+      topic: "Eigenvalues & Eigenvectors",
+      question: "For A = [[2,1],[1,2]], an eigenvector for λ=3 is proportional to:",
+      options: [
+        "(1,1)",
+        "(1,−1)",
+        "(2,0)",
+        "(0,2)"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Solve (A−3I)v=0.",
+        "You get v1=v2."
+      ],
+      solution: "For λ=3, (A−3I) gives v1=v2, so v∝(1,1)."
+    },
+    {
+      topic: "Eigenvalues & Eigenvectors",
+      question: "For diagonal matrix diag(2,5,−1), the eigenvalues are:",
+      options: [
+        "2, 5, −1",
+        "Only 2",
+        "Only 5",
+        "2+5−1 = 6"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Diagonal matrices scale basis vectors.",
+        "Each diagonal entry is an eigenvalue."
+      ],
+      solution: "Eigenvalues are the diagonal entries: 2,5,−1."
+    },
+    {
+      topic: "Eigenvalues & Eigenvectors",
+      question: "If Av=λv, then A^2 v equals:",
+      options: [
+        "λ^2 v",
+        "2λ v",
+        "λ v",
+        "v/λ"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Apply A again to Av.",
+        "A(Av)=A(λv)=λ(Av)=λ(λv)."
+      ],
+      solution: "A^2v = A(Av)=A(λv)=λAv=λ(λv)=λ^2v."
+    },
+    {
+      topic: "Eigenvalues & Eigenvectors",
+      question: "If A is invertible and Av=λv (λ≠0), then A^{-1}v equals:",
+      options: [
+        "(1/λ) v",
+        "λ v",
+        "0",
+        "Undefined"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Multiply Av=λv by A^{-1} on the left.",
+        "You get v = λ A^{-1} v."
+      ],
+      solution: "A^{-1}v = (1/λ)v."
+    },
+    {
+      topic: "Eigenvalues & Eigenvectors",
+      question: "For any square matrix A, the sum of eigenvalues (with multiplicity) equals:",
+      options: [
+        "tr(A)",
+        "det(A)",
+        "rank(A)",
+        "0 always"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Check for diagonal matrices first.",
+        "Trace matches sum of diagonal entries."
+      ],
+      solution: "Sum of eigenvalues equals tr(A)."
+    },
+    {
+      topic: "Eigenvalues & Eigenvectors",
+      question: "For any square matrix A, the product of eigenvalues (with multiplicity) equals:",
+      options: [
+        "det(A)",
+        "tr(A)",
+        "rank(A)",
+        "1 always"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Check for diagonal matrices first.",
+        "Determinant multiplies diagonal entries."
+      ],
+      solution: "Product of eigenvalues equals det(A)."
+    },
+    {
+      topic: "Eigenvalues & Eigenvectors",
+      question: "For Hermitian operator H, eigenvectors corresponding to distinct eigenvalues are:",
+      options: [
+        "Orthogonal",
+        "Always equal",
+        "Always non-orthogonal",
+        "Always complex"
+      ],
+      correctIndex: 0,
+      hints: [
+        "This is a key theorem for Hermitian operators.",
+        "It underpins orthonormal eigenbases."
+      ],
+      solution: "Hermitian operators have orthogonal eigenvectors for different eigenvalues."
+    },
+    {
+      topic: "Eigenvalues & Eigenvectors",
+      question: "If [A,B]=0 and A is Hermitian with non-degenerate eigenvalues, then:",
+      options: [
+        "A and B can share eigenvectors (simultaneous eigenbasis)",
+        "A and B must be equal",
+        "B must be a projection",
+        "A cannot be diagonalized"
+      ],
+      correctIndex: 0,
+      hints: [
+        "Commuting + non-degenerate implies shared eigenvectors.",
+        "This is the standard compatibility statement."
+      ],
+      solution: "If A is non-degenerate and commutes with B, eigenvectors of A can be chosen as eigenvectors of B too."
+    },
 
-    // ==========================
-    // State
-    // ==========================
-    let activeTopicKey = null;
-    let activeQuestions = [];
+    // =============
+    // Pauli Matrices
+    // =============
+    {
+      topic: "Pauli Matrices",
+      question: "Which matrix is σx?",
+      options: [
+        "[[0,1],[1,0]]",
+        "[[1,0],[0,−1]]",
+        "[[0,−i],[i,0]]",
+        "[[1,0],[0,1]]"
+      ],
+      correctIndex: 0,
+      hints: ["σx swaps basis states.", "It has ones off-diagonal."],
+      solution: "σx = [[0,1],[1,0]]."
+    },
+    {
+      topic: "Pauli Matrices",
+      question: "Which matrix is σy?",
+      options: [
+        "[[0,−i],[i,0]]",
+        "[[0,1],[1,0]]",
+        "[[1,0],[0,−1]]",
+        "[[1,0],[0,1]]"
+      ],
+      correctIndex: 0,
+      hints: ["σy has imaginary off-diagonals.", "It is Hermitian."],
+      solution: "σy = [[0,−i],[i,0]]."
+    },
+    {
+      topic: "Pauli Matrices",
+      question: "Which matrix is σz?",
+      options: [
+        "[[1,0],[0,−1]]",
+        "[[0,1],[1,0]]",
+        "[[0,−i],[i,0]]",
+        "[[1,0],[0,1]]"
+      ],
+      correctIndex: 0,
+      hints: ["σz is diagonal.", "Entries are +1 and −1."],
+      solution: "σz = [[1,0],[0,−1]]."
+    },
+    {
+      topic: "Pauli Matrices",
+      question: "Eigenvalues of σz are:",
+      options: [
+        "+1 and −1",
+        "0 and 1",
+        "i and −i",
+        "2 and −2"
+      ],
+      correctIndex: 0,
+      hints: ["σz is diagonal.", "Diagonal entries are eigenvalues."],
+      solution: "Eigenvalues are +1 and −1."
+    },
+    {
+      topic: "Pauli Matrices",
+      question: "Which product identity is correct?",
+      options: [
+        "σxσy = iσz",
+        "σxσy = −iσz",
+        "σxσy = σz",
+        "σxσy = iI"
+      ],
+      correctIndex: 0,
+      hints: ["Standard Pauli multiplication.", "Order matters: σyσx = −iσz."],
+      solution: "σxσy = iσz."
+    },
+    {
+      topic: "Pauli Matrices",
+      question: "The commutator [σx,σy] equals:",
+      options: [
+        "2iσz",
+        "iσz",
+        "2σz",
+        "0"
+      ],
+      correctIndex: 0,
+      hints: ["Use [σi,σj]=2i εijk σk.", "So x,y gives z."],
+      solution: "[σx,σy]=2iσz."
+    },
+    {
+      topic: "Pauli Matrices",
+      question: "For i≠j, the anti-commutator {σi,σj} equals:",
+      options: [
+        "0",
+        "2I",
+        "2σk",
+        "I"
+      ],
+      correctIndex: 0,
+      hints: ["Distinct Pauli matrices anticommute.", "σxσy = −σyσx."],
+      solution: "{σi,σj}=0 for i≠j."
+    },
+    {
+      topic: "Pauli Matrices",
+      question: "Which identity is always true?",
+      options: [
+        "σi^2 = I",
+        "σi^2 = 0",
+        "σi^2 = σi",
+        "σi^2 = −I"
+      ],
+      correctIndex: 0,
+      hints: ["Check σxσx.", "It becomes identity."],
+      solution: "σi^2 = I."
+    },
+    {
+      topic: "Pauli Matrices",
+      question: "Trace of σx, σy, σz is:",
+      options: [
+        "0",
+        "1",
+        "2",
+        "−1"
+      ],
+      correctIndex: 0,
+      hints: ["Trace is sum of diagonal entries.", "σx and σy have 0 diagonals; σz has 1+(−1)."],
+      solution: "Tr(σi)=0."
+    },
+    {
+      topic: "Pauli Matrices",
+      question: "Determinant of any Pauli matrix is:",
+      options: [
+        "−1",
+        "+1",
+        "0",
+        "Depends on i"
+      ],
+      correctIndex: 0,
+      hints: ["Compute det(σz)=det([[1,0],[0,−1]])=−1.", "Same for others."],
+      solution: "det(σi)=−1."
+    },
 
-    let currentQuestionIndex = 0;
-    let score = 0;
-    let attempts = 0;
-    let hintIndex = 0;
-    let locked = false;
-
-    const letters = ["A", "B", "C", "D"];
-
-    function escapeHtml(str) {
-        return String(str)
-            .replaceAll("&", "&amp;")
-            .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;");
+    // ======================
+    // Commutation Relations
+    // ======================
+    {
+      topic: "Commutation Relations",
+      question: "The commutator [A,B] is defined as:",
+      options: [
+        "AB − BA",
+        "AB + BA",
+        "A + B",
+        "A − B"
+      ],
+      correctIndex: 0,
+      hints: ["Commutator measures non-commutativity.", "If AB=BA, commutator is zero."],
+      solution: "[A,B]=AB−BA."
+    },
+    {
+      topic: "Commutation Relations",
+      question: "Which commutator is always zero for any operator A?",
+      options: [
+        "[A, I]",
+        "[A, A†]",
+        "[A, B] for any B",
+        "[A, A^2]"
+      ],
+      correctIndex: 0,
+      hints: ["Identity commutes with everything.", "AI=IA."],
+      solution: "[A,I]=0 always."
+    },
+    {
+      topic: "Commutation Relations",
+      question: "If [A,B]=0, then:",
+      options: [
+        "AB = BA",
+        "AB = 0",
+        "A = B",
+        "A must be Hermitian"
+      ],
+      correctIndex: 0,
+      hints: ["Just rewrite the definition.", "[A,B]=AB−BA."],
+      solution: "[A,B]=0 ⇒ AB−BA=0 ⇒ AB=BA."
+    },
+    {
+      topic: "Commutation Relations",
+      question: "Product rule for commutators is:",
+      options: [
+        "[A,BC] = [A,B]C + B[A,C]",
+        "[A,BC] = [A,B] + [A,C]",
+        "[A,BC] = [A,B][A,C]",
+        "[A,BC] = 0 always"
+      ],
+      correctIndex: 0,
+      hints: ["Expand A(BC) − (BC)A.", "Then regroup terms."],
+      solution: "[A,BC]=ABC−BCA=(AB−BA)C + B(AC−CA)=[A,B]C + B[A,C]."
+    },
+    {
+      topic: "Commutation Relations",
+      question: "Jacobi identity is:",
+      options: [
+        "[A,[B,C]] + [B,[C,A]] + [C,[A,B]] = 0",
+        "[A,B] + [B,C] + [C,A] = 0",
+        "[A,B] = [B,A]",
+        "[A,[A,B]] = 0 always"
+      ],
+      correctIndex: 0,
+      hints: ["This is the standard triple-commutator identity.", "It sums to zero."],
+      solution: "Jacobi identity: [A,[B,C]]+[B,[C,A]]+[C,[A,B]]=0."
+    },
+    {
+      topic: "Commutation Relations",
+      question: "Canonical commutator (1D) is:",
+      options: [
+        "[x,p] = iħ",
+        "[x,p] = 0",
+        "[x,p] = ħ",
+        "[x,p] = −ħ"
+      ],
+      correctIndex: 0,
+      hints: ["This is a postulate of QM.", "Position and momentum do not commute."],
+      solution: "[x,p]=iħ."
+    },
+    {
+      topic: "Commutation Relations",
+      question: "Given [X,P] = iħ, what is [X, P^2]?",
+      options: [
+        "2iħ P",
+        "iħ P^2",
+        "0",
+        "−2iħ P"
+      ],
+      correctIndex: 0,
+      hints: ["Use [A,BC]=[A,B]C + B[A,C].", "So [X,P^2]=[X,P]P + P[X,P]."],
+      solution: "[X,P^2]=[X,P]P + P[X,P] = (iħ)P + P(iħ) = 2iħ P."
+    },
+    {
+      topic: "Commutation Relations",
+      question: "If A and B are Hermitian and AB is also Hermitian, then:",
+      options: [
+        "[A,B]=0",
+        "A=B",
+        "A must be unitary",
+        "B must be a projector"
+      ],
+      correctIndex: 0,
+      hints: ["(AB)† = B†A† = BA.", "If AB is Hermitian, AB=(AB)†."],
+      solution: "If AB is Hermitian, AB=(AB)†=BA ⇒ AB=BA ⇒ [A,B]=0."
+    },
+    {
+      topic: "Commutation Relations",
+      question: "If two observables commute and A is non-degenerate, then they can be:",
+      options: [
+        "Simultaneously diagonalized (common eigenbasis)",
+        "Measured only one at a time",
+        "Equal to identity",
+        "Only anti-Hermitian"
+      ],
+      correctIndex: 0,
+      hints: ["Commuting + non-degenerate implies shared eigenvectors.", "This is compatibility in QM."],
+      solution: "Commuting observables can share a common eigenbasis when the spectrum is non-degenerate."
+    },
+    {
+      topic: "Commutation Relations",
+      question: "If A and B commute, then which is true?",
+      options: [
+        "[A, B^n] = 0 for all integers n ≥ 1",
+        "[A,B] = I",
+        "[A,B] = 2AB",
+        "A must be a projection"
+      ],
+      correctIndex: 0,
+      hints: ["If AB=BA then AB^n=B^nA.", "Induction works."],
+      solution: "From AB=BA it follows AB^n=B^nA, so [A,B^n]=0."
     }
+  ];
 
-    function formatSolution(solution) {
-        return solution.split("\n").map(line => {
-            const t = line.trim();
-            if (t.startsWith("Step") || t.startsWith("•") || /^\d+\./.test(t)) {
-                return `<p style="margin: 8px 0; padding-left: 10px;"><strong>${escapeHtml(line)}</strong></p>`;
-            }
-            return `<p style="margin: 8px 0;">${escapeHtml(line)}</p>`;
-        }).join("");
+  /***********************
+   * Utilities
+   ***********************/
+  const letters = ["A", "B", "C", "D"];
+  const STORAGE_KEY = "baphy105_topic_scorecard_v1";
+
+  function escapeHtml(str) {
+    return String(str)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;");
+  }
+
+  // Fisher–Yates shuffle (in-place)
+  function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
     }
+    return arr;
+  }
 
-    function buildTopicMenu() {
-        const wrap = document.getElementById("topic-buttons");
-        wrap.innerHTML = "";
+  // Shuffle options and keep correctIndex consistent
+  function shuffledQuestionView(q) {
+    const items = q.options.map((text, idx) => ({
+      text,
+      isCorrect: idx === q.correctIndex
+    }));
+    shuffleArray(items);
+    const options = items.map(x => x.text);
+    const correctIndex = items.findIndex(x => x.isCorrect);
+    return { options, correctIndex };
+  }
 
-        TOPICS.forEach(t => {
-            const count = quizData.filter(q => q.topic === t.key).length;
-
-            const btn = document.createElement("button");
-            btn.className = "topic-btn";
-            btn.innerHTML = `${escapeHtml(t.label)}<small>${count} questions</small>`;
-
-            // Click event starts that topic quiz [web:193]
-            btn.addEventListener("click", () => startTopic(t.key));
-
-            wrap.appendChild(btn);
-        });
-
-        document.getElementById("start-all-btn").addEventListener("click", () => startAllTopics());
+  function loadScorecard() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return {};
+      const data = JSON.parse(raw);
+      return (data && typeof data === "object") ? data : {};
+    } catch {
+      return {};
     }
+  }
 
-    function showTopicScreen() {
-        document.getElementById("topic-screen").classList.remove("hidden");
-        document.getElementById("quiz-content").classList.add("hidden");
-        document.getElementById("completion-screen").classList.add("hidden");
+  function saveScorecard(scorecard) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(scorecard));
+  }
 
-        document.getElementById("progress").style.width = "0%";
-        document.getElementById("current-question").textContent = "-";
-    }
+  function resetScorecard() {
+    localStorage.removeItem(STORAGE_KEY);
+  }
 
-    function startTopic(topicKey) {
-        activeTopicKey = topicKey;
-        activeQuestions = quizData.filter(q => q.topic === topicKey); // filtered topic quiz [web:201]
+  function pct(n, d) {
+    if (!d) return "0%";
+    return Math.round((100 * n) / d) + "%";
+  }
 
-        resetStats();
-        document.getElementById("topic-screen").classList.add("hidden");
-        document.getElementById("quiz-content").classList.remove("hidden");
-        loadQuestion();
-    }
+  /***********************
+   * State
+   ***********************/
+  let activeTopicKey = null;        // "__ALL__" or topic string
+  let activeQuestions = [];         // chosen set, shuffled order
+  let currentQuestionIndex = 0;
 
-    function startAllTopics() {
-        activeTopicKey = "__ALL__";
-        activeQuestions = [...quizData];
+  let score = 0;                   // correct questions count
+  let attempts = 0;                // number of option clicks
+  let hintIndex = 0;
+  let locked = false;
 
-        resetStats();
-        document.getElementById("topic-screen").classList.add("hidden");
-        document.getElementById("quiz-content").classList.remove("hidden");
-        loadQuestion();
-    }
+  // Per-question shuffled view (so the correct button is not fixed)
+  let viewOptions = [];
+  let viewCorrectIndex = -1;
 
-    function resetStats() {
-        currentQuestionIndex = 0;
-        score = 0;
-        attempts = 0;
-        hintIndex = 0;
-        locked = false;
+  // Scorecard persists per topic
+  let scorecard = loadScorecard();
 
-        document.getElementById("score").textContent = "0";
-        document.getElementById("attempts").textContent = "0";
-    }
+  /***********************
+   * UI: Topic menu
+   ***********************/
+  function buildTopicMenu() {
+    const wrap = document.getElementById("topic-buttons");
+    wrap.innerHTML = "";
 
-    function loadQuestion() {
-        if (currentQuestionIndex >= activeQuestions.length) {
-            showCompletionScreen();
-            return;
-        }
+    TOPICS.forEach(t => {
+      const count = QUESTIONS.filter(q => q.topic === t.key).length;
 
-        const q = activeQuestions[currentQuestionIndex];
-        hintIndex = 0;
-        locked = false;
+      const sc = scorecard[t.key] || {};
+      const last = (typeof sc.lastScore === "number") ? `${sc.lastScore}/${sc.lastTotal}` : "—";
+      const best = (typeof sc.bestScore === "number") ? `${sc.bestScore}/${sc.bestTotal}` : "—";
 
-        const optionsHTML = q.options.map((opt, i) => {
-            const label = letters[i] ? letters[i] + ") " : "";
-            return `<button class="option-btn" id="opt-${i}" onclick="selectOption(${i})">${label}${escapeHtml(opt)}</button>`;
-        }).join("");
+      const btn = document.createElement("button");
+      btn.className = "topic-btn";
+      btn.innerHTML = `
+        <div><strong>${escapeHtml(t.label)}</strong> <span class="pill">${count} Q</span></div>
+        <span class="meta">Last: ${escapeHtml(last)} | Best: ${escapeHtml(best)}</span>
+      `;
+      btn.addEventListener("click", () => startTopic(t.key));
+      wrap.appendChild(btn);
+    });
 
-        const quizContent = document.getElementById("quiz-content");
-        quizContent.innerHTML = `
-            <div class="question-card">
-                <div class="question-number">
-                    Question ${currentQuestionIndex + 1} of ${activeQuestions.length}
-                    | Topic: ${escapeHtml(q.topic)}
-                </div>
-
-                <div class="question-text">${q.question}</div>
-
-                <div class="options">${optionsHTML}</div>
-
-                <div>
-                    <button class="btn btn-secondary" id="change-topic-btn" onclick="backToTopics()">Change Topic</button>
-                    <button class="btn btn-secondary" id="skip-btn" onclick="skipQuestion()">Skip Question</button>
-                    <button class="btn btn-primary hidden" id="next-btn" onclick="nextQuestion()">Next Question →</button>
-                </div>
-
-                <div class="feedback" id="feedback"></div>
-
-                <div class="solution" id="solution">
-                    <h3>📖 Full Solution</h3>
-                    <div class="solution-content">${formatSolution(q.solution)}</div>
-                </div>
-            </div>
-        `;
-
-        document.getElementById("current-question").textContent = String(currentQuestionIndex + 1);
-        updateProgress();
-    }
-
-    function setButtonsDisabled(disabled) {
-        const q = activeQuestions[currentQuestionIndex];
-        for (let i = 0; i < q.options.length; i++) {
-            const btn = document.getElementById(`opt-${i}`);
-            if (btn) btn.disabled = disabled;
-        }
-    }
-
-    function showNextOnly() {
-        const nextBtn = document.getElementById("next-btn");
-        const skipBtn = document.getElementById("skip-btn");
-        if (nextBtn) nextBtn.classList.remove("hidden");
-        if (skipBtn) skipBtn.classList.add("hidden");
-    }
-
-    function selectOption(index) {
-        if (locked) return;
-
-        const q = activeQuestions[currentQuestionIndex];
-        const feedback = document.getElementById("feedback");
-
-        attempts++;
-        document.getElementById("attempts").textContent = String(attempts);
-
-        const clickedBtn = document.getElementById(`opt-${index}`);
-
-        if (index === q.correctIndex) {
-            locked = true;
-            score++;
-            document.getElementById("score").textContent = String(score);
-
-            if (clickedBtn) clickedBtn.classList.add("correct");
-
-            feedback.className = "feedback correct";
-            feedback.style.display = "block";
-            feedback.innerHTML = "✅ <strong>Correct!</strong> Well done! Here is the complete solution:";
-
-            document.getElementById("solution").style.display = "block";
-            setButtonsDisabled(true);
-            showNextOnly();
-            return;
-        }
-
-        // Wrong
-        if (clickedBtn) clickedBtn.classList.add("wrong");
-
-        if (hintIndex < q.hints.length) {
-            feedback.className = "feedback hint";
-            feedback.style.display = "block";
-            feedback.innerHTML = `💡 <strong>Hint ${hintIndex + 1}:</strong> ${escapeHtml(q.hints[hintIndex])}`;
-            hintIndex++;
-        } else {
-            locked = true;
-            feedback.className = "feedback incorrect";
-            feedback.style.display = "block";
-            feedback.innerHTML = "❌ <strong>Incorrect.</strong> Here is the complete solution:";
-
-            const correctBtn = document.getElementById(`opt-${q.correctIndex}`);
-            if (correctBtn) correctBtn.classList.add("correct");
-
-            document.getElementById("solution").style.display = "block";
-            setButtonsDisabled(true);
-            showNextOnly();
-        }
-    }
-
-    function nextQuestion() {
-        currentQuestionIndex++;
-        loadQuestion();
-    }
-
-    function skipQuestion() {
-        if (locked) return;
-
-        const feedback = document.getElementById("feedback");
-        feedback.className = "feedback hint";
-        feedback.style.display = "block";
-        feedback.innerHTML = "⏭️ <strong>Question skipped.</strong> Here is the solution for your reference:";
-
-        const q = activeQuestions[currentQuestionIndex];
-        const correctBtn = document.getElementById(`opt-${q.correctIndex}`);
-        if (correctBtn) correctBtn.classList.add("correct");
-
-        document.getElementById("solution").style.display = "block";
-        locked = true;
-        setButtonsDisabled(true);
-        showNextOnly();
-    }
-
-    function updateProgress() {
-        const progress = (currentQuestionIndex / activeQuestions.length) * 100;
-        document.getElementById("progress").style.width = progress + "%";
-    }
-
-    function showCompletionScreen() {
-        document.getElementById("quiz-content").classList.add("hidden");
-        document.getElementById("completion-screen").classList.remove("hidden");
-
-        document.getElementById("final-score").textContent = String(score);
-        document.getElementById("total-questions").textContent = String(activeQuestions.length);
-        document.getElementById("progress").style.width = "100%";
-        document.getElementById("current-question").textContent = String(activeQuestions.length);
-    }
-
-    function backToTopics() {
-        showTopicScreen();
-    }
-
-    function restartSameTopic() {
-        if (activeTopicKey === "__ALL__") {
-            startAllTopics();
-        } else if (activeTopicKey) {
-            startTopic(activeTopicKey);
-        } else {
-            showTopicScreen();
-        }
-    }
-
-    window.onload = function() {
+    document.getElementById("start-all-btn").onclick = startAllTopics;
+    document.getElementById("reset-scores-btn").onclick = () => {
+      if (confirm("Reset all saved topic scores?")) {
+        resetScorecard();
+        scorecard = loadScorecard();
         buildTopicMenu();
-        showTopicScreen();
+      }
     };
+  }
+
+  function showTopicScreen() {
+    document.getElementById("topic-screen").classList.remove("hidden");
+    document.getElementById("quiz-content").classList.add("hidden");
+    document.getElementById("completion-screen").classList.add("hidden");
+
+    document.getElementById("progress").style.width = "0%";
+    setTopStats("—", "—", 0, 0);
+  }
+
+  /***********************
+   * Start / Restart
+   ***********************/
+  function resetRunStats() {
+    currentQuestionIndex = 0;
+    score = 0;
+    attempts = 0;
+    hintIndex = 0;
+    locked = false;
+
+    document.getElementById("stat-score").textContent = "0";
+    document.getElementById("stat-attempts").textContent = "0";
+  }
+
+  function startTopic(topicKey) {
+    activeTopicKey = topicKey;
+    activeQuestions = QUESTIONS.filter(q => q.topic === topicKey);
+    shuffleArray(activeQuestions);
+
+    resetRunStats();
+    document.getElementById("topic-screen").classList.add("hidden");
+    document.getElementById("quiz-content").classList.remove("hidden");
+    loadQuestion();
+  }
+
+  function startAllTopics() {
+    activeTopicKey = "__ALL__";
+    activeQuestions = [...QUESTIONS];
+    shuffleArray(activeQuestions);
+
+    resetRunStats();
+    document.getElementById("topic-screen").classList.add("hidden");
+    document.getElementById("quiz-content").classList.remove("hidden");
+    loadQuestion();
+  }
+
+  function restartSameTopic() {
+    if (activeTopicKey === "__ALL__") return startAllTopics();
+    if (activeTopicKey) return startTopic(activeTopicKey);
+    showTopicScreen();
+  }
+
+  function backToTopics() {
+    buildTopicMenu();
+    showTopicScreen();
+  }
+
+  /***********************
+   * Quiz rendering
+   ***********************/
+  function setTopStats(topic, qText, scoreVal, attemptsVal) {
+    document.getElementById("stat-topic").textContent = topic;
+    document.getElementById("stat-q").textContent = qText;
+    document.getElementById("stat-score").textContent = String(scoreVal);
+    document.getElementById("stat-attempts").textContent = String(attemptsVal);
+  }
+
+  function updateProgress() {
+    const progress = (currentQuestionIndex / activeQuestions.length) * 100;
+    document.getElementById("progress").style.width = progress + "%";
+  }
+
+  function formatSolution(solution) {
+    return solution.split("\n").map(line => {
+      const t = line.trim();
+      if (t.startsWith("Step") || t.startsWith("•") || /^\d+\./.test(t)) {
+        return `<p style="margin: 8px 0; padding-left: 10px;"><strong>${escapeHtml(line)}</strong></p>`;
+      }
+      return `<p style="margin: 8px 0;">${escapeHtml(line)}</p>`;
+    }).join("");
+  }
+
+  function loadQuestion() {
+    if (currentQuestionIndex >= activeQuestions.length) {
+      showCompletionScreen();
+      return;
+    }
+
+    const q = activeQuestions[currentQuestionIndex];
+    hintIndex = 0;
+    locked = false;
+
+    // Shuffle options every time question is shown
+    const view = shuffledQuestionView(q);
+    viewOptions = view.options;
+    viewCorrectIndex = view.correctIndex;
+
+    const optionsHTML = viewOptions.map((opt, i) => {
+      const label = letters[i] ? letters[i] + ") " : "";
+      return `<button class="option-btn" id="opt-${i}" onclick="selectOption(${i})">${label}${escapeHtml(opt)}</button>`;
+    }).join("");
+
+    const topicDisplay = (activeTopicKey === "__ALL__") ? "All Topics" : q.topic;
+    setTopStats(topicDisplay, `${currentQuestionIndex + 1}/${activeQuestions.length}`, score, attempts);
+
+    document.getElementById("quiz-content").innerHTML = `
+      <div class="question-card">
+        <div class="question-number">
+          Question ${currentQuestionIndex + 1} of ${activeQuestions.length}
+          | Topic: ${escapeHtml(q.topic)}
+        </div>
+
+        <div class="question-text">${escapeHtml(q.question)}</div>
+
+        <div class="options">${optionsHTML}</div>
+
+        <div>
+          <button class="btn btn-secondary" onclick="backToTopics()">Change Topic</button>
+          <button class="btn btn-secondary" id="skip-btn" onclick="skipQuestion()">Skip</button>
+          <button class="btn btn-primary hidden" id="next-btn" onclick="nextQuestion()">Next →</button>
+        </div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <div class="solution" id="solution">
+          <h3>📖 Full Solution</h3>
+          <div class="solution-content">${formatSolution(q.solution)}</div>
+        </div>
+      </div>
+    `;
+
+    updateProgress();
+  }
+
+  function setButtonsDisabled(disabled) {
+    for (let i = 0; i < 4; i++) {
+      const btn = document.getElementById(`opt-${i}`);
+      if (btn) btn.disabled = disabled;
+    }
+  }
+
+  function showNextOnly() {
+    const nextBtn = document.getElementById("next-btn");
+    const skipBtn = document.getElementById("skip-btn");
+    if (nextBtn) nextBtn.classList.remove("hidden");
+    if (skipBtn) skipBtn.classList.add("hidden");
+  }
+
+  function selectOption(index) {
+    if (locked) return;
+
+    const q = activeQuestions[currentQuestionIndex];
+    const feedback = document.getElementById("feedback");
+
+    attempts++;
+    document.getElementById("stat-attempts").textContent = String(attempts);
+
+    const clickedBtn = document.getElementById(`opt-${index}`);
+
+    if (index === viewCorrectIndex) {
+      locked = true;
+      score++;
+      document.getElementById("stat-score").textContent = String(score);
+
+      if (clickedBtn) clickedBtn.classList.add("correct");
+
+      feedback.className = "feedback correct";
+      feedback.style.display = "block";
+      feedback.innerHTML = "✅ <strong>Correct!</strong> Here is the full solution:";
+
+      document.getElementById("solution").style.display = "block";
+      setButtonsDisabled(true);
+      showNextOnly();
+      return;
+    }
+
+    // Wrong click
+    if (clickedBtn) clickedBtn.classList.add("wrong");
+
+    if (hintIndex < q.hints.length) {
+      feedback.className = "feedback hint";
+      feedback.style.display = "block";
+      feedback.innerHTML = `💡 <strong>Hint ${hintIndex + 1}:</strong> ${escapeHtml(q.hints[hintIndex])}`;
+      hintIndex++;
+    } else {
+      locked = true;
+      feedback.className = "feedback incorrect";
+      feedback.style.display = "block";
+      feedback.innerHTML = "❌ <strong>Incorrect.</strong> Here is the full solution:";
+
+      const correctBtn = document.getElementById(`opt-${viewCorrectIndex}`);
+      if (correctBtn) correctBtn.classList.add("correct");
+
+      document.getElementById("solution").style.display = "block";
+      setButtonsDisabled(true);
+      showNextOnly();
+    }
+  }
+
+  function skipQuestion() {
+    if (locked) return;
+
+    const feedback = document.getElementById("feedback");
+    feedback.className = "feedback hint";
+    feedback.style.display = "block";
+    feedback.innerHTML = "⏭️ <strong>Skipped.</strong> Solution shown for reference:";
+
+    const correctBtn = document.getElementById(`opt-${viewCorrectIndex}`);
+    if (correctBtn) correctBtn.classList.add("correct");
+
+    document.getElementById("solution").style.display = "block";
+    locked = true;
+    setButtonsDisabled(true);
+    showNextOnly();
+  }
+
+  function nextQuestion() {
+    currentQuestionIndex++;
+    loadQuestion();
+  }
+
+  /***********************
+   * Completion + scorecard
+   ***********************/
+  function updateScorecardOnFinish() {
+    // Only store topic-wise results when a single topic quiz is taken
+    if (activeTopicKey === "__ALL__") return;
+
+    const topic = activeTopicKey;
+    const total = activeQuestions.length;
+
+    const existing = scorecard[topic] || {};
+    const lastScore = score;
+    const lastTotal = total;
+
+    let bestScore = existing.bestScore;
+    let bestTotal = existing.bestTotal;
+
+    if (typeof bestScore !== "number" || lastScore > bestScore) {
+      bestScore = lastScore;
+      bestTotal = lastTotal;
+    }
+
+    scorecard[topic] = {
+      lastScore, lastTotal,
+      bestScore, bestTotal,
+      updatedAt: new Date().toISOString()
+    };
+
+    saveScorecard(scorecard);
+  }
+
+  function showCompletionScreen() {
+    updateScorecardOnFinish();
+
+    document.getElementById("quiz-content").classList.add("hidden");
+    document.getElementById("completion-screen").classList.remove("hidden");
+
+    const label = (activeTopicKey === "__ALL__") ? "All Topics" : activeTopicKey;
+
+    document.getElementById("final-topic").textContent = label;
+    document.getElementById("final-score").textContent = String(score);
+    document.getElementById("final-total").textContent = String(activeQuestions.length);
+    document.getElementById("final-accuracy").textContent = pct(score, activeQuestions.length);
+
+    document.getElementById("progress").style.width = "100%";
+    setTopStats(label, `${activeQuestions.length}/${activeQuestions.length}`, score, attempts);
+  }
+
+  /***********************
+   * Boot
+   ***********************/
+  window.onload = function () {
+    // Quick sanity: ensure 10 questions per topic
+    // (If you edit the question bank, keep 10 per topic for the menu.)
+    buildTopicMenu();
+    showTopicScreen();
+  };
 </script>
 </body>
 </html>
