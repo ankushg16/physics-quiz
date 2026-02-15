@@ -220,7 +220,7 @@ Free to use for educational purposes. Attribution appreciated.
 
 Created for BAPHY105 - Engineering Physics  
 VIT Vellore  
-Dr. Samir Ranjan Meher
+Dr. Ankush
 
 ---
 
