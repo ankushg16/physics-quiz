@@ -1459,9 +1459,10 @@ So AB^n = B^nA for all n≥1, hence [A,B^n] = 0 for all n≥1.`
     }
   ];
   
-  /* =========================================================
-   ADD-ONLY PATCH 2: new questions for Module 3 and 4
-   Paste after your existing const QUESTIONS = [ ... ];
+ /* =========================================================
+   CONSOLIDATED QUESTION BANK
+   Formal wording + detailed solutions
+   Same structure as your attached code
    ========================================================= */
 
 const NEW_MODULE_QUESTIONS = [
@@ -1470,163 +1471,99 @@ const NEW_MODULE_QUESTIONS = [
   // =====================================================
   {
     topic: "Observables & Operators",
-    question: "A student says any matrix with real entries can represent an observable. Which response is correct?",
+    question: "Which statement correctly characterizes the condition that an operator must satisfy in order to represent a standard observable in quantum mechanics?",
     options: [
-      "False; an observable must be Hermitian, and a real matrix can fail to be symmetric/Hermitian.",
-      "True; real entries automatically guarantee measurable outcomes.",
-      "True only for 2×2 matrices.",
-      "False only because real matrices cannot have eigenvectors."
+      "It must be Hermitian so that its eigenvalues are real and its eigenvectors can form an orthonormal basis in the finite-dimensional case.",
+      "It must contain only real matrix entries in every basis.",
+      "It must commute with every other observable.",
+      "It must be invertible."
     ],
     correctIndex: 0,
-    hints: ["Observable → Hermitian operator.", "Real does not always mean symmetric."],
-    solution: `Step 1: In quantum mechanics, an observable is represented by a Hermitian operator.
-Step 2: Hermitian means A† = A. For a real matrix, this reduces to A^T = A, i.e. symmetry.
-Step 3: A real matrix can be non-symmetric, so it need not be Hermitian.
-Step 4: Therefore “real matrix” is not enough; “real symmetric matrix” would work.`
+    hints: [
+      "A physical measurement outcome must be real.",
+      "The required property is basis-independent."
+    ],
+    solution: `The correct answer is that an observable is represented by a Hermitian operator.
+
+The central reason is physical: measurement outcomes are real numbers. Hermitian operators have real eigenvalues, so they are suitable for representing quantities that can be measured in the laboratory. This is the mathematical property that connects the formalism to experimental outcomes.
+
+A second important point is that Hermitian operators have a well-behaved spectral structure. In the standard finite-dimensional setting, they can be diagonalized by an orthonormal basis of eigenvectors. That fact makes the Born-rule interpretation clean, because probabilities can be assigned to orthogonal measurement outcomes.
+
+By contrast, the statement that an operator must have only real matrix entries is too weak and also basis-dependent. A Hermitian operator may have complex entries in one basis and still represent a perfectly valid observable. What matters is Hermiticity, not the visual appearance of the matrix in a particular representation.
+
+Therefore the defining criterion is Hermiticity, not merely real entries, universal commutation, or invertibility.`
   },
   {
     topic: "Observables & Operators",
-    question: "If two Hermitian observables commute, what is the most precise statement?",
+    question: "Suppose two Hermitian operators A and B satisfy [A,B] = 0. Which conclusion is the most precise?",
     options: [
-      "They can be simultaneously diagonalized, with care taken for degeneracy.",
-      "They must have completely distinct eigenvalues.",
-      "They are necessarily equal.",
-      "They must each have only two eigenvalues."
+      "They can be simultaneously diagonalized, with additional care required inside degenerate eigenspaces.",
+      "They must have identical eigenvalues.",
+      "They must be proportional to the identity.",
+      "They necessarily describe the same physical observable."
     ],
     correctIndex: 0,
-    hints: ["Commutation suggests compatibility.", "Degenerate subspaces need extra care."],
-    solution: `Step 1: If two Hermitian operators commute, they are compatible observables.
-Step 2: In the non-degenerate case, eigenvectors of one are automatically eigenvectors of the other.
-Step 3: In the degenerate case, the second operator must be diagonalized within each degenerate subspace.
-Step 4: So the correct statement is simultaneous diagonalization, with degeneracy handled properly.`
+    hints: [
+      "Commutation is related to compatibility.",
+      "Degeneracy is the only subtle point here."
+    ],
+    solution: `The correct answer is that commuting Hermitian operators can be simultaneously diagonalized, but degeneracy must be handled carefully.
+
+If A and B commute, then they are compatible observables. This means there exists a basis in which both operators can be represented in diagonal form. In that basis, the basis vectors can be chosen to correspond to simultaneous eigenstates.
+
+The simplest case is when A has no degeneracy. Then each eigenvector of A is unique up to an overall phase, and commutation implies that B maps that eigenvector back into the same one-dimensional eigenspace. As a result, the vector is also an eigenvector of B.
+
+The subtlety appears when A has a degenerate eigenvalue. In that case, B need not already be diagonal in the degenerate subspace, but because A and B commute, B preserves that subspace. One must then diagonalize B inside that smaller subspace.
+
+So the strongest accurate statement is not that the operators are equal or have the same spectrum, but that they admit a common eigenbasis after degeneracies are treated correctly.`
   },
   {
     topic: "Observables & Operators",
-    question: "Why is the statement “measurement outcomes are the diagonal entries of the matrix” conceptually unsafe?",
+    question: "Why is it conceptually incorrect to identify the possible outcomes of measuring an observable with the diagonal entries of its matrix representation?",
     options: [
-      "Because diagonal entries depend on basis, while measurement outcomes are the operator eigenvalues.",
+      "Because diagonal entries depend on the chosen basis, whereas physical measurement outcomes are the operator eigenvalues.",
       "Because diagonal entries are always zero for observables.",
-      "Because eigenvalues are never real in quantum mechanics.",
-      "Because only trace matters for measurement."
+      "Because only the trace of the operator has physical meaning.",
+      "Because a measurable operator cannot be written as a matrix."
     ],
     correctIndex: 0,
-    hints: ["Think about change of basis.", "Physical outcomes should not depend on representation."],
-    solution: `Step 1: The matrix of an operator depends on the basis chosen.
-Step 2: Diagonal entries can change under a basis transformation.
-Step 3: Physical measurement outcomes must be basis-independent, so they must be tied to invariants of the operator.
-Step 4: Those invariants are the eigenvalues, not arbitrary diagonal entries.`
+    hints: [
+      "Ask which quantities remain unchanged under a basis transformation.",
+      "A physical prediction should not depend on notation."
+    ],
+    solution: `The correct answer is that diagonal entries are basis-dependent, while measurement outcomes are basis-independent eigenvalues.
+
+A matrix representation changes when the basis changes. If one expresses the same operator in a different basis, its individual entries—including its diagonal entries—can change. Therefore diagonal entries do not have an invariant physical meaning by themselves.
+
+Measurement outcomes, however, must refer to properties of the operator that do not depend on how we write the operator. The eigenvalues satisfy that requirement. They are intrinsic to the operator and remain the same under a change of basis.
+
+One can see the danger clearly from a simple example: an operator that is diagonal in one basis need not be diagonal in another. If diagonal entries themselves were the outcomes, the predicted measurement results would depend on the arbitrary choice of basis, which is physically unacceptable.
+
+Hence the correct interpretation is that the outcomes of measurement are the eigenvalues of the observable, not the diagonal entries in an arbitrary representation.`
   },
   {
     topic: "Observables & Operators",
-    question: "If A is Hermitian and satisfies A^2 = I, what can be said about its possible measurement outcomes?",
+    question: "Let A be a Hermitian operator satisfying A^2 = I. What are the only possible measurement outcomes associated with A?",
     options: [
-      "They can only be +1 or -1.",
-      "They must all be 0.",
-      "They can be any real numbers.",
-      "They must be purely imaginary."
+      "+1 and -1 only",
+      "0 only",
+      "Any real number",
+      "Only purely imaginary numbers"
     ],
     correctIndex: 0,
-    hints: ["Act on an eigenvector.", "Use A^2|ψ⟩ = |ψ⟩."],
-    solution: `Step 1: Let A|ψ⟩ = a|ψ⟩, where a is an eigenvalue.
-Step 2: Then A^2|ψ⟩ = a^2|ψ⟩.
-Step 3: But A^2 = I, so A^2|ψ⟩ = |ψ⟩.
-Step 4: Therefore a^2 = 1, giving a = ±1. Since A is Hermitian, these outcomes are real and valid.`
-  },
-  {
-    topic: "Observables & Operators",
-    question: "If two operators share one eigenvector, what follows?",
-    options: [
-      "Almost nothing global; sharing one eigenvector does not imply the operators commute.",
-      "They must commute.",
-      "They must be Hermitian.",
-      "They must have identical spectra."
+    hints: [
+      "Apply the operator equation to an eigenvector.",
+      "Use the eigenvalue equation A|ψ⟩ = a|ψ⟩."
     ],
-    correctIndex: 0,
-    hints: ["Commutation is a whole-space statement.", "One common vector is too little information."],
-    solution: `Step 1: Commutation means AB = BA on every vector in the space.
-Step 2: Sharing one eigenvector only tells us they act nicely on one special direction.
-Step 3: Away from that direction, the operators may still fail to commute.
-Step 4: So a single shared eigenvector does not prove compatibility.`
-  },
-  {
-    topic: "Observables & Operators",
-    question: "Why is the identity operator I a valid but trivial observable?",
-    options: [
-      "Because every state is its eigenstate with the same eigenvalue, so it yields no new information.",
-      "Because it is not Hermitian but is still measurable.",
-      "Because it has infinitely many different outcomes.",
-      "Because it changes the state unpredictably."
-    ],
-    correctIndex: 0,
-    hints: ["What does I do to a state?", "How many distinct outcomes are possible?"],
-    solution: `Step 1: The identity operator satisfies I|ψ⟩ = |ψ⟩ for every state.
-Step 2: So every normalized state is an eigenstate of I with eigenvalue 1.
-Step 3: Measuring it always returns the same result.
-Step 4: Hence it is a valid observable mathematically, but physically uninformative.`
-  },
-  {
-    topic: "Observables & Operators",
-    question: "If A is Hermitian and f is a real polynomial, why is f(A) also an observable?",
-    options: [
-      "Because applying a real polynomial to a Hermitian operator preserves Hermiticity.",
-      "Because polynomials always reduce to the identity.",
-      "Because observables cannot be functions of other observables.",
-      "Because f(A) must have only integer eigenvalues."
-    ],
-    correctIndex: 0,
-    hints: ["Check what happens to eigenvalues.", "Hermiticity is the key property."],
-    solution: `Step 1: A Hermitian operator has real eigenvalues and can be diagonalized in an orthonormal basis.
-Step 2: In that basis, f(A) is obtained by replacing each eigenvalue a_n with f(a_n).
-Step 3: If f is real on the spectrum, the new eigenvalues remain real.
-Step 4: Therefore f(A) is Hermitian and qualifies as an observable.`
-  },
-  {
-    topic: "Observables & Operators",
-    question: "A Hermitian operator has a degenerate eigenvalue. What is the best interpretation of a measurement yielding that value?",
-    options: [
-      "The system is known to lie in the corresponding eigenspace, but not necessarily in a unique eigenvector.",
-      "The state becomes completely known in all respects.",
-      "The state is destroyed and cannot be discussed further.",
-      "The operator stops being Hermitian."
-    ],
-    correctIndex: 0,
-    hints: ["Degeneracy means more than one eigenvector shares the same eigenvalue.", "Think eigenspace, not single vector."],
-    solution: `Step 1: A degenerate eigenvalue corresponds to a multi-dimensional eigenspace.
-Step 2: A measurement that returns that eigenvalue places the system in that eigenspace.
-Step 3: But the measurement may not identify which particular vector inside that subspace describes the state.
-Step 4: So the measurement gives partial information, not necessarily a fully unique state.`
-  },
-  {
-    topic: "Observables & Operators",
-    question: "What is the conceptual role of a complete set of commuting observables (CSCO)?",
-    options: [
-      "It labels states uniquely by compatible measurement outcomes.",
-      "It guarantees all operators in quantum mechanics commute.",
-      "It removes the need for wavefunctions entirely.",
-      "It makes every state stationary."
-    ],
-    correctIndex: 0,
-    hints: ["Think about resolving degeneracy.", "What does “complete” help you do?"],
-    solution: `Step 1: One observable may not uniquely label a state if degeneracy is present.
-Step 2: Additional commuting observables can be measured simultaneously without mutual disturbance.
-Step 3: Together, a complete set resolves the degeneracies and uniquely identifies basis states.
-Step 4: That is why CSCOs are central in organizing quantum states.`
-  },
-  {
-    topic: "Observables & Operators",
-    question: "If an operator has a non-real eigenvalue, what is the safest conclusion?",
-    options: [
-      "It cannot represent a standard observable in quantum mechanics.",
-      "It is automatically unitary.",
-      "It is still a valid observable because eigenvalues may be complex.",
-      "It must commute with the Hamiltonian."
-    ],
-    correctIndex: 0,
-    hints: ["Observable outcomes should be real.", "Hermitian operators have real eigenvalues."],
-    solution: `Step 1: Standard observables are represented by Hermitian operators.
-Step 2: Hermitian operators have real eigenvalues.
-Step 3: So if an operator has a genuinely complex eigenvalue, it cannot be Hermitian.
-Step 4: Therefore it cannot represent a standard measurement observable.`
+    solution: `The correct answer is that the only possible outcomes are +1 and -1.
+
+Take an eigenvector |ψ⟩ of A with eigenvalue a, so that A|ψ⟩ = a|ψ⟩. Applying A once more gives A^2|ψ⟩ = a^2|ψ⟩. But the operator identity states that A^2 = I, so the same vector must also satisfy A^2|ψ⟩ = |ψ⟩.
+
+Comparing the two results gives a^2|ψ⟩ = |ψ⟩. Since |ψ⟩ is not the zero vector, it follows that a^2 = 1. Therefore the only possible eigenvalues are a = +1 and a = -1.
+
+Because A is Hermitian, its eigenvalues must be real, which is fully consistent with these two values. No other real number can satisfy a^2 = 1, and purely imaginary values are excluded both by Hermiticity and by the same algebraic condition.
+
+Therefore the measurement spectrum of such an operator is restricted to the two values +1 and -1.`
   },
 
   // =====================================================
@@ -1634,163 +1571,106 @@ Step 4: Therefore it cannot represent a standard measurement observable.`
   // =====================================================
   {
     topic: "Expectation Values & Uncertainty",
-    question: "Why is an expectation value not always a possible single-shot measurement outcome?",
+    question: "Which statement most accurately explains why the expectation value of an observable need not coincide with any single outcome obtained in an individual measurement?",
     options: [
-      "Because it is an ensemble average and can lie between actual eigenvalues.",
-      "Because expectation values are always imaginary.",
-      "Because only the largest eigenvalue can ever be measured.",
-      "Because expectation values exist only for mixed states."
+      "The expectation value is an ensemble average and may lie between the actual eigenvalues available in one trial.",
+      "Expectation values are mathematical artifacts with no physical interpretation.",
+      "Only the largest eigenvalue can be measured in a single trial.",
+      "Expectation values are relevant only for mixed states."
     ],
     correctIndex: 0,
-    hints: ["Average is not the same as one trial.", "Think of outcomes +1 and -1 with average 0."],
-    solution: `Step 1: A single measurement returns one eigenvalue of the observable.
-Step 2: The expectation value is the weighted average over many identically prepared trials.
-Step 3: An average can lie between allowed outcomes; for example, +1 and -1 can average to 0.
-Step 4: So the expectation value need not itself be a measurable one-shot result.`
+    hints: [
+      "Distinguish one experiment from many identically prepared experiments.",
+      "The arithmetic mean of allowed outcomes need not itself be an allowed outcome."
+    ],
+    solution: `The correct answer is that the expectation value is an ensemble average and therefore need not equal a single-shot outcome.
+
+A quantum measurement performed once returns one of the eigenvalues of the observable. By contrast, the expectation value is defined as the weighted average of outcomes over many repeated measurements on identically prepared systems. It is therefore a statistical quantity, not necessarily an allowed outcome of one run.
+
+For example, suppose the only possible outcomes are +1 and -1 with equal probability. Then the expectation value is 0. However, an individual measurement never yields 0 in that situation; it yields either +1 or -1.
+
+This example shows the difference between the center of a distribution and the points in the distribution itself. An average may lie between available outcomes, especially when positive and negative contributions cancel.
+
+Hence the expectation value is physically meaningful, but it should not be confused with the result of a single measurement event.`
   },
   {
     topic: "Expectation Values & Uncertainty",
-    question: "If a normalized state is an eigenstate of A with eigenvalue a, what must be true?",
+    question: "If a normalized state |ψ⟩ is an eigenstate of an observable A with eigenvalue a, which statement is correct?",
     options: [
       "⟨A⟩ = a and ΔA = 0.",
       "⟨A⟩ = 0 and ΔA = a.",
-      "⟨A⟩ = a but ΔA is always nonzero.",
-      "Neither the mean nor uncertainty can be inferred."
+      "⟨A⟩ = a but ΔA must be nonzero.",
+      "Neither the expectation value nor the uncertainty can be determined."
     ],
     correctIndex: 0,
-    hints: ["Use A|ψ⟩ = a|ψ⟩.", "A definite value means no spread."],
-    solution: `Step 1: If A|ψ⟩ = a|ψ⟩, then ⟨A⟩ = ⟨ψ|A|ψ⟩ = a⟨ψ|ψ⟩ = a.
-Step 2: Also A^2|ψ⟩ = a^2|ψ⟩, so ⟨A^2⟩ = a^2.
-Step 3: The variance is ΔA^2 = ⟨A^2⟩ - ⟨A⟩^2 = a^2 - a^2 = 0.
-Step 4: Thus the mean equals a and the uncertainty vanishes.`
+    hints: [
+      "Use A|ψ⟩ = a|ψ⟩ directly in the definitions.",
+      "A sharp measurement outcome corresponds to zero spread."
+    ],
+    solution: `The correct answer is that the expectation value equals a and the uncertainty vanishes.
+
+Start from the eigenvalue equation A|ψ⟩ = a|ψ⟩. Since the state is normalized, the expectation value is
+⟨A⟩ = ⟨ψ|A|ψ⟩ = ⟨ψ|a|ψ⟩ = a⟨ψ|ψ⟩ = a.
+Thus the mean value is exactly the eigenvalue.
+
+Next examine the second moment. Applying A twice gives A^2|ψ⟩ = a^2|ψ⟩, so
+⟨A^2⟩ = ⟨ψ|A^2|ψ⟩ = a^2.
+Therefore the variance is
+ΔA^2 = ⟨A^2⟩ - ⟨A⟩^2 = a^2 - a^2 = 0.
+
+A zero variance means that repeated measurements on identically prepared copies of the state show no spread at all. Every trial yields the same value a.
+
+So an eigenstate of A is precisely a state of definite A-value, with expectation value a and uncertainty zero.`
   },
   {
     topic: "Expectation Values & Uncertainty",
-    question: "A student finds ⟨p⟩ = 0 and concludes the particle is at rest. What is the best correction?",
+    question: "A state has ⟨p⟩ = 0. Which interpretation is most accurate?",
     options: [
-      "Wrong; zero average momentum can come from cancellation of positive and negative components.",
-      "Correct; ⟨p⟩ = 0 always means exact zero momentum.",
-      "Correct only in two dimensions.",
-      "Wrong because momentum expectation values cannot be computed."
+      "The average momentum is zero, but the momentum need not be definite and the state need not describe a particle at rest.",
+      "The particle certainly has momentum zero in every trial.",
+      "The particle certainly has zero kinetic energy.",
+      "The momentum operator is not defined for that state."
     ],
     correctIndex: 0,
-    hints: ["Average is not sharp value.", "Look at Δp, not only ⟨p⟩."],
-    solution: `Step 1: The expectation value is only the average over many measurements.
-Step 2: A state may contain both +p and -p components with equal probability.
-Step 3: Their average can be zero even though neither measurement outcome is zero.
-Step 4: To know whether momentum is definite, one must inspect the uncertainty Δp as well.`
+    hints: [
+      "The mean value does not by itself determine the spread.",
+      "Opposite momentum components can cancel in the average."
+    ],
+    solution: `The correct answer is that a zero expectation value of momentum does not by itself imply a particle at rest.
+
+The quantity ⟨p⟩ is an average over many measurements. It tells us the center of the momentum distribution, not whether the distribution is narrow or broad. A state may contain positive and negative momentum components whose contributions cancel in the mean.
+
+For instance, a symmetric superposition of +p and -p momentum states has ⟨p⟩ = 0. Nevertheless, each individual measurement returns either +p or -p, not necessarily 0. In such a state, the momentum is not sharp even though the average is zero.
+
+To decide whether the particle truly has a definite momentum, one must inspect the uncertainty Δp. If Δp = 0, then the momentum is sharp. If Δp is nonzero, the state contains a spread of momentum outcomes.
+
+Therefore ⟨p⟩ = 0 should be interpreted as zero average momentum, not automatically as exact rest.`
   },
   {
     topic: "Expectation Values & Uncertainty",
-    question: "Why does ⟨A†A⟩ always satisfy ⟨A†A⟩ ≥ 0?",
+    question: "Why is the condition ⟨A^2⟩ = ⟨A⟩^2 significant?",
     options: [
-      "Because ⟨A†A⟩ = ||A|ψ⟩||^2, a norm squared.",
-      "Because A†A is always the identity.",
-      "Because A†A must commute with every operator.",
-      "Because expectation values of all operators are positive."
+      "It means the variance of A is zero, so the state has a definite value of A.",
+      "It implies that A must be the identity operator.",
+      "It proves that A is non-Hermitian.",
+      "It implies that every observable has the same expectation value."
     ],
     correctIndex: 0,
-    hints: ["Rewrite as an inner product.", "Norm squared cannot be negative."],
-    solution: `Step 1: For any state |ψ⟩, ⟨A†A⟩ = ⟨ψ|A†A|ψ⟩.
-Step 2: This equals ⟨Aψ|Aψ⟩.
-Step 3: But ⟨Aψ|Aψ⟩ is the norm squared of A|ψ⟩.
-Step 4: Since a norm squared is never negative, ⟨A†A⟩ ≥ 0.`
-  },
-  {
-    topic: "Expectation Values & Uncertainty",
-    question: "What is the most meaningful interpretation of the condition ⟨A²⟩ = ⟨A⟩²?",
-    options: [
-      "The variance of A is zero, so the state has a definite value of A.",
-      "A must be the identity operator.",
-      "The operator A is non-Hermitian.",
-      "The expectation value is imaginary."
+    hints: [
+      "Recall the definition of variance.",
+      "Certainty corresponds to the absence of statistical spread."
     ],
-    correctIndex: 0,
-    hints: ["Variance uses these two quantities.", "Zero spread means certainty."],
-    solution: `Step 1: The variance is defined by ΔA^2 = ⟨A²⟩ - ⟨A⟩².
-Step 2: If ⟨A²⟩ = ⟨A⟩², then ΔA^2 = 0.
-Step 3: Zero variance means repeated measurements show no spread.
-Step 4: Therefore the state has a definite value of A, typically because it is an eigenstate or lies within one degenerate eigenspace.`
-  },
-  {
-    topic: "Expectation Values & Uncertainty",
-    question: "Why is variance a better test of certainty than expectation value?",
-    options: [
-      "Because the expectation value can be the same for very different distributions, but variance measures spread.",
-      "Because expectation values are never physical.",
-      "Because variance is always simpler to compute.",
-      "Because variance alone determines the state completely."
-    ],
-    correctIndex: 0,
-    hints: ["Different distributions can share the same mean.", "Certainty is about spread, not average."],
-    solution: `Step 1: The expectation value records only the average result.
-Step 2: Two different probability distributions can have the same average.
-Step 3: Variance tells us how tightly outcomes cluster around that average.
-Step 4: So certainty is captured by small or zero variance, not by the mean alone.`
-  },
-  {
-    topic: "Expectation Values & Uncertainty",
-    question: "If an observable A commutes with a time-independent Hamiltonian H, what is the most important consequence?",
-    options: [
-      "⟨A⟩ is conserved in time for states evolving under H.",
-      "A and H must be equal.",
-      "A becomes non-Hermitian.",
-      "The state stops evolving."
-    ],
-    correctIndex: 0,
-    hints: ["Commuting with H signals a constant of motion.", "Think conserved quantity."],
-    solution: `Step 1: In quantum dynamics, commuting with the Hamiltonian indicates compatibility with time evolution.
-Step 2: If [A,H]=0 and A has no explicit time dependence, A is a constant of motion.
-Step 3: That means its expectation value does not change with time under Schrödinger evolution.
-Step 4: The state may still evolve, but ⟨A⟩ remains constant.`
-  },
-  {
-    topic: "Expectation Values & Uncertainty",
-    question: "Why is the expectation value ⟨A⟩ basis-independent even though the matrix of A changes with basis?",
-    options: [
-      "Because ⟨A⟩ is a physical scalar obtained from bra, operator, and ket transformed consistently.",
-      "Because matrices never change under basis transformations.",
-      "Because expectation values ignore the state vector.",
-      "Because only diagonal matrices have expectation values."
-    ],
-    correctIndex: 0,
-    hints: ["Physical results should not depend on representation.", "The scalar survives basis change."],
-    solution: `Step 1: Under a basis change, both the state components and operator matrix elements transform.
-Step 2: These changes compensate each other in the scalar quantity ⟨ψ|A|ψ⟩.
-Step 3: So the numerical value of the expectation does not depend on representation.
-Step 4: This is why expectation values are physically meaningful even when matrices look different in different bases.`
-  },
-  {
-    topic: "Expectation Values & Uncertainty",
-    question: "For a stationary state in a standard infinite well from 0 to L, what is ⟨x⟩?",
-    options: [
-      "L/2",
-      "0",
-      "L",
-      "It depends on n in a non-systematic way."
-    ],
-    correctIndex: 0,
-    hints: ["Use symmetry of the probability density.", "The well is centered around its midpoint in probability."],
-    solution: `Step 1: In a stationary well eigenstate, the probability density is symmetric about x = L/2.
-Step 2: Contributions from positions left and right of the midpoint balance.
-Step 3: Therefore the average position lies at the center of the well.
-Step 4: Hence ⟨x⟩ = L/2 for every stationary state in the standard 0-to-L well.`
-  },
-  {
-    topic: "Expectation Values & Uncertainty",
-    question: "What does the uncertainty relation fundamentally tell us?",
-    options: [
-      "It limits simultaneous sharpness of non-commuting observables, not merely measurement technology.",
-      "It is caused only by experimental imperfections.",
-      "It applies only to energy measurements.",
-      "It means observables cannot have expectation values."
-    ],
-    correctIndex: 0,
-    hints: ["Think structure of the theory, not poor apparatus.", "Non-commutation is central."],
-    solution: `Step 1: The uncertainty principle arises from operator algebra, especially nonzero commutators.
-Step 2: It does not simply reflect bad instruments or practical limitations.
-Step 3: For non-commuting observables, the quantum state cannot make both spreads arbitrarily small.
-Step 4: So the limitation is built into the formalism itself.`
+    solution: `The correct answer is that this equality means the variance is zero and therefore the observable has a definite value in that state.
+
+By definition, the variance of A is
+ΔA^2 = ⟨A^2⟩ - ⟨A⟩^2.
+If the two terms are equal, then their difference is zero, so ΔA^2 = 0.
+
+A zero variance has a very strong physical interpretation. It means that repeated measurements of A on identically prepared systems produce no spread at all. The outcome is certain.
+
+In the simplest case, the state is an eigenstate of A. More generally, if degeneracy is present, the state may lie in an eigenspace corresponding to a single eigenvalue. In either case, the measured value is definite.
+
+Thus the importance of the condition is not algebraic only; it signals complete sharpness of the observable in the given state.`
   },
 
   // =====================================================
@@ -1798,163 +1678,99 @@ Step 4: So the limitation is built into the formalism itself.`
   // =====================================================
   {
     topic: "Measurement in Quantum Mechanics",
-    question: "Why does an immediate repeated measurement of the same ideal observable return the same value?",
+    question: "Why does an immediate repetition of an ideal projective measurement of the same observable return the same result with certainty?",
     options: [
-      "Because the first measurement projects the state into the eigenspace of the observed value.",
-      "Because all observables commute with themselves only after measurement.",
-      "Because the apparatus stores the old answer.",
-      "Because the wavefunction becomes classical."
+      "Because the first measurement projects the state into the eigenspace associated with the observed eigenvalue.",
+      "Because the apparatus mechanically remembers the previous answer.",
+      "Because all observables begin to commute after a measurement.",
+      "Because the system becomes classical after one observation."
     ],
     correctIndex: 0,
-    hints: ["Think projection/collapse.", "After the first measurement the state is special."],
-    solution: `Step 1: In ideal projective measurement, the state is updated by the first measurement.
-Step 2: The post-measurement state lies in the eigenspace corresponding to the observed eigenvalue.
-Step 3: Measuring the same observable again finds the system already prepared in that eigenspace.
-Step 4: Therefore the same outcome is obtained with certainty.`
+    hints: [
+      "The key idea is state update.",
+      "After the first measurement the state is no longer arbitrary."
+    ],
+    solution: `The correct answer is that the first ideal measurement projects the state into the eigenspace corresponding to the observed value.
+
+Before measurement, the state may be a superposition of several eigenstates of the observable. An ideal projective measurement selects one outcome and updates the state accordingly. The post-measurement state is therefore no longer the original superposition.
+
+If the same observable is measured again immediately, the system is already in a state belonging to the eigenspace of that same outcome. Since the second measurement is testing the same spectral decomposition, it finds the system already prepared in the required subspace.
+
+In the nondegenerate case, the post-measurement state is a single eigenvector. In the degenerate case, it lies somewhere inside the corresponding eigenspace. In either case, the measured eigenvalue is unchanged by an immediate repetition of the same ideal measurement.
+
+Thus the repeatability comes from the projection postulate, not from memory in the apparatus or from a transition to classical physics.`
   },
   {
     topic: "Measurement in Quantum Mechanics",
-    question: "What is the most careful statement about collapse for a degenerate eigenvalue?",
+    question: "A system is in a superposition of two energy eigenstates. What does an ideal energy measurement yield in a single trial?",
     options: [
-      "The state collapses into the eigenspace, not necessarily a unique eigenvector.",
-      "The state always collapses to one specific basis vector chosen by mathematics alone.",
-      "Collapse does not occur for degenerate spectra.",
-      "The operator stops being measurable."
+      "One of the allowed energy eigenvalues, obtained probabilistically according to the Born rule, followed by projection onto the corresponding eigenspace.",
+      "The arithmetic mean of the two energies in every trial.",
+      "A continuously varying energy between the two eigenvalues.",
+      "No change in the state because energy measurements are non-invasive."
     ],
     correctIndex: 0,
-    hints: ["Degenerate means several vectors share one eigenvalue.", "Think subspace."],
-    solution: `Step 1: Degeneracy means many orthogonal states can correspond to the same measured value.
-Step 2: A measurement of that value identifies the eigenspace but may not resolve the exact vector within it.
-Step 3: Additional compatible observables may be needed to sharpen the state description.
-Step 4: So the post-measurement object is best described as an eigenspace projection.`
+    hints: [
+      "Single-trial outcomes are eigenvalues, not averages.",
+      "The coefficients determine probabilities."
+    ],
+    solution: `The correct answer is that a single trial returns one of the allowed energy eigenvalues with probabilities determined by the state's expansion coefficients.
+
+Suppose the state is written as a superposition of two energy eigenstates. Each component has an amplitude, and the Born rule says that the squared magnitude of each amplitude gives the probability of obtaining the corresponding energy in a measurement.
+
+Therefore the apparatus does not return the arithmetic mean in each run. Instead, each run yields one eigenvalue or the other. Only after many trials does one recover an average energy equal to the expectation value.
+
+After a particular outcome is obtained, the state is updated. The post-measurement state lies in the eigenspace associated with the observed energy. This is why a repeated energy measurement performed immediately afterward yields the same energy with certainty.
+
+So the measurement process has two aspects: probabilistic selection of an eigenvalue in a single run, and projection of the state onto the corresponding eigenspace.`
   },
   {
     topic: "Measurement in Quantum Mechanics",
-    question: "Why are probability amplitudes more fundamental than probabilities?",
+    question: "What is the most accurate statement about the effect of measuring an observable that has a degenerate eigenvalue?",
     options: [
-      "Because amplitudes carry phase information needed for interference, while probabilities do not.",
-      "Because amplitudes are always directly measurable.",
-      "Because amplitudes are real and positive.",
-      "Because probabilities never appear in quantum theory."
+      "The post-measurement state lies in the eigenspace associated with the measured eigenvalue, but it need not be a uniquely specified eigenvector.",
+      "Degeneracy prevents the observable from being measurable.",
+      "The state always collapses to a unique basis vector fixed independently of the apparatus.",
+      "No state update occurs when the eigenvalue is degenerate."
     ],
     correctIndex: 0,
-    hints: ["Interference needs phase.", "|ψ|² comes later."],
-    solution: `Step 1: The wavefunction or state amplitude can be complex.
-Step 2: Different alternatives can add as amplitudes before probabilities are computed.
-Step 3: Relative phase can enhance or cancel outcomes through interference.
-Step 4: Probabilities alone lose this phase information, which is why amplitudes are more fundamental.`
-  },
-  {
-    topic: "Measurement in Quantum Mechanics",
-    question: "A system is in a superposition of two energy eigenstates. What does an energy measurement do?",
-    options: [
-      "It returns one allowed eigenvalue probabilistically and projects the state onto the corresponding eigenspace.",
-      "It returns the arithmetic mean energy in every single run.",
-      "It leaves the state completely unchanged no matter what happens.",
-      "It always returns the lower energy."
+    hints: [
+      "Degeneracy refers to a multi-dimensional eigenspace.",
+      "The measured value may not determine a unique vector."
     ],
-    correctIndex: 0,
-    hints: ["Single run vs ensemble average.", "Superposition predicts probabilities, not one averaged outcome."],
-    solution: `Step 1: Expand the state in the energy eigenbasis.
-Step 2: The squared magnitudes of the expansion coefficients give the probabilities for each energy outcome.
-Step 3: A single measurement produces one of those eigenvalues, not the average of them.
-Step 4: Afterward the state is projected onto the eigenspace associated with the observed result.`
-  },
-  {
-    topic: "Measurement in Quantum Mechanics",
-    question: "Why is normalization essential before assigning measurement probabilities?",
-    options: [
-      "Because the Born probabilities must add up to 1.",
-      "Because normalization makes all amplitudes equal.",
-      "Because unnormalized states are always forbidden mathematically.",
-      "Because normalization makes operators Hermitian."
-    ],
-    correctIndex: 0,
-    hints: ["Probabilities require a proper total.", "Sum of all outcome probabilities?"],
-    solution: `Step 1: The Born rule interprets squared amplitudes as probabilities.
-Step 2: Probabilities of all mutually exclusive outcomes must sum to 1.
-Step 3: If the state is unnormalized, the raw squared amplitudes do not yet have that meaning.
-Step 4: So normalization is required to turn amplitudes into a valid probabilistic description.`
-  },
-  {
-    topic: "Measurement in Quantum Mechanics",
-    question: "What is the best criticism of the phrase “measurement simply reveals a pre-existing value”?",
-    options: [
-      "It fails for incompatible sequential measurements, where the first measurement changes later statistics.",
-      "It is correct in all quantum experiments.",
-      "It is wrong only for photons.",
-      "It is wrong because observables have no eigenvalues."
-    ],
-    correctIndex: 0,
-    hints: ["Think state update.", "Sequential Stern-Gerlach is the classic counterexample."],
-    solution: `Step 1: If measurement merely revealed a fixed pre-existing value, later incompatible measurements would not alter earlier certainty.
-Step 2: But sequential experiments show that an intermediate measurement changes the state and therefore future probabilities.
-Step 3: This means measurement is not just passive reading; it is an active state-preparation event in the standard formalism.
-Step 4: Hence the classical “just reveal” language is incomplete and misleading.`
-  },
-  {
-    topic: "Measurement in Quantum Mechanics",
-    question: "If a state is orthogonal to an eigenspace of an observable, what is the probability of obtaining that eigenvalue?",
-    options: [
-      "Zero",
-      "One",
-      "One-half",
-      "It cannot be determined even in principle."
-    ],
-    correctIndex: 0,
-    hints: ["Born rule uses projection amplitude.", "Orthogonal means zero overlap."],
-    solution: `Step 1: Measurement probability is determined by the squared overlap with the corresponding eigenspace.
-Step 2: Orthogonality means that overlap amplitude is zero.
-Step 3: The square of zero is zero.
-Step 4: Therefore that outcome cannot occur in the given state.`
-  },
-  {
-    topic: "Measurement in Quantum Mechanics",
-    question: "Why do compatible observables matter in measurement theory?",
-    options: [
-      "Because they can be measured together without one disturbing the sharpness of the other.",
-      "Because they always have identical eigenvectors and eigenvalues.",
-      "Because they are always proportional to the identity.",
-      "Because they remove probabilistic behavior completely."
-    ],
-    correctIndex: 0,
-    hints: ["Compatibility is linked to commutation.", "Joint sharpness is the idea."],
-    solution: `Step 1: Compatible observables commute and can share a common eigenbasis.
-Step 2: A state can therefore be prepared with definite values of both simultaneously.
-Step 3: Measuring one does not destroy the sharpness of the other in that basis.
-Step 4: This is why compatibility is central to quantum measurement logic.`
+    solution: `The correct answer is that the state is projected into the eigenspace corresponding to the measured degenerate eigenvalue.
+
+When an eigenvalue is degenerate, more than one orthogonal state yields the same measurement value. Therefore obtaining that value does not necessarily identify a unique eigenvector. What is determined with certainty is the eigenspace, not always the exact direction inside it.
+
+This point matters conceptually because the measurement result can be sharp even though the post-measurement state is not fully specified by that value alone. Additional commuting observables may be required if one wants to refine the description further and resolve the degeneracy.
+
+The wrong alternative is the claim that mathematics alone chooses a unique basis vector. In a degenerate subspace, many orthonormal bases are possible. Without extra physical structure, a unique vector is not singled out by the eigenvalue alone.
+
+Hence the careful statement is that the state collapses into the relevant eigenspace, not necessarily into one uniquely determined eigenvector.`
   },
   {
     topic: "Measurement in Quantum Mechanics",
     question: "Why is the measurement postulate needed in addition to Schrödinger evolution?",
     options: [
-      "Because unitary evolution alone does not specify why single runs yield eigenvalues with Born probabilities.",
-      "Because Schrödinger equations are valid only after measurement.",
-      "Because measurements are impossible without classical mechanics.",
-      "Because expectation values cannot be computed dynamically."
+      "Because unitary time evolution alone does not specify how single experimental runs produce eigenvalues with Born-rule probabilities.",
+      "Because the Schrödinger equation is invalid whenever a detector is present.",
+      "Because measurements are classical processes unrelated to quantum states.",
+      "Because expectation values cannot be defined dynamically."
     ],
     correctIndex: 0,
-    hints: ["TDSE gives smooth evolution.", "Single outcomes need an operational rule."],
-    solution: `Step 1: Schrödinger evolution tells us how the state changes in time for a closed system.
-Step 2: It does not by itself explain the rule for extracting single experimental outcomes.
-Step 3: The measurement postulate supplies the eigenvalue-probability-projection structure.
-Step 4: Without that extra rule, the formalism would not connect cleanly to laboratory observations.`
-  },
-  {
-    topic: "Measurement in Quantum Mechanics",
-    question: "What is the key difference between selective and non-selective measurement?",
-    options: [
-      "Selective measurement keeps a chosen outcome subensemble, while non-selective measurement averages over all outcomes.",
-      "Selective measurement is quantum, non-selective is classical.",
-      "Selective measurement changes eigenvalues, non-selective does not.",
-      "There is no difference."
+    hints: [
+      "Separate continuous state evolution from outcome assignment.",
+      "The issue is how theory connects to single laboratory events."
     ],
-    correctIndex: 0,
-    hints: ["Think post-selection.", "Do we keep one branch or all branches?"],
-    solution: `Step 1: In selective measurement, one retains only systems corresponding to a chosen outcome.
-Step 2: In non-selective measurement, all outcomes are included in the final ensemble.
-Step 3: The two procedures lead to different post-measurement descriptions.
-Step 4: So the distinction is operationally and conceptually important.`
+    solution: `The correct answer is that Schrödinger evolution by itself does not tell us how one specific measurement outcome is obtained in a single run.
+
+The Schrödinger equation governs the time evolution of the state of a closed quantum system. This evolution is continuous and unitary. It tells us how amplitudes change with time, but it does not by itself assign a single recorded eigenvalue to an individual measurement event.
+
+The measurement postulate adds precisely that missing operational link. It states which values can appear as outcomes, how probabilities are computed from the state, and how the state is updated after an outcome is observed.
+
+Without this extra postulate, the formalism would describe evolving wavefunctions but would not clearly specify how laboratory readings emerge from them. The issue is not that the Schrödinger equation becomes false, but that it is incomplete as a full account of measurement outcomes.
+
+Therefore the measurement postulate is needed to connect dynamical evolution with observed experimental statistics and state-update rules.`
   },
 
   // =====================================================
@@ -1962,163 +1778,99 @@ Step 4: So the distinction is operationally and conceptually important.`
   // =====================================================
   {
     topic: "Sequential Stern-Gerlach",
-    question: "A z+ beam enters a second z-oriented Stern-Gerlach analyzer. What happens ideally?",
+    question: "A beam selected from the z+ output of one Stern-Gerlach apparatus is sent directly into a second Stern-Gerlach apparatus also oriented along z. What is observed ideally?",
     options: [
-      "Only z+ emerges, because the first stage has already prepared the z+ eigenstate.",
-      "It splits equally into z+ and z- again.",
-      "It becomes an x-basis superposition only.",
-      "No beam emerges."
+      "Only the z+ output appears, because the first device has already prepared the beam in an eigenstate of S_z.",
+      "The beam splits equally into z+ and z-.",
+      "The second apparatus produces no output because the state has already been measured.",
+      "The beam changes into an x-basis superposition observable at the detector."
     ],
     correctIndex: 0,
-    hints: ["Repeat measurement of same observable.", "Prepared eigenstate stays sharp."],
-    solution: `Step 1: Selecting the z+ beam after the first analyzer prepares the state |z+⟩.
-Step 2: The second analyzer measures the same spin component S_z.
-Step 3: Since |z+⟩ is already an eigenstate of S_z, the result is certain.
-Step 4: Therefore only the z+ channel appears.`
+    hints: [
+      "This is an immediate repetition of the same observable.",
+      "The first selected beam is already an S_z eigenstate."
+    ],
+    solution: `The correct answer is that only the z+ channel appears.
+
+The first Stern-Gerlach device both measures and prepares the state. Once the z+ branch is selected, the outgoing beam is no longer an arbitrary mixture. It is a beam prepared in the state |z+⟩, which is an eigenstate of S_z.
+
+The second apparatus measures the same spin component along the same axis. Since the incoming state is already an eigenstate of that observable, the result is definite. There is no reason for a fresh split into z+ and z-.
+
+This is the spin analogue of repeating an ideal projective measurement of the same observable. The state preparation caused by the first apparatus guarantees the certainty of the second result.
+
+Therefore an ideal second z-oriented analyzer transmits only the z+ beam.`
   },
   {
     topic: "Sequential Stern-Gerlach",
-    question: "A z+ beam enters an x-oriented analyzer. Why do x+ and x- appear with equal intensity?",
+    question: "A beam prepared in the state |z+⟩ is incident on a Stern-Gerlach apparatus oriented along x. Why do the x+ and x- outputs occur with equal intensity?",
     options: [
       "Because |z+⟩ is an equal superposition of |x+⟩ and |x-⟩.",
-      "Because the apparatus fails to detect spin sharply.",
-      "Because x and z are actually the same observable.",
-      "Because spin is destroyed at the first analyzer."
+      "Because the apparatus cannot distinguish spin states sharply along x.",
+      "Because S_x and S_z are actually the same observable written differently.",
+      "Because a spin state loses all directional information after preparation."
     ],
     correctIndex: 0,
-    hints: ["Change basis.", "Definite z does not mean definite x."],
-    solution: `Step 1: The state |z+⟩ is not an eigenstate of S_x.
-Step 2: In the x-basis, |z+⟩ decomposes symmetrically into |x+⟩ and |x-⟩.
-Step 3: Equal amplitudes imply equal probabilities after taking modulus squared.
-Step 4: Hence the beam splits 50–50 into x+ and x-.`
+    hints: [
+      "Change the basis from z to x.",
+      "Equal amplitudes lead to equal probabilities."
+    ],
+    solution: `The correct answer is that |z+⟩ is an equal superposition of |x+⟩ and |x-⟩.
+
+A state that is definite with respect to one spin component need not be definite with respect to another. The state |z+⟩ is an eigenstate of S_z, but it is not an eigenstate of S_x. To predict the outcome of an x-oriented measurement, one must expand |z+⟩ in the x-basis.
+
+That expansion has equal-magnitude coefficients for |x+⟩ and |x-⟩. The Born rule then says that the probabilities are the squared magnitudes of those coefficients, which are equal. Hence the two outputs have equal intensity.
+
+The result does not indicate a flaw in the device. On the contrary, it reflects the non-commuting character of the spin components. A state sharp in z is necessarily indefinite in x.
+
+Therefore the equal split is a direct consequence of basis change and the Born rule.`
   },
   {
     topic: "Sequential Stern-Gerlach",
-    question: "In the sequence z+ → x+ selected → z analyzer, why does the final z stage split again?",
+    question: "In the sequence z+ selected → x+ selected → z measurement, why does the final z-analyzer split the beam again?",
     options: [
-      "Because the intermediate x measurement prepares |x+⟩, which is a superposition of |z+⟩ and |z-⟩.",
-      "Because the final z analyzer is defective.",
-      "Because z conservation is violated.",
-      "Because x+ and z+ are the same state."
+      "Because the intermediate x-selection prepares the state |x+⟩, which is a superposition of |z+⟩ and |z-⟩.",
+      "Because the final z-analyzer is less accurate than the first one.",
+      "Because z-spin is not conserved in a laboratory magnetic field.",
+      "Because the two z-analyzers cannot agree in principle."
     ],
     correctIndex: 0,
-    hints: ["Intermediate measurement changes the state.", "Express |x+⟩ in the z-basis."],
-    solution: `Step 1: After selecting x+, the state is no longer |z+⟩; it is |x+⟩.
-Step 2: The state |x+⟩ has nonzero overlap with both |z+⟩ and |z-⟩.
-Step 3: Therefore the final z measurement has two allowed outcomes with nonzero probabilities.
-Step 4: The renewed split shows how an incompatible intermediate measurement resets the state.`
+    hints: [
+      "The intermediate measurement changes the state.",
+      "Write |x+⟩ in the z-basis."
+    ],
+    solution: `The correct answer is that the intermediate x-measurement prepares a new state, namely |x+⟩, and that state is not definite with respect to S_z.
+
+After the first device, the system is in |z+⟩. If one were to measure S_z again immediately, the result would still be z+ with certainty. However, the insertion of an x-oriented analyzer changes the situation completely.
+
+Selecting the x+ output does not merely label the particles; it prepares the new state |x+⟩. That state can be expressed as a superposition of |z+⟩ and |z-⟩. Consequently, a later z-measurement has nonzero probability for both outcomes.
+
+This experiment shows that an intermediate incompatible measurement can erase the certainty established by an earlier measurement. The important point is not experimental imperfection, but state preparation by the intermediate analyzer.
+
+Therefore the final z-device splits the beam because the state entering it is |x+⟩, not the original |z+⟩.`
   },
   {
     topic: "Sequential Stern-Gerlach",
-    question: "What does the sequence z → x → z teach most directly?",
+    question: "What is the most direct operational meaning of the statement [S_x, S_z] ≠ 0 in the Stern-Gerlach context?",
     options: [
-      "An intermediate incompatible measurement can erase previous certainty.",
-      "All spin components have simultaneous definite values.",
-      "Measurement is only passive sorting.",
-      "The first z result cannot be trusted."
+      "The order in which x and z spin measurements are performed affects the observed statistics.",
+      "The operators have no eigenvectors.",
+      "The two observables can never be measured in any experiment.",
+      "The values of S_x and S_z are always numerically equal."
     ],
     correctIndex: 0,
-    hints: ["Think loss of earlier sharpness.", "Order matters."],
-    solution: `Step 1: The first z selection makes the z value definite.
-Step 2: Measuring x next prepares a state adapted to x, not z.
-Step 3: A final z measurement then becomes probabilistic again.
-Step 4: So incompatibility means one measurement can destroy the certainty created by another.`
-  },
-  {
-    topic: "Sequential Stern-Gerlach",
-    question: "Why is an SG analyzer more than a passive sorting device?",
-    options: [
-      "Because selecting an output beam prepares a new quantum state for later measurements.",
-      "Because it only labels particles without affecting them.",
-      "Because it changes the particle into a classical object.",
-      "Because it measures position rather than spin."
+    hints: [
+      "Non-commutation manifests itself through order dependence.",
+      "Think of sequential analyzers rather than abstract algebra alone."
     ],
-    correctIndex: 0,
-    hints: ["State preparation is the key phrase.", "Selection matters."],
-    solution: `Step 1: After the analyzer, different output channels correspond to different spin eigenstates.
-Step 2: Keeping one channel is not merely reading a value; it prepares a definite post-selected state.
-Step 3: That prepared state determines what later analyzers will observe.
-Step 4: Therefore the analyzer acts as both measuring and state-preparing device.`
-  },
-  {
-    topic: "Sequential Stern-Gerlach",
-    question: "If one branch after an analyzer is blocked, why is that physically important?",
-    options: [
-      "Because it changes the ensemble by removing part of the state distribution available downstream.",
-      "Because blocked branches still contribute equally later.",
-      "Because blocking only changes geometry, not state preparation.",
-      "Because it makes spin unobservable."
-    ],
-    correctIndex: 0,
-    hints: ["Removing a branch changes what survives.", "Think post-selection again."],
-    solution: `Step 1: The outgoing branches correspond to different possible post-measurement states.
-Step 2: Blocking one branch means those particles no longer participate in later stages.
-Step 3: The downstream ensemble is therefore different from the unblocked case.
-Step 4: So blocking is not a cosmetic change; it changes the prepared state distribution.`
-  },
-  {
-    topic: "Sequential Stern-Gerlach",
-    question: "What is the operational meaning of saying Sx and Sz do not commute?",
-    options: [
-      "The order of x and z measurements changes the observed statistics.",
-      "They must have the same eigenvectors.",
-      "They always give identical outcomes.",
-      "They cannot be measured at all."
-    ],
-    correctIndex: 0,
-    hints: ["Non-commuting means order-sensitive physics.", "Sequential experiments reveal it."],
-    solution: `Step 1: Non-commuting observables cannot in general share a complete sharp basis.
-Step 2: Measuring one changes the state relevant to the other.
-Step 3: Therefore x-then-z and z-then-x produce different statistical patterns.
-Step 4: This order dependence is the experimental face of non-commutation.`
-  },
-  {
-    topic: "Sequential Stern-Gerlach",
-    question: "Why does the Stern-Gerlach experiment naturally motivate a two-dimensional Hilbert space for spin-1/2?",
-    options: [
-      "Because each analyzer reveals exactly two discrete outcomes along any chosen axis.",
-      "Because the beam position is two-dimensional in the apparatus.",
-      "Because only two analyzers can be used in practice.",
-      "Because spin-1/2 particles have no wavefunction."
-    ],
-    correctIndex: 0,
-    hints: ["How many spin outcomes appear?", "Think basis states."],
-    solution: `Step 1: For spin-1/2 particles, a Stern-Gerlach analyzer along any axis yields two outputs only.
-Step 2: Those two outcomes correspond to two basis states, such as |z+⟩ and |z-⟩.
-Step 3: Different analyzer orientations correspond to different bases in the same state space.
-Step 4: Hence the minimal spin space is naturally two-dimensional.`
-  },
-  {
-    topic: "Sequential Stern-Gerlach",
-    question: "Why is the phrase “spin up” incomplete in Stern-Gerlach language?",
-    options: [
-      "Because “up” is meaningful only after specifying the measurement axis.",
-      "Because all spin-up states are identical for every axis.",
-      "Because spin can point only along z.",
-      "Because SG analyzers do not measure direction."
-    ],
-    correctIndex: 0,
-    hints: ["Up relative to what?", "Axis specification matters."],
-    solution: `Step 1: Spin components are defined relative to chosen axes, such as x, y, or z.
-Step 2: The states |x+⟩ and |z+⟩ are different states, not the same state with different labels.
-Step 3: Therefore “up” without an axis is physically ambiguous.
-Step 4: One must always specify the reference direction.`
-  },
-  {
-    topic: "Sequential Stern-Gerlach",
-    question: "If an x+ beam is sent into a y-oriented analyzer, what is the best expectation?",
-    options: [
-      "It splits into y+ and y- with equal probability because x+ is not an eigenstate of Sy.",
-      "Only y+ emerges because positive spin stays positive.",
-      "Only y- emerges because of orthogonality.",
-      "No definite statement can be made in quantum mechanics."
-    ],
-    correctIndex: 0,
-    hints: ["Different axes correspond to different bases.", "Prepared x does not fix y."],
-    solution: `Step 1: A definite spin state along x is not a definite spin state along y.
-Step 2: In the y-basis, |x+⟩ has equal-magnitude amplitudes for |y+⟩ and |y-⟩.
-Step 3: Equal magnitudes give equal probabilities after squaring.
-Step 4: Therefore the beam splits equally into y+ and y-.`
+    solution: `The correct answer is that non-commutation means the order of the measurements matters physically.
+
+If two observables commute, one expects a common eigenbasis and compatibility of measurement. In that case, measuring one does not generally spoil the sharpness of the other. But when [S_x, S_z] ≠ 0, the two observables do not share a complete set of simultaneous sharp states.
+
+The Stern-Gerlach sequence makes this visible in an operational way. A z-prepared beam followed by an x-measurement gives one pattern, while an x-prepared beam followed by a z-measurement gives another pattern. The statistics depend on the measurement order because the first measurement prepares the state relevant for the second one.
+
+Thus the commutator is not merely a formal symbol. It encodes a directly observable experimental fact: the sequence of incompatible measurements changes the outcomes.
+
+Therefore the most concrete interpretation is order-dependent measurement statistics.`
   },
 
   // =====================================================
@@ -2126,163 +1878,105 @@ Step 4: Therefore the beam splits equally into y+ and y-.`
   // =====================================================
   {
     topic: "Schrödinger Equations",
-    question: "Which statement best captures the relation between TDSE and TISE?",
+    question: "Which statement most accurately describes the relationship between the time-dependent Schrödinger equation (TDSE) and the time-independent Schrödinger equation (TISE)?",
     options: [
-      "The TDSE is the general evolution law; the TISE is a special eigenvalue problem obtained when separation of variables is possible.",
-      "The TISE is more fundamental and the TDSE is derived only for measurements.",
-      "They are unrelated equations with different physics.",
-      "Only the TISE is valid in quantum mechanics."
+      "The TDSE is the general dynamical law, whereas the TISE is a special eigenvalue problem that arises when the Hamiltonian is time-independent and separation of variables is possible.",
+      "The TISE is the fundamental law and the TDSE is used only for measurements.",
+      "They are unrelated equations that apply to different branches of physics.",
+      "Only the TISE is valid for bound states."
     ],
     correctIndex: 0,
-    hints: ["General time evolution vs stationary-state method.", "Time-independent Hamiltonian helps separation."],
-    solution: `Step 1: The time-dependent Schrödinger equation governs state evolution in general.
-Step 2: When the Hamiltonian is time-independent, one often tries a separable form ψ(x,t)=φ(x)T(t).
-Step 3: The spatial part then satisfies Hφ = Eφ, the time-independent Schrödinger equation.
-Step 4: So the TISE is a special structured consequence of the more general TDSE setting.`
+    hints: [
+      "One equation governs evolution; the other is an eigenvalue problem.",
+      "Time-independence of the Hamiltonian is the standard gateway to the TISE."
+    ],
+    solution: `The correct answer is that the TDSE is the general evolution equation and the TISE is a special eigenvalue problem obtained under suitable conditions.
+
+The time-dependent Schrödinger equation tells us how the state evolves in time in the most general standard setting. It is the fundamental dynamical equation of nonrelativistic quantum mechanics.
+
+When the Hamiltonian does not depend explicitly on time, one may try a separated form such as ψ(x,t) = φ(x)T(t). Substituting this into the TDSE allows the spatial and temporal dependences to be separated. The spatial part then satisfies an eigenvalue equation of the form Hφ = Eφ, which is the TISE.
+
+Thus the TISE does not replace the TDSE. Instead, it emerges from the TDSE when the problem has enough structure to permit separation of variables. It is especially useful for finding stationary states and the allowed energy spectrum.
+
+So the correct relation is hierarchical: TDSE is the general law, TISE is a special but extremely important consequence in time-independent problems.`
   },
   {
     topic: "Schrödinger Equations",
-    question: "A student says a stationary state does not change with time. What is the best correction?",
+    question: "What is the best correction to the statement, 'A stationary state does not change with time'?",
     options: [
-      "Its probability density is time-independent, but the state still acquires a global phase factor.",
-      "It changes randomly with time.",
-      "It remains exactly the same vector with no phase change.",
-      "It is not a solution of the Schrödinger equation."
+      "Its probability density is time-independent, although the state vector acquires a time-dependent global phase factor.",
+      "It changes randomly in time, but the average change is zero.",
+      "It remains exactly identical in every respect, including phase.",
+      "It is not a legitimate solution of the Schrödinger equation."
     ],
     correctIndex: 0,
-    hints: ["Think e^{-iEt/ħ}.", "Phase vs probability density."],
-    solution: `Step 1: An energy eigenstate evolves as ψ(x,t)=φ(x)e^{-iEt/ħ}.
-Step 2: The factor e^{-iEt/ħ} changes the state vector by a global phase.
-Step 3: However |ψ(x,t)|² = |φ(x)|² is unchanged, so observable spatial probability density is stationary.
-Step 4: Thus “unchanged” is true only at the level of probability density, not literal vector phase.`
+    hints: [
+      "Distinguish the state vector from observable probability density.",
+      "Recall the phase factor e^{-iEt/ħ}."
+    ],
+    solution: `The correct answer is that a stationary state has time-independent observable probability density, even though the state vector acquires a global phase.
+
+If φ is an energy eigenstate with eigenvalue E, then its time evolution is
+ψ(x,t) = φ(x)e^{-iEt/ħ}.
+The exponential factor depends on time, so the state vector is not literally unchanged.
+
+However, measurable probabilities depend on |ψ(x,t)|². Since the phase factor has unit modulus, it disappears when taking the absolute square:
+|ψ(x,t)|² = |φ(x)|².
+Therefore the spatial probability density remains constant in time.
+
+This is why such states are called stationary. The observables built from the probability density are stationary even though the vector itself acquires a phase. That phase is global for a single energy eigenstate and does not affect the associated probability density.
+
+So the careful correction is that stationary states are stationary in observable density, not in the trivial sense of having no time dependence whatsoever.`
   },
   {
     topic: "Schrödinger Equations",
-    question: "Why can a superposition of two stationary states be non-stationary?",
+    question: "Why can a superposition of two stationary states produce a time-dependent probability density?",
     options: [
-      "Because the relative phase between the components evolves in time and changes interference terms.",
-      "Because stationary states are invalid to superpose.",
-      "Because one of the energies must become imaginary.",
-      "Because normalization is lost automatically."
+      "Because the two components acquire different time-dependent phases, and the interference term depends on their relative phase.",
+      "Because superpositions are forbidden for stationary states.",
+      "Because one of the energies must become complex.",
+      "Because normalization is lost once more than one eigenstate is present."
     ],
     correctIndex: 0,
-    hints: ["Each component gets its own phase.", "Relative phase matters physically."],
-    solution: `Step 1: If ψ = c1φ1e^{-iE1t/ħ} + c2φ2e^{-iE2t/ħ}, the two components acquire different phases.
-Step 2: The relative phase depends on (E1-E2)t/ħ and changes with time.
-Step 3: In |ψ|², cross terms depend on that relative phase and therefore oscillate.
-Step 4: So the superposition can have time-dependent measurable density even though each component alone is stationary.`
+    hints: [
+      "A single global phase is harmless, but a relative phase is observable.",
+      "Look at the cross term in |ψ|²."
+    ],
+    solution: `The correct answer is that the relative phase between the components evolves in time and modifies the interference term.
+
+Consider a state
+ψ(x,t) = c1φ1(x)e^{-iE1t/ħ} + c2φ2(x)e^{-iE2t/ħ}.
+Each stationary component by itself has a time-independent probability density. The important new feature in the superposition is that the two phases evolve at different rates if E1 ≠ E2.
+
+When one computes |ψ|², cross terms appear. Those terms contain factors involving the phase difference, which depends on (E1 - E2)t/ħ. Because that relative phase changes with time, the interference pattern changes with time as well.
+
+So the state is non-stationary even though each component is stationary when taken separately. The time dependence is not due to any instability of eigenstates; it is due to interference between components with different energies.
+
+Therefore superpositions of stationary states are generally not stationary unless all contributing energies are the same.`
   },
   {
     topic: "Schrödinger Equations",
-    question: "What is the most meaningful role of the Hamiltonian in the TDSE?",
+    question: "What is the most conceptually important role of the Hamiltonian in the time-dependent Schrödinger equation?",
     options: [
-      "It generates time evolution of the quantum state.",
-      "It only lists the possible measurement errors.",
-      "It always equals momentum.",
-      "It removes all phase information."
+      "It generates the time evolution of the quantum state.",
+      "It serves only as a list of possible energy measurement errors.",
+      "It converts every state into a position eigenstate.",
+      "It removes all phase information from the wavefunction."
     ],
     correctIndex: 0,
-    hints: ["Generator of evolution.", "Energy interpretation is important but not the whole story."],
-    solution: `Step 1: The TDSE can be viewed as the rule telling how the state changes in time.
-Step 2: In that equation, the Hamiltonian determines the dynamical structure of the evolution.
-Step 3: In many familiar cases it is also the total energy operator.
-Step 4: Its deeper conceptual role is that it generates the unitary time development of the state.`
-  },
-  {
-    topic: "Schrödinger Equations",
-    question: "When is separation of variables justified in solving Schrödinger problems?",
-    options: [
-      "When the Hamiltonian has suitable time-independence so that ψ(x,t)=φ(x)T(t) is consistent.",
-      "Always, for every quantum problem.",
-      "Only for free particles.",
-      "Never; separation is classical only."
+    hints: [
+      "Think dynamically, not only spectrally.",
+      "Energy interpretation is important, but there is a deeper structural role."
     ],
-    correctIndex: 0,
-    hints: ["It is a method, not a postulate.", "Look for time-independent structure."],
-    solution: `Step 1: Separation of variables is a mathematical ansatz, not a universal law.
-Step 2: It works when the equation permits time and space dependence to be isolated consistently.
-Step 3: This is especially natural for time-independent Hamiltonians.
-Step 4: Then one obtains a spatial eigenvalue problem and a simple time-phase equation.`
-  },
-  {
-    topic: "Schrödinger Equations",
-    question: "Why are energy eigenstates especially convenient for time evolution?",
-    options: [
-      "Each one evolves only by a simple phase factor, so superpositions can be evolved term by term.",
-      "Because energy eigenstates never interfere.",
-      "Because they always have zero uncertainty in position.",
-      "Because they make the Hamiltonian disappear."
-    ],
-    correctIndex: 0,
-    hints: ["Diagonal basis for H.", "Simple phases are easy to track."],
-    solution: `Step 1: If Hφ_n = E_nφ_n, then the time evolution of that component is just e^{-iE_nt/ħ}.
-Step 2: So each basis component evolves independently by a simple phase.
-Step 3: Any initial state expanded in energy eigenstates can then be evolved by updating each phase separately.
-Step 4: This is why the energy basis is the natural basis for many time-evolution problems.`
-  },
-  {
-    topic: "Schrödinger Equations",
-    question: "If [A,H]=0 for a time-independent observable A, what is the best statement?",
-    options: [
-      "A is a constant of motion in the sense that its expectation value is conserved.",
-      "A must equal H exactly.",
-      "The state becomes an eigenstate of A automatically.",
-      "No physical consequence follows."
-    ],
-    correctIndex: 0,
-    hints: ["Commuting with H has dynamical meaning.", "Conserved quantity."],
-    solution: `Step 1: Commuting with H means the observable is compatible with the time evolution generated by H.
-Step 2: For no explicit time dependence, this implies no net dynamical change in its mean value.
-Step 3: Therefore ⟨A⟩ remains constant in time.
-Step 4: That is why such an observable is called a constant of motion.`
-  },
-  {
-    topic: "Schrödinger Equations",
-    question: "Can the TISE alone describe a localized wave packet moving and spreading in time?",
-    options: [
-      "No; one must combine stationary solutions using the TDSE to describe full time dependence.",
-      "Yes; a single stationary state is enough for any wave packet.",
-      "Yes, but only in two dimensions.",
-      "No, because wave packets are not quantum states."
-    ],
-    correctIndex: 0,
-    hints: ["Wave packets are typically superpositions.", "Time dependence matters explicitly."],
-    solution: `Step 1: The TISE provides stationary energy eigenstates.
-Step 2: A localized packet is usually a superposition of many such eigenstates.
-Step 3: The physically relevant motion comes from their different time phases evolving under the TDSE.
-Step 4: So the TDSE is needed to describe localization, motion, and spreading properly.`
-  },
-  {
-    topic: "Schrödinger Equations",
-    question: "Why does Schrödinger evolution preserve normalization for a closed system?",
-    options: [
-      "Because the evolution is unitary, so inner products and total probability are preserved.",
-      "Because wavefunctions are forced to become real.",
-      "Because energy is always zero.",
-      "Because normalization is redefined at each instant by hand."
-    ],
-    correctIndex: 0,
-    hints: ["Closed-system evolution is unitary.", "Probability must stay 1."],
-    solution: `Step 1: Time evolution in standard quantum mechanics is unitary for closed systems.
-Step 2: Unitary transformations preserve inner products.
-Step 3: In particular, ⟨ψ(t)|ψ(t)⟩ stays equal to its initial value.
-Step 4: Therefore normalization and total probability are preserved in time.`
-  },
-  {
-    topic: "Schrödinger Equations",
-    question: "What is the twofold significance of the eigenvalue equation Hφ = Eφ?",
-    options: [
-      "It identifies sharp energy measurement outcomes and also gives the phase rate for time evolution.",
-      "It only tells us boundary conditions.",
-      "It makes all states degenerate.",
-      "It proves energy is always zero."
-    ],
-    correctIndex: 0,
-    hints: ["Measurement meaning + dynamics meaning.", "Energy eigenstate evolves simply."],
-    solution: `Step 1: As an eigenvalue equation, Hφ=Eφ says the state φ has definite energy E.
-Step 2: So an energy measurement on that state yields E with certainty.
-Step 3: Dynamically, the same E determines the phase factor e^{-iEt/ħ} in time evolution.
-Step 4: Thus the equation links measurement theory and time evolution in one compact statement.`
+    solution: `The correct answer is that the Hamiltonian generates time evolution.
+
+In the time-dependent Schrödinger equation, the Hamiltonian determines how the state changes with time. This dynamical role is more fundamental than merely saying that it represents energy, although in many standard systems it does serve as the total energy operator.
+
+One way to understand this is to compare quantum mechanics with classical mechanics, where a generator governs evolution in time. In quantum theory, the Hamiltonian plays that role. It controls how phases accumulate and how superpositions evolve.
+
+Its spectral properties are also important. Energy eigenstates are especially convenient because they evolve by simple phase factors. But that convenience is a consequence of the deeper fact that the Hamiltonian is the operator responsible for time translation of the state.
+
+Therefore the most meaningful conceptual description is that the Hamiltonian is the generator of unitary time evolution.`
   },
 
   // =====================================================
@@ -2290,167 +1984,106 @@ Step 4: Thus the equation links measurement theory and time evolution in one com
   // =====================================================
   {
     topic: "Particle in a 1D Potential Well",
-    question: "Why must the wavefunction vanish at an infinite potential wall?",
+    question: "Why must the wavefunction vanish at the boundaries of an infinite square well?",
     options: [
-      "Because the probability of finding the particle in the infinite-potential region is exactly zero, and continuity forces ψ to vanish at the boundary.",
-      "Because all derivatives must vanish everywhere.",
-      "Because the wavefunction becomes constant at the wall.",
-      "Because infinite potential means infinite probability."
+      "Because the wavefunction is zero in the region of infinite potential, and continuity requires it to vanish at the walls as well.",
+      "Because the derivative of the wavefunction must always vanish at any boundary.",
+      "Because a particle at a wall must have zero energy.",
+      "Because the normalization condition alone forces boundary values to be zero."
     ],
     correctIndex: 0,
-    hints: ["Outside the well the particle cannot exist.", "Use continuity at the boundary."],
-    solution: `Step 1: In the infinite-wall model, the particle cannot exist where V = ∞.
-Step 2: Therefore the wavefunction outside the well is zero.
-Step 3: Physical solutions require continuity of the wavefunction at the boundaries.
-Step 4: So the wavefunction must also be zero exactly at the walls.`
+    hints: [
+      "Outside the well the particle is excluded.",
+      "Continuity of the wavefunction is the crucial point."
+    ],
+    solution: `The correct answer is that the wavefunction must match continuously to zero outside the well.
+
+In the idealized infinite square well, the potential is infinite outside the allowed region. In that region the particle cannot be found, so the wavefunction is taken to be zero there. This is the mathematical expression of complete exclusion from the forbidden region.
+
+A physically acceptable wavefunction must be continuous at the boundaries of the well. Since the wavefunction is zero just outside each wall, continuity requires that it also be zero exactly at the wall from the inside.
+
+This boundary condition is not an arbitrary extra rule. It is what selects the standing-wave solutions that fit inside the well. Only those solutions that vanish at both ends are admissible.
+
+Hence the boundary values vanish because the state must connect continuously to the zero wavefunction in the infinite-potential region.`
   },
   {
     topic: "Particle in a 1D Potential Well",
-    question: "Why is the n = 0 “solution” excluded in the infinite square well?",
+    question: "Why is the n = 0 candidate excluded from the spectrum of the infinite square well?",
     options: [
-      "Because it gives ψ(x)=0 everywhere, which cannot be normalized.",
-      "Because it gives infinite energy.",
-      "Because it violates Hermiticity.",
-      "Because it corresponds to negative probability."
+      "Because it produces the identically zero wavefunction, which cannot be normalized and therefore does not represent a physical state.",
+      "Because it corresponds to negative probability density.",
+      "Because it violates the uncertainty principle directly.",
+      "Because the Hamiltonian is undefined for n = 0."
     ],
     correctIndex: 0,
-    hints: ["What happens to sin(nπx/L) when n=0?", "A physical state cannot be identically zero."],
-    solution: `Step 1: The standard well solutions involve sin(nπx/L).
-Step 2: If n=0, this becomes sin(0)=0 for all x.
-Step 3: That produces the zero function, which cannot be normalized and carries no physical probability distribution.
-Step 4: Hence n=0 is excluded and the lowest valid state is n=1.`
+    hints: [
+      "Evaluate sin(nπx/L) at n = 0.",
+      "A physical wavefunction cannot be zero everywhere."
+    ],
+    solution: `The correct answer is that n = 0 gives the zero function, which is not a physical state.
+
+The well eigenfunctions are proportional to sin(nπx/L). If one formally substitutes n = 0, the result is sin(0) = 0 for every x in the well. That means the wavefunction is identically zero everywhere.
+
+An identically zero function cannot be normalized. Since all probabilities are derived from the normalized wavefunction, the zero function carries no physical probability interpretation at all. It does not represent a state of the particle.
+
+Therefore n = 0 is not the ground state. The lowest admissible state is n = 1, which is nonzero, normalizable, and satisfies the boundary conditions properly.
+
+So the exclusion of n = 0 is a direct consequence of the physical requirement that the state be nontrivial and normalizable.`
   },
   {
     topic: "Particle in a 1D Potential Well",
-    question: "Why is the ground-state energy nonzero even though V(x)=0 inside the well?",
+    question: "Why is the ground-state energy of the infinite square well nonzero even though the potential inside the well is zero?",
     options: [
-      "Because boundary conditions enforce a standing wave with nonzero kinetic energy.",
-      "Because the potential secretly becomes negative.",
-      "Because the particle is classical at n=1.",
-      "Because normalization itself adds energy."
+      "Because the boundary conditions force a standing wave with nonzero curvature, and therefore nonzero kinetic energy.",
+      "Because the particle gains energy from the walls whenever it reflects.",
+      "Because normalization contributes a fixed positive energy.",
+      "Because the potential is actually nonzero at the center of the well."
     ],
     correctIndex: 0,
-    hints: ["Zero potential does not imply zero total energy.", "Confinement matters."],
-    solution: `Step 1: Inside the well, the potential energy is zero, but the total energy includes kinetic energy.
-Step 2: Confinement forces the wavefunction to fit the boundary conditions as a standing wave.
-Step 3: That standing wave has nonzero curvature, hence nonzero kinetic energy.
-Step 4: Therefore the lowest allowed energy is positive, giving zero-point energy.`
+    hints: [
+      "Total energy is not the same as potential energy.",
+      "Confinement imposes a minimum allowed wavelength."
+    ],
+    solution: `The correct answer is that the confinement enforced by the boundaries produces a minimum nonzero kinetic energy.
+
+Inside the well, the potential energy is indeed zero. However, the total energy is the sum of kinetic and potential contributions. A zero potential does not imply zero total energy.
+
+Because the wavefunction must vanish at both walls, only standing waves that fit the interval are allowed. The lowest such wave is the n = 1 mode, not a constant function. That lowest mode has nonzero curvature, and in quantum mechanics curvature of the wavefunction is associated with kinetic energy.
+
+Equivalently, the allowed wavelengths are quantized, so the momentum cannot be zero in the ground state. The system cannot satisfy the boundary conditions with a completely flat, zero-momentum state.
+
+Therefore the ground state has a positive minimum energy, often called zero-point energy.`
   },
   {
     topic: "Particle in a 1D Potential Well",
-    question: "Why are the energy levels in the infinite well not equally spaced?",
+    question: "Why are the energy levels of the infinite square well not equally spaced?",
     options: [
-      "Because E_n is proportional to n², so successive gaps grow like 2n+1.",
-      "Because the well width changes with n.",
-      "Because odd states are forbidden.",
-      "Because only the first two levels are physical."
+      "Because the energies scale as n^2, so successive gaps increase with n.",
+      "Because the width of the well changes for different states.",
+      "Because odd values of n are forbidden.",
+      "Because the potential becomes stronger at higher energy."
     ],
     correctIndex: 0,
-    hints: ["Recall E_n ∝ n².", "Compare E_{n+1} - E_n."],
-    solution: `Step 1: The energy spectrum of the infinite well is E_n = n²π²ħ²/(2mL²).
-Step 2: This depends quadratically on n, not linearly.
-Step 3: Therefore E_{n+1} - E_n ∝ (n+1)² - n² = 2n+1.
-Step 4: So the level spacing increases with n and is not uniform.`
-  },
-  {
-    topic: "Particle in a 1D Potential Well",
-    question: "A student says a higher-n state means the particle is “farther to the right.” What is the best reply?",
-    options: [
-      "Wrong; higher n means higher energy and more nodes, not a shifted mean position.",
-      "Correct; n directly measures average position.",
-      "Correct only for even n.",
-      "Wrong because position is not an observable in the well."
+    hints: [
+      "Recall the form of E_n.",
+      "Compute E_{n+1} - E_n."
     ],
-    correctIndex: 0,
-    hints: ["Think about ⟨x⟩.", "n labels energy structure, not left/right location."],
-    solution: `Step 1: In the standard 0-to-L infinite well, stationary-state probability densities remain centered about L/2.
-Step 2: The quantum number n controls wavelength, number of nodes, and energy.
-Step 3: It does not indicate a displacement of the particle toward one side.
-Step 4: So higher n means more oscillation and higher energy, not “more to the right.”`
-  },
-  {
-    topic: "Particle in a 1D Potential Well",
-    question: "Why do the well eigenfunctions become orthogonal?",
-    options: [
-      "Because they are eigenfunctions of a Hermitian Hamiltonian with different eigenvalues.",
-      "Because sine functions are chosen arbitrarily to be orthogonal.",
-      "Because orthogonality is imposed by normalization only.",
-      "Because the potential is zero inside the box."
-    ],
-    correctIndex: 0,
-    hints: ["Hermitian operator theorem.", "Orthogonality is structural, not accidental."],
-    solution: `Step 1: The well Hamiltonian is Hermitian with suitable boundary conditions.
-Step 2: Distinct eigenvalues of a Hermitian operator correspond to orthogonal eigenfunctions.
-Step 3: The trigonometric integrals verify this explicitly, but the deeper reason is Hermiticity.
-Step 4: So orthogonality is built into the operator structure of the problem.`
-  },
-  {
-    topic: "Particle in a 1D Potential Well",
-    question: "Why does a superposition of two well eigenstates produce time-dependent probability density?",
-    options: [
-      "Because the components acquire different phases and their interference term oscillates in time.",
-      "Because eigenstates themselves are unstable.",
-      "Because the well becomes time-dependent automatically.",
-      "Because normalization fails in superposition."
-    ],
-    correctIndex: 0,
-    hints: ["Relative phase again.", "Cross terms matter in |ψ|²."],
-    solution: `Step 1: A single eigenstate has only a global phase in time and thus fixed probability density.
-Step 2: A superposition of two eigenstates acquires two different phase factors.
-Step 3: Their relative phase appears in the interference term of |ψ|².
-Step 4: That interference oscillates with time, making the density non-stationary.`
-  },
-  {
-    topic: "Particle in a 1D Potential Well",
-    question: "How many interior nodes does the nth stationary state of the infinite well have?",
-    options: [
-      "n - 1",
-      "n",
-      "2n",
-      "1 for all n"
-    ],
-    correctIndex: 0,
-    hints: ["Look at sin(nπx/L).", "Count zeros inside, not at the walls."],
-    solution: `Step 1: The nth eigenfunction is proportional to sin(nπx/L).
-Step 2: This function vanishes at x = kL/n for integer k.
-Step 3: Excluding the boundary points x=0 and x=L, the interior zeros are k=1,2,...,n-1.
-Step 4: Therefore the nth state has n-1 interior nodes.`
-  },
-  {
-    topic: "Particle in a 1D Potential Well",
-    question: "Why does the large-n probability density begin to resemble a more classical distribution after coarse-graining?",
-    options: [
-      "Because rapid oscillations average out and the density becomes nearly uniform on larger scales.",
-      "Because quantum mechanics becomes exactly classical point-by-point.",
-      "Because the particle stops interfering with itself.",
-      "Because only even n survive at large energy."
-    ],
-    correctIndex: 0,
-    hints: ["Think correspondence principle.", "Exact oscillations remain, but averaging matters."],
-    solution: `Step 1: For large n, the wavefunction oscillates very rapidly across the well.
-Step 2: Fine-scale peaks and troughs remain quantum mechanically present.
-Step 3: But on coarse spatial scales, these oscillations average toward a nearly uniform distribution.
-Step 4: This is a simple example of the correspondence principle.`
-  },
-  {
-    topic: "Particle in a 1D Potential Well",
-    question: "What is the best conceptual lesson of the one-dimensional infinite well?",
-    options: [
-      "Quantization can emerge from wave behavior plus boundary conditions, even without a classical restoring force.",
-      "Quantization occurs only because the potential is infinite.",
-      "The particle must bounce like a classical ball between the walls.",
-      "Only the ground state has physical meaning."
-    ],
-    correctIndex: 0,
-    hints: ["Boundary conditions are the key.", "Wave nature + allowed solutions."],
-    solution: `Step 1: The well problem is fundamentally a wave-boundary problem.
-Step 2: Only certain standing-wave solutions fit the walls, so only certain wave numbers are allowed.
-Step 3: Those allowed wave numbers produce discrete energies.
-Step 4: Thus quantization emerges naturally from admissible wave solutions, not from adding a separate ad hoc rule.`
+    solution: `The correct answer is that the energies depend quadratically on the quantum number n.
+
+For the infinite square well, the energy spectrum is
+E_n = n^2π^2ħ^2 / (2mL^2).
+The key feature is the factor n^2. If the spectrum were proportional to n, the spacing would be constant. But because it is proportional to n^2, the gaps grow with n.
+
+To see this explicitly, compare consecutive levels:
+E_{n+1} - E_n ∝ (n+1)^2 - n^2 = 2n + 1.
+Since 2n + 1 increases as n increases, the separation between adjacent levels becomes larger at higher n.
+
+This is why the infinite well differs from systems such as the harmonic oscillator, where the energy spacing is uniform. In the well, the allowed standing-wave pattern leads naturally to a quadratic spectrum.
+
+Therefore the levels are not equally spaced because E_n scales as n^2 rather than linearly with n.`
   }
 ];
 
-QUESTIONS.push(...NEW_MODULE_QUESTIONS);
 
 
   /***********************
