@@ -4,152 +4,431 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Engineering Physics Quiz</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      padding: 20px;
-    }
-    .container {
-      max-width: 980px; margin: 0 auto; background: white;
-      border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); padding: 30px;
-    }
-    h1 { color: #667eea; text-align: center; margin-bottom: 10px; }
-    .subtitle { text-align: center; color: #666; margin-bottom: 18px; font-size: 0.95em; }
-    .stats {
-      display: flex; justify-content: space-around;
-      margin: 16px 0 20px 0; padding: 15px;
-      background: #f8f9fa; border-radius: 8px; gap: 10px; flex-wrap: wrap;
-    }
-    .stat-item { text-align: center; min-width: 140px; }
-    .stat-value { font-size: 1.8em; font-weight: bold; color: #667eea; }
-    .stat-label { color: #666; font-size: 0.9em; }
-    .progress-bar {
-      background: #f0f0f0; height: 10px;
-      border-radius: 5px; margin-bottom: 20px; overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #667eea, #764ba2);
-      transition: width 0.3s ease;
-    }
-    .hidden { display: none; }
-    .topic-screen {
-      background: #f8f9fa; padding: 22px; border-radius: 12px;
-      border-left: 5px solid #667eea; margin-bottom: 20px;
-    }
-    .topic-title { color: #333; font-size: 1.2em; margin-bottom: 8px; text-align: center; }
-    .topic-subtitle { color: #666; text-align: center; margin-bottom: 16px; font-size: 0.95em; }
-    .topic-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px; }
-    @media (min-width: 780px) { .topic-grid { grid-template-columns: 1fr 1fr; } }
-    .topic-card {
-      background: #ffffff; border: 2px solid #ddd;
-      border-radius: 12px; padding: 14px 16px; transition: all 0.2s ease;
-    }
-    .topic-card:hover {
-      border-color: #667eea;
-      box-shadow: 0 3px 12px rgba(102,126,234,0.18);
-      transform: translateY(-1px);
-    }
-    .topic-card .meta { display: block; color: #666; margin-top: 6px; font-size: 0.9em; line-height: 1.35em; }
-    .topic-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
-    .question-card {
-      background: #f8f9fa; padding: 25px; border-radius: 10px;
-      margin-bottom: 20px; border-left: 5px solid #667eea;
-    }
-    .question-number { color: #667eea; font-weight: bold; margin-bottom: 10px; line-height: 1.4em; }
-    .question-text { font-size: 1.1em; line-height: 1.6; margin-bottom: 18px; color: #333; white-space: pre-line; }
-    .options { margin-bottom: 10px; }
-    .option-btn {
-      width: 100%; text-align: left; background: #ffffff; border: 2px solid #ddd;
-      border-radius: 10px; padding: 12px 14px; font-size: 1em; cursor: pointer;
-      transition: all 0.2s ease; margin-bottom: 10px;
-    }
-    .option-btn:hover {
-      border-color: #667eea;
-      box-shadow: 0 3px 12px rgba(102,126,234,0.18);
-      transform: translateY(-1px);
-    }
-    .option-btn:disabled { cursor: not-allowed; opacity: 0.88; }
-    .option-btn.correct { border-color: #28a745; background: #d4edda; }
-    .option-btn.wrong   { border-color: #dc3545; background: #f8d7da; }
-    .btn {
-      padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer;
-      font-size: 1em; font-weight: 600; transition: all 0.3s;
-      margin-right: 10px; margin-top: 10px;
-    }
-    .btn-small { padding: 10px 14px; margin-right: 0; margin-top: 0; font-size: 0.95em; }
-    .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
-    .btn-secondary { background: #6c757d; color: white; }
-    .btn-secondary:hover { background: #5a6268; }
-    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
-    .feedback { padding: 15px; border-radius: 8px; margin-top: 15px; display: none; }
-    .feedback.correct   { background: #d4edda; border: 2px solid #28a745; color: #155724; }
-    .feedback.incorrect { background: #f8d7da; border: 2px solid #dc3545; color: #721c24; }
-    .feedback.hint      { background: #fff3cd; border: 2px solid #ffc107; color: #856404; }
-    .solution {
-      background: #e7f3ff; padding: 20px; border-radius: 8px;
-      margin-top: 15px; border-left: 5px solid #2196F3; display: none;
-    }
-    .solution h3 { color: #2196F3; margin-bottom: 10px; }
-    .solution-content { line-height: 1.75; color: #333; }
-    .pill {
-      display: inline-block; padding: 4px 10px; border-radius: 999px;
-      background: #eef2ff; color: #3b4cca; font-weight: 600;
-      font-size: 0.9em; margin-left: 6px;
-    }
-    .slides-panel {
-      margin-top: 18px; background: #ffffff; border: 2px solid #ddd;
-      border-radius: 12px; padding: 14px;
-    }
-    .slides-header {
-      display: flex; justify-content: space-between; align-items: center;
-      gap: 10px; flex-wrap: wrap; margin-bottom: 10px;
-    }
-    .slides-title  { color: #333; font-size: 1.05em; font-weight: 700; }
-    .slides-subtitle { color: #666; font-size: 0.92em; margin-top: 2px; }
-    .slides-frame {
-      width: 100%; height: 650px; border: 2px solid #ddd;
-      border-radius: 12px; background: #f8f9fa;
-    }
-    .note { color: #666; font-size: 0.9em; margin-top: 8px; text-align: center; }
-    
-    /* ── Module grouping ── */
-.module-section {
-  margin-bottom: 24px;
-}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap');
 
-.module-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  padding: 10px 18px;
-  border-radius: 10px;
-  margin-bottom: 12px;
-}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-.module-header .mod-title {
-  font-weight: 700;
-  font-size: 1.05em;
-}
+  body {
+    font-family: 'Courier Prime', 'Courier New', monospace;
+    background: #d6cfc4;
+    min-height: 100vh;
+    padding: 20px;
+  }
 
-.module-header .mod-meta {
-  font-size: 0.85em;
-  opacity: 0.88;
-}
+  .container {
+    max-width: 980px;
+    margin: 0 auto;
+    background: #f7f2e8;
+    border-radius: 4px;
+    border: 2px solid #5a4e3c;
+    box-shadow: 6px 6px 0 #5a4e3c;
+    padding: 30px;
+  }
 
-.module-empty {
-  color: #999;
-  font-style: italic;
-  font-size: 0.92em;
-  padding: 6px 4px;
-}
-  </style>
+  h1 {
+    color: #2b3a1e;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 1.8em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-bottom: 3px double #5a4e3c;
+    padding-bottom: 10px;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: #6b5a3e;
+    margin-bottom: 18px;
+    font-size: 0.95em;
+    font-style: italic;
+  }
+
+  .stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 16px 0 20px 0;
+    padding: 15px;
+    background: #ede8dc;
+    border: 1px solid #c4b8a0;
+    border-radius: 4px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .stat-item { text-align: center; min-width: 140px; }
+
+  .stat-value {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #2b3a1e;
+  }
+
+  .stat-label {
+    color: #6b5a3e;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .progress-bar {
+    background: #d6cfc4;
+    height: 8px;
+    border-radius: 0;
+    margin-bottom: 20px;
+    overflow: hidden;
+    border: 1px solid #a09080;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: #2b3a1e;
+    transition: width 0.3s ease;
+  }
+
+  .hidden { display: none; }
+
+  /* ── Topic screen ── */
+  .topic-screen {
+    background: #f0ebe0;
+    padding: 22px;
+    border-radius: 4px;
+    border-left: 5px solid #2b3a1e;
+    border-top: 1px solid #c4b8a0;
+    border-right: 1px solid #c4b8a0;
+    border-bottom: 1px solid #c4b8a0;
+    margin-bottom: 20px;
+  }
+
+  .topic-title {
+    color: #2b3a1e;
+    font-size: 1.15em;
+    margin-bottom: 6px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+  }
+
+  .topic-subtitle {
+    color: #6b5a3e;
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: 0.9em;
+    font-style: italic;
+  }
+
+  .topic-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  @media (min-width: 780px) {
+    .topic-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ── Topic card ── */
+  .topic-card {
+    background: #faf6ee;
+    border: 1px solid #b8a888;
+    border-radius: 4px;
+    padding: 14px 16px;
+    transition: all 0.15s ease;
+  }
+
+  .topic-card:hover {
+    border-color: #2b3a1e;
+    box-shadow: 3px 3px 0 #2b3a1e;
+    transform: translate(-1px, -1px);
+  }
+
+  .topic-card .meta {
+    display: block;
+    color: #7a6a50;
+    margin-top: 5px;
+    font-size: 0.85em;
+    line-height: 1.4em;
+  }
+
+  .topic-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  /* ── Question card ── */
+  .question-card {
+    background: #faf6ee;
+    padding: 25px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    border-left: 5px solid #2b3a1e;
+    border-top: 1px solid #c4b8a0;
+    border-right: 1px solid #c4b8a0;
+    border-bottom: 1px solid #c4b8a0;
+  }
+
+  .question-number {
+    color: #6b5a3e;
+    font-weight: bold;
+    margin-bottom: 10px;
+    line-height: 1.4em;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .question-text {
+    font-size: 1.05em;
+    line-height: 1.7;
+    margin-bottom: 18px;
+    color: #1a1410;
+    white-space: pre-line;
+  }
+
+  .options { margin-bottom: 10px; }
+
+  .option-btn {
+    width: 100%;
+    text-align: left;
+    background: #f7f2e8;
+    border: 1px solid #b8a888;
+    border-radius: 4px;
+    padding: 11px 14px;
+    font-size: 0.98em;
+    font-family: 'Courier Prime', 'Courier New', monospace;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    margin-bottom: 8px;
+    color: #1a1410;
+  }
+
+  .option-btn:hover {
+    border-color: #2b3a1e;
+    background: #eee8d8;
+    box-shadow: 2px 2px 0 #2b3a1e;
+    transform: translate(-1px, -1px);
+  }
+
+  .option-btn:disabled { cursor: not-allowed; opacity: 0.75; }
+  .option-btn.correct  { border-color: #2b3a1e; background: #dde8d0; color: #1a2e10; font-weight: bold; }
+  .option-btn.wrong    { border-color: #7a2020; background: #ead8d8; color: #4a1010; }
+
+  /* ── Buttons ── */
+  .btn {
+    padding: 10px 18px;
+    border: 2px solid #5a4e3c;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-family: 'Courier Prime', 'Courier New', monospace;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.15s ease;
+    margin-right: 8px;
+    margin-top: 10px;
+  }
+
+  .btn-small {
+    padding: 8px 12px;
+    margin-right: 0;
+    margin-top: 0;
+    font-size: 0.85em;
+  }
+
+  .btn-primary {
+    background: #2b3a1e;
+    color: #f7f2e8;
+    border-color: #2b3a1e;
+  }
+
+  .btn-primary:hover {
+    background: #3d5228;
+    box-shadow: 3px 3px 0 #1a2410;
+    transform: translate(-1px, -1px);
+  }
+
+  .btn-secondary {
+    background: #f7f2e8;
+    color: #2b3a1e;
+    border-color: #5a4e3c;
+  }
+
+  .btn-secondary:hover {
+    background: #ede8dc;
+    box-shadow: 3px 3px 0 #5a4e3c;
+    transform: translate(-1px, -1px);
+  }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* ── Feedback ── */
+  .feedback {
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-top: 12px;
+    display: none;
+    font-size: 0.95em;
+  }
+
+  .feedback.correct {
+    background: #dde8d0;
+    border: 1px solid #2b3a1e;
+    color: #1a2e10;
+  }
+
+  .feedback.incorrect {
+    background: #ead8d8;
+    border: 1px solid #7a2020;
+    color: #4a1010;
+  }
+
+  .feedback.hint {
+    background: #f0e8d0;
+    border: 1px solid #8b6914;
+    color: #4a3808;
+  }
+
+  /* ── Solution ── */
+  .solution {
+    background: #f0ebe0;
+    padding: 20px;
+    border-radius: 4px;
+    margin-top: 15px;
+    border-left: 5px solid #5a4e3c;
+    border-top: 1px solid #c4b8a0;
+    border-right: 1px solid #c4b8a0;
+    border-bottom: 1px solid #c4b8a0;
+    display: none;
+  }
+
+  .solution h3 {
+    color: #2b3a1e;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.95em;
+  }
+
+  .solution-content {
+    line-height: 1.8;
+    color: #2a1e10;
+    font-size: 0.95em;
+  }
+
+  /* ── Pill badge ── */
+  .pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 2px;
+    background: #2b3a1e;
+    color: #f7f2e8;
+    font-weight: 700;
+    font-size: 0.82em;
+    margin-left: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── Slides panel ── */
+  .slides-panel {
+    margin-top: 18px;
+    background: #faf6ee;
+    border: 1px solid #b8a888;
+    border-radius: 4px;
+    padding: 14px;
+  }
+
+  .slides-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .slides-title   { color: #2b3a1e; font-size: 1em; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  .slides-subtitle { color: #6b5a3e; font-size: 0.88em; margin-top: 2px; font-style: italic; }
+
+  .slides-frame {
+    width: 100%;
+    height: 650px;
+    border: 1px solid #b8a888;
+    border-radius: 4px;
+    background: #f0ebe0;
+  }
+
+  /* ── Module accordion ── */
+  .module-section {
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #b8a888;
+    overflow: hidden;
+    box-shadow: 3px 3px 0 #b8a888;
+  }
+
+  .module-header {
+    background: #2b3a1e;
+    color: #f7f2e8;
+    padding: 11px 18px;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0;
+    margin-bottom: 0;
+  }
+
+  .module-header:hover { background: #3d5228; }
+
+  .mod-title {
+    font-weight: 700;
+    font-size: 0.98em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .mod-arrow {
+    font-size: 0.8em;
+    transition: transform 0.25s ease;
+    display: inline-block;
+  }
+
+  .module-section.open .mod-arrow { transform: rotate(180deg); }
+
+  .module-body {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.35s ease, padding 0.25s ease;
+    padding: 0 8px;
+    background: #f7f2e8;
+  }
+
+  .module-section.open .module-body {
+    max-height: 1200px;
+    padding: 14px 8px 8px 8px;
+  }
+
+  .module-empty {
+    color: #a09070;
+    font-style: italic;
+    font-size: 0.9em;
+    padding: 8px 4px;
+  }
+
+  .note { color: #7a6a50; font-size: 0.88em; margin-top: 8px; text-align: center; }
+</style>
 </head>
 
 <body>
@@ -304,54 +583,66 @@
 
   MODULES.forEach(mod => {
     const modTopics = TOPICS.filter(t => t.moduleKey === mod.key);
+    const totalQ    = modTopics.reduce((sum, t) =>
+      sum + QUESTIONS.filter(q => q.topic === t.key).length, 0);
 
     const section = document.createElement("div");
-    section.className = "module-section";
+    section.className = "module-section"; // closed by default
 
-    /* ── module header ── */
+    /* ── module header (clickable) ── */
     const header = document.createElement("div");
     header.className = "module-header";
     header.innerHTML = `
-      <span class="mod-title">${escapeHtml(mod.key)}: ${escapeHtml(mod.label)}</span>;
+      <span class="mod-title">${escapeHtml(mod.key)}: ${escapeHtml(mod.label)}</span>
+      <span style="display:flex;align-items:center;gap:10px;">
+        ${totalQ > 0 ? `<span class="pill" style="background:rgba(255,255,255,0.25);color:white;">${totalQ} Q</span>` : ""}
+        <span class="mod-arrow">▼</span>
+      </span>`;
+
+    header.addEventListener("click", () => {
+      section.classList.toggle("open");
+    });
     section.appendChild(header);
 
+    /* ── collapsible body ── */
+    const body = document.createElement("div");
+    body.className = "module-body";
+
     if (modTopics.length === 0) {
-      /* placeholder for modules with no questions yet */
       const empty = document.createElement("div");
       empty.className = "module-empty";
       empty.textContent = "No questions added yet for this module.";
-      section.appendChild(empty);
-      wrap.appendChild(section);
-      return;
+      body.appendChild(empty);
+    } else {
+      const grid = document.createElement("div");
+      grid.className = "topic-grid";
+
+      modTopics.forEach(t => {
+        const count = QUESTIONS.filter(q => q.topic === t.key).length;
+        const sc    = scorecard[t.key] || {};
+        const last  = typeof sc.lastScore === "number" ? sc.lastScore+"/"+sc.lastTotal : "—";
+        const best  = typeof sc.bestScore === "number" ? sc.bestScore+"/"+sc.bestTotal : "—";
+        const pdf   = TOPIC_SLIDES[t.key] || "";
+
+        const card = document.createElement("div");
+        card.className = "topic-card";
+        card.innerHTML = `
+          <div><strong>${escapeHtml(t.label)}</strong><span class="pill">${count} Q</span></div>
+          <span class="meta">Last: ${escapeHtml(last)} | Best: ${escapeHtml(best)}</span>
+          <span class="meta">Slides: ${pdf ? escapeHtml(pdf.split("/").pop()) : "Not linked"}</span>
+          <div class="topic-actions">
+            <button class="btn btn-primary   btn-small" data-action="start">Start Quiz</button>
+            <button class="btn btn-secondary btn-small" data-action="view" ${pdf?"":"disabled"}>View Slides</button>
+          </div>`;
+        card.querySelector('[data-action="start"]').addEventListener("click", () => startTopic(t.key));
+        card.querySelector('[data-action="view"]' ).addEventListener("click", () => openSlides(t.key));
+        grid.appendChild(card);
+      });
+
+      body.appendChild(grid);
     }
 
-    /* ── topic grid ── */
-    const grid = document.createElement("div");
-    grid.className = "topic-grid";
-
-    modTopics.forEach(t => {
-      const count = QUESTIONS.filter(q => q.topic === t.key).length;
-      const sc    = scorecard[t.key] || {};
-      const last  = typeof sc.lastScore === "number" ? sc.lastScore+"/"+sc.lastTotal : "—";
-      const best  = typeof sc.bestScore === "number" ? sc.bestScore+"/"+sc.bestTotal : "—";
-      const pdf   = TOPIC_SLIDES[t.key] || "";
-
-      const card = document.createElement("div");
-      card.className = "topic-card";
-      card.innerHTML = `
-        <div><strong>${escapeHtml(t.label)}</strong><span class="pill">${count} Q</span></div>
-        <span class="meta">Last: ${escapeHtml(last)} | Best: ${escapeHtml(best)}</span>
-        <span class="meta">Slides: ${pdf ? escapeHtml(pdf.split("/").pop()) : "Not linked"}</span>
-        <div class="topic-actions">
-          <button class="btn btn-primary   btn-small" data-action="start">Start Quiz</button>
-          <button class="btn btn-secondary btn-small" data-action="view" ${pdf?"":"disabled"}>View Slides</button>
-        </div>`;
-      card.querySelector('[data-action="start"]').addEventListener("click", () => startTopic(t.key));
-      card.querySelector('[data-action="view"]' ).addEventListener("click", () => openSlides(t.key));
-      grid.appendChild(card);
-    });
-
-    section.appendChild(grid);
+    section.appendChild(body);
     wrap.appendChild(section);
   });
 
@@ -361,8 +652,7 @@
       resetScorecard(); scorecard = loadScorecard(); buildTopicMenu();
     }
   };
-}
-  function showTopicScreen() {
+}  function showTopicScreen() {
     document.getElementById("topic-screen").classList.remove("hidden");
     document.getElementById("quiz-content").classList.add("hidden");
     document.getElementById("completion-screen").classList.add("hidden");
