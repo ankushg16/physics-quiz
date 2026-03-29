@@ -419,7 +419,6 @@ TOPICS.push(
   { key: "Particle in a 1D Potential Well", label: "Particle in a one-dimensional potential well" }
 );
 
-
 TOPICS.push(
   { key: "3D Wells & Degeneracy",  label: "3D Potential Wells and Degeneracy" },
   { key: "Quantum Tunneling",       label: "Quantum Tunneling and Transmission" }
@@ -429,386 +428,6 @@ Object.assign(TOPIC_SLIDES, {
   "3D Wells & Degeneracy": "references/Module4.pdf",
   "Quantum Tunneling":      "references/Module4.pdf"
 });
-
-/* ---- Push all 10 Module-4 questions into QUESTIONS ---- */
-QUESTIONS.push(
-
-  // ======================================================
-  // TOPIC 1 — 3D Wells & Degeneracy  (Q1–Q5)
-  // ======================================================
-
-  // Q1 — Energy eigenvalues of a 3D cubic infinite well
-  {
-    topic: "3D Wells & Degeneracy",
-    question: "For a particle trapped inside a 3D infinite potential well with equal side length L, the energy eigenvalue E_{n\u2093,n\u1D67,n_z} is:",
-    options: [
-      "(\u03C0\u00B2\u0127\u00B2/2mL\u00B2)(n\u2093\u00B2 + n\u1D67\u00B2 + n_z\u00B2)",
-      "(\u03C0\u00B2\u0127\u00B2/2mL\u00B2)(n\u2093 + n\u1D67 + n_z)",
-      "(\u03C0\u00B2\u0127/2mL\u00B2)(n\u2093\u00B2 + n\u1D67\u00B2 + n_z\u00B2)",
-      "(\u03C0\u00B2\u0127\u00B2/mL\u00B2)(n\u2093\u00B2 + n\u1D67\u00B2 + n_z\u00B2)"
-    ],
-    correctIndex: 0,
-    hints: [
-      "Separate the 3D Schrodinger equation into three independent 1D problems using the product ansatz psi(x,y,z)=X(x)Y(y)Z(z).",
-      "Each 1D box of length L contributes ni^2 * pi^2 * hbar^2 / (2mL^2). Total energy is the sum of all three contributions."
-    ],
-    solution:
-`Step 1: Separate the 3D Schrodinger equation.
-Inside the box the potential is zero, so -(hbar^2/2m) del^2 psi = E psi.
-With the product ansatz psi(x,y,z) = X(x)Y(y)Z(z), this separates into three independent 1D problems.
-
-Step 2: Solve each 1D infinite well.
-For a 1D infinite square well of length L the quantised energy is:
-  En = n^2 * pi^2 * hbar^2 / (2mL^2),   n = 1, 2, 3, ...
-
-Step 3: Add the three independent contributions.
-  E_{nx,ny,nz} = Ex + Ey + Ez = (pi^2 hbar^2 / 2mL^2)(nx^2 + ny^2 + nz^2).
-
-Step 4: Note the quantum number constraints.
-Each ni must be a positive integer (ni = 1, 2, 3, ...). ni = 0 is excluded because it would make the wavefunction vanish everywhere.
-
-Step 5: Conclude.
-The correct energy eigenvalue is E = (pi^2 hbar^2 / 2mL^2)(nx^2 + ny^2 + nz^2).`
-  },
-
-  // Q2 — Ground state energy of a 3D cubic well
-  {
-    topic: "3D Wells & Degeneracy",
-    question: "What is the ground-state energy of a particle in a 3D cubic infinite potential well of side L?",
-    options: [
-      "3pi^2 hbar^2 / (2mL^2)",
-      "pi^2 hbar^2 / (2mL^2)",
-      "pi^2 hbar^2 / (6mL^2)",
-      "9pi^2 hbar^2 / (2mL^2)"
-    ],
-    correctIndex: 0,
-    hints: [
-      "Ground state means all three quantum numbers take their minimum allowed value.",
-      "Each quantum number ni has minimum value 1 (not 0). Substitute (nx, ny, nz) = (1, 1, 1) into the energy formula."
-    ],
-    solution:
-`Step 1: Identify the ground-state quantum numbers.
-Quantum numbers nx, ny, nz each begin at 1.
-So the ground state is the set (nx, ny, nz) = (1, 1, 1).
-
-Step 2: Apply the energy formula.
-E_{1,1,1} = (pi^2 hbar^2 / 2mL^2)(1^2 + 1^2 + 1^2) = (pi^2 hbar^2 / 2mL^2) x 3.
-
-Step 3: Simplify.
-E_ground = 3 pi^2 hbar^2 / (2mL^2).
-
-Step 4: Physical note — zero-point energy.
-This non-zero ground-state energy is the 3D analogue of the zero-point energy.
-It arises from quantum confinement and the Heisenberg uncertainty principle — the particle cannot be at rest inside the box.
-
-Step 5: Conclude.
-Ground-state energy of the 3D cubic infinite well = 3 pi^2 hbar^2 / (2mL^2).`
-  },
-
-  // Q3 — Degeneracy of the first excited level
-  {
-    topic: "3D Wells & Degeneracy",
-    question: "In a 3D cubic infinite potential well, the first excited energy level has nx^2 + ny^2 + nz^2 = 6. What is its degeneracy?",
-    options: [
-      "3  [states: (2,1,1), (1,2,1), (1,1,2)]",
-      "1  [only state (2,1,1)]",
-      "6  [all permutations including sign changes]",
-      "2  [states (2,2,1) and (1,1,2)]"
-    ],
-    correctIndex: 0,
-    hints: [
-      "Find all ordered triples (nx, ny, nz) of positive integers satisfying nx^2 + ny^2 + nz^2 = 6.",
-      "The only integer combination that works is {2, 1, 1} since 4 + 1 + 1 = 6. Count all distinct orderings."
-    ],
-    solution:
-`Step 1: Set up the search.
-We need all (nx, ny, nz) with ni >= 1 and nx^2 + ny^2 + nz^2 = 6.
-
-Step 2: Enumerate systematically.
-Try nx = 2: 4 + ny^2 + nz^2 = 6  =>  ny^2 + nz^2 = 2  =>  ny = nz = 1.  Valid: (2,1,1).
-Try nx = 1: 1 + ny^2 + nz^2 = 6  =>  ny^2 + nz^2 = 5.
-  ny = 2: nz^2 = 1  =>  nz = 1.  Valid: (1,2,1).
-  ny = 1: nz^2 = 4  =>  nz = 2.  Valid: (1,1,2).
-No other positive-integer combinations satisfy the equation.
-
-Step 3: Count distinct states.
-Three distinct states: (2,1,1), (1,2,1), (1,1,2).
-
-Step 4: Confirm all have the same energy.
-Each gives nx^2 + ny^2 + nz^2 = 6,  so E = 6 pi^2 hbar^2 / (2mL^2) for all three.
-
-Step 5: Conclude.
-The first excited energy level of the 3D cubic infinite well is three-fold (triply) degenerate.`
-  },
-
-  // Q4 — Effect of unequal box dimensions on degeneracy
-  {
-    topic: "3D Wells & Degeneracy",
-    question: "A 3D rectangular infinite potential box has sides Lx, Ly, Lz all different. Compared to the cubic box, what happens to degeneracy?",
-    options: [
-      "Most degeneracies are lifted because permutations of quantum numbers now give distinct energies.",
-      "Degeneracy increases because each dimension introduces its own independent set of energy levels.",
-      "Degeneracy is unaffected — it depends only on the number of quantum numbers, not on the dimensions.",
-      "Only the ground state loses degeneracy; all excited states remain degenerate."
-    ],
-    correctIndex: 0,
-    hints: [
-      "For unequal sides the energy is E = (pi^2 hbar^2 / 2m)(nx^2/Lx^2 + ny^2/Ly^2 + nz^2/Lz^2).",
-      "Swapping quantum numbers between axes (e.g. (2,1,1) vs (1,2,1)) no longer gives the same energy when Lx, Ly, Lz are all different."
-    ],
-    solution:
-`Step 1: Write the energy formula for a rectangular box.
-E_{nx,ny,nz} = (pi^2 hbar^2 / 2m)[nx^2/Lx^2 + ny^2/Ly^2 + nz^2/Lz^2].
-
-Step 2: Revisit the cubic case to see why degeneracy existed.
-When Lx = Ly = Lz = L, the energy simplifies to (pi^2 hbar^2/2mL^2)(nx^2+ny^2+nz^2).
-It depends only on the sum nx^2+ny^2+nz^2, so permutations like (2,1,1), (1,2,1), (1,1,2) all give the same energy => degenerate.
-
-Step 3: Check the asymmetric case.
-When the sides differ, swapping quantum numbers changes the energy:
-  (2,1,1): 4/Lx^2 + 1/Ly^2 + 1/Lz^2
-  (1,2,1): 1/Lx^2 + 4/Ly^2 + 1/Lz^2
-These are generally not equal when Lx != Ly, so the degeneracy is lifted.
-
-Step 4: Physical origin of degeneracy.
-Degeneracy in the cubic box arises from its three-fold rotational symmetry (all sides equal). Removing that symmetry removes the degeneracy.
-
-Step 5: Conclude.
-In a rectangular box with all sides unequal, most degeneracies present in the cubic box are lifted.`
-  },
-
-  // Q5 — Normalized 3D eigenfunction
-  {
-    topic: "3D Wells & Degeneracy",
-    question: "The correctly normalized eigenfunction for a particle in a 3D cubic infinite potential well (side L) is:",
-    options: [
-      "(2/L)^(3/2) sin(nx*pi*x/L) sin(ny*pi*y/L) sin(nz*pi*z/L)",
-      "(1/L)^(3/2) sin(nx*pi*x/L) sin(ny*pi*y/L) sin(nz*pi*z/L)",
-      "(2/L)^(3/2) cos(nx*pi*x/L) cos(ny*pi*y/L) cos(nz*pi*z/L)",
-      "(2/L)^(3/2) exp(i*nx*pi*x/L) exp(i*ny*pi*y/L) exp(i*nz*pi*z/L)"
-    ],
-    correctIndex: 0,
-    hints: [
-      "The 3D wavefunction is a product of three independent 1D eigenfunctions. Each 1D normalized form is sqrt(2/L) sin(ni*pi*xi/L).",
-      "Multiply the three 1D functions: the combined normalization prefactor is [sqrt(2/L)]^3 = (2/L)^(3/2)."
-    ],
-    solution:
-`Step 1: Recall the 1D normalized eigenfunction.
-For a 1D infinite square well of length L (0 <= x <= L):
-  psi_n(x) = sqrt(2/L) sin(n*pi*x/L),   n = 1, 2, 3, ...
-This satisfies the boundary conditions psi(0)=psi(L)=0 and is normalised so that integral |psi|^2 dx = 1.
-
-Step 2: Write the 3D solution as a product.
-Because the 3D potential separates, the full wavefunction is:
-  psi(x,y,z) = psi_nx(x) * psi_ny(y) * psi_nz(z).
-
-Step 3: Multiply out.
-  psi = [sqrt(2/L) sin(nx*pi*x/L)] * [sqrt(2/L) sin(ny*pi*y/L)] * [sqrt(2/L) sin(nz*pi*z/L)].
-
-Step 4: Combine the normalization factors.
-  [sqrt(2/L)]^3 = (2/L)^(3/2).
-
-Step 5: Final answer.
-  psi_{nx,ny,nz}(x,y,z) = (2/L)^(3/2) sin(nx*pi*x/L) sin(ny*pi*y/L) sin(nz*pi*z/L).
-This is normalised so that integral over the cube gives 1.`
-  },
-
-
-  // ======================================================
-  // TOPIC 2 — Quantum Tunneling  (Q6–Q10)
-  // ======================================================
-
-  // Q6 — Conceptual introduction to tunneling
-  {
-    topic: "Quantum Tunneling",
-    question: "A particle with total energy E < V0 encounters a rectangular potential barrier of height V0 and width d. What does quantum mechanics predict?",
-    options: [
-      "A non-zero probability that the particle passes through the barrier (quantum tunneling).",
-      "The particle is completely reflected with 100% probability, as in classical mechanics.",
-      "The particle gains energy inside the barrier to overcome V0.",
-      "The particle is permanently trapped inside the barrier."
-    ],
-    correctIndex: 0,
-    hints: [
-      "Classically, E < V0 means the particle cannot enter the barrier and is totally reflected. Quantum mechanics gives a different answer.",
-      "Inside the classically forbidden region the Schrodinger equation gives an exponentially decaying (not zero) wavefunction, allowing a non-zero transmitted wave beyond the barrier."
-    ],
-    solution:
-`Step 1: Classical prediction.
-If E < V0, classical mechanics says the particle cannot enter the barrier. Reflection is total; transmission is zero.
-
-Step 2: Set up the quantum problem — three regions.
-Region I  (x < 0):        free motion, psi_I  = e^{ikx} + R e^{-ikx},  k = sqrt(2mE)/hbar.
-Region II (0 < x < d):    barrier,     psi_II = A e^{-kappa*x} + B e^{+kappa*x},  kappa = sqrt(2m(V0-E))/hbar.
-Region III (x > d):       free motion, psi_III = T e^{ikx}.
-
-Step 3: Key observation inside the barrier.
-Because V0 > E, the Schrodinger equation gives d^2 psi/dx^2 = +kappa^2 psi (positive RHS).
-Solutions are real exponentials, NOT oscillatory. The wavefunction decays but does NOT vanish.
-
-Step 4: Apply boundary conditions.
-Continuity of psi and dpsi/dx at x = 0 and x = d links the three regions.
-Since psi_II(d) is not zero, a transmitted wave psi_III exists — even though E < V0.
-
-Step 5: Conclude.
-Quantum mechanics predicts a non-zero transmission probability.
-This phenomenon is called quantum tunneling.`
-  },
-
-  // Q7 — Decay constant kappa
-  {
-    topic: "Quantum Tunneling",
-    question: "The spatial decay constant kappa of the wavefunction inside a rectangular potential barrier (height V0 > E) is:",
-    options: [
-      "kappa = sqrt(2m(V0 - E)) / hbar",
-      "kappa = sqrt(2m*V0) / hbar",
-      "kappa = sqrt(2m*E) / hbar",
-      "kappa = sqrt(2m(V0 + E)) / hbar"
-    ],
-    correctIndex: 0,
-    hints: [
-      "Start from the time-independent Schrodinger equation inside the barrier: -(hbar^2/2m) d^2psi/dx^2 + V0*psi = E*psi.",
-      "Rearrange to get d^2psi/dx^2 = kappa^2 * psi, then read off kappa^2 = 2m(V0 - E)/hbar^2."
-    ],
-    solution:
-`Step 1: Write the TISE inside the barrier.
-  -(hbar^2/2m) d^2psi/dx^2 + V0*psi = E*psi.
-
-Step 2: Rearrange.
-  d^2psi/dx^2 = [2m(V0 - E)/hbar^2] * psi.
-
-Step 3: Identify kappa^2.
-  Let kappa^2 = 2m(V0 - E)/hbar^2.
-  Since V0 > E, kappa^2 > 0 (real positive number).
-  The equation becomes d^2psi/dx^2 = kappa^2 * psi, giving exponential (not oscillatory) solutions.
-
-Step 4: Extract kappa.
-  kappa = sqrt(2m(V0 - E)) / hbar.
-
-Step 5: Physical interpretation of kappa.
-  kappa sets the penetration length 1/kappa into the barrier.
-  Larger (V0 - E) or heavier mass m => larger kappa => wavefunction decays more rapidly inside the barrier.`
-  },
-
-  // Q8 — Transmission coefficient formula
-  {
-    topic: "Quantum Tunneling",
-    question: "The approximate tunneling transmission coefficient T for a wide rectangular barrier (kappa*d >> 1) is:",
-    options: [
-      "T ≈ exp(-2*kappa*d),  where kappa = sqrt(2m(V0-E))/hbar",
-      "T ≈ exp(+2*kappa*d)",
-      "T ≈ (kappa*d)^2",
-      "T ≈ 1 / (kappa*d)"
-    ],
-    correctIndex: 0,
-    hints: [
-      "Inside the barrier psi ~ e^{-kappa*x}. After traversing distance d, the amplitude is ~ e^{-kappa*d}.",
-      "Transmission probability = |amplitude|^2 = (e^{-kappa*d})^2 = e^{-2*kappa*d}."
-    ],
-    solution:
-`Step 1: Write the decaying wavefunction inside the barrier (dominant term for wide barrier).
-  psi_II(x) ≈ A e^{-kappa*x}.
-
-Step 2: Evaluate the amplitude at the far edge of the barrier x = d.
-  psi_II(d) ≈ A e^{-kappa*d}.
-
-Step 3: The transmitted amplitude is proportional to psi_II(d).
-  Transmitted amplitude ∝ e^{-kappa*d}.
-
-Step 4: Compute the transmission probability (probability = |amplitude|^2).
-  T = |transmitted amplitude|^2 / |incident amplitude|^2 ≈ e^{-2*kappa*d}.
-
-Step 5: Full expression with prefactor (for reference).
-  More precisely: T ≈ 16(E/V0)(1 - E/V0) * e^{-2*kappa*d}.
-  For wide barriers (kappa*d >> 1), the exponential factor dominates completely.
-
-Step 6: Conclude.
-  T ≈ exp(-2*kappa*d)  is the standard approximate result.`
-  },
-
-  // Q9 — Dependence of T on barrier width
-  {
-    topic: "Quantum Tunneling",
-    question: "If the barrier width d is doubled while all other parameters (V0, E, m) remain fixed, the tunneling probability T changes as:",
-    options: [
-      "T → T^2  (the new T is the square of the original T)",
-      "T → T/2  (T halves linearly)",
-      "T → 2T   (T doubles)",
-      "T remains unchanged"
-    ],
-    correctIndex: 0,
-    hints: [
-      "Use T ≈ e^{-2*kappa*d}. Replace d with 2d and compare.",
-      "e^{-2*kappa*(2d)} = e^{-4*kappa*d} = (e^{-2*kappa*d})^2 = T^2."
-    ],
-    solution:
-`Step 1: Write the original transmission probability.
-  T1 = e^{-2*kappa*d}.
-
-Step 2: Write the transmission probability for the doubled barrier width 2d.
-  T2 = e^{-2*kappa*(2d)} = e^{-4*kappa*d}.
-
-Step 3: Express T2 in terms of T1.
-  T2 = (e^{-2*kappa*d})^2 = T1^2.
-
-Step 4: Interpret quantitatively.
-  Since T1 < 1 (it is a probability), T1^2 < T1.
-  Example: if T1 = 0.01, then T2 = 0.0001 — a factor of 100 reduction for only a factor of 2 increase in width.
-
-Step 5: Physical significance.
-  The exponential dependence on width means tunneling probability is extremely sensitive to barrier thickness.
-  This is why quantum tunneling is significant at the atomic/nuclear scale (angstroms and femtometers) but completely negligible for macroscopic barriers.
-
-Step 6: Conclude.
-  Doubling the barrier width squares the transmission coefficient: T → T^2.`
-  },
-
-  // Q10 — Real-world applications of tunneling
-  {
-    topic: "Quantum Tunneling",
-    question: "Which of the following is NOT a real-world phenomenon or application of quantum tunneling?",
-    options: [
-      "Electrical resistance of a thick bulk copper wire at room temperature",
-      "Alpha decay of radioactive nuclei",
-      "Scanning tunneling microscopy (STM)",
-      "Tunnel diodes and Josephson junctions in electronics"
-    ],
-    correctIndex: 0,
-    hints: [
-      "Alpha decay, STM, and tunnel diodes all explicitly require a particle to cross a classically forbidden energy barrier.",
-      "Ask yourself: what is the primary mechanism for current flow in a normal thick metallic conductor — is there any classically forbidden barrier involved?"
-    ],
-    solution:
-`Step 1: Check alpha decay.
-The alpha particle sits inside a nucleus, confined by the nuclear potential.
-Classically it does not have enough energy to escape over the Coulomb barrier.
-Quantum mechanically it tunnels through the barrier — this is the entire mechanism of alpha decay.
-=> This IS a tunneling phenomenon.
-
-Step 2: Check scanning tunneling microscopy (STM).
-The STM tip is positioned nanometres above a conducting surface.
-Electrons tunnel through the vacuum gap (a classically forbidden region) between tip and sample.
-The current varies exponentially with tip-surface distance, consistent with T ~ e^{-2*kappa*d}.
-=> This IS a tunneling phenomenon.
-
-Step 3: Check tunnel diodes and Josephson junctions.
-Tunnel diodes rely on electrons tunneling through a thin depletion or insulating layer.
-Josephson junctions involve Cooper pairs tunneling through a thin insulator between superconductors.
-=> Both ARE tunneling phenomena.
-
-Step 4: Check resistance of a thick copper wire.
-In a normal metallic conductor current flows by drift of conduction electrons in an applied electric field.
-The dominant resistance mechanism is scattering from phonons and crystal impurities — classical electron transport.
-No classically forbidden energy barrier is present; the electrons move freely through the conduction band.
-=> This is NOT a tunneling application.
-
-Step 5: Conclude.
-The correct answer is: electrical resistance of a thick bulk copper wire.`
-  }
-
-); /* ===== End of Module 4 QUESTIONS.push ===== */
-
-
 
 Object.assign(TOPIC_SLIDES, {
   "Observables & Operators": "references/BPHY-Lecture-11.pdf",
@@ -2472,8 +2091,388 @@ Since 2n + 1 increases as n increases, the separation between adjacent levels be
 This is why the infinite well differs from systems such as the harmonic oscillator, where the energy spacing is uniform. In the well, the allowed standing-wave pattern leads naturally to a quadratic spectrum.
 
 Therefore the levels are not equally spaced because E_n scales as n^2 rather than linearly with n.`
-  }
+  }  
 ];
+
+/* ---- Push all 10 Module-4 questions into QUESTIONS ---- */
+QUESTIONS.push(
+
+  // ======================================================
+  // TOPIC 1 — 3D Wells & Degeneracy  (Q1–Q5)
+  // ======================================================
+
+  // Q1 — Energy eigenvalues of a 3D cubic infinite well
+  {
+    topic: "3D Wells & Degeneracy",
+    question: "For a particle trapped inside a 3D infinite potential well with equal side length L, the energy eigenvalue E_{n\u2093,n\u1D67,n_z} is:",
+    options: [
+      "(\u03C0\u00B2\u0127\u00B2/2mL\u00B2)(n\u2093\u00B2 + n\u1D67\u00B2 + n_z\u00B2)",
+      "(\u03C0\u00B2\u0127\u00B2/2mL\u00B2)(n\u2093 + n\u1D67 + n_z)",
+      "(\u03C0\u00B2\u0127/2mL\u00B2)(n\u2093\u00B2 + n\u1D67\u00B2 + n_z\u00B2)",
+      "(\u03C0\u00B2\u0127\u00B2/mL\u00B2)(n\u2093\u00B2 + n\u1D67\u00B2 + n_z\u00B2)"
+    ],
+    correctIndex: 0,
+    hints: [
+      "Separate the 3D Schrodinger equation into three independent 1D problems using the product ansatz psi(x,y,z)=X(x)Y(y)Z(z).",
+      "Each 1D box of length L contributes ni^2 * pi^2 * hbar^2 / (2mL^2). Total energy is the sum of all three contributions."
+    ],
+    solution:
+`Step 1: Separate the 3D Schrodinger equation.
+Inside the box the potential is zero, so -(hbar^2/2m) del^2 psi = E psi.
+With the product ansatz psi(x,y,z) = X(x)Y(y)Z(z), this separates into three independent 1D problems.
+
+Step 2: Solve each 1D infinite well.
+For a 1D infinite square well of length L the quantised energy is:
+  En = n^2 * pi^2 * hbar^2 / (2mL^2),   n = 1, 2, 3, ...
+
+Step 3: Add the three independent contributions.
+  E_{nx,ny,nz} = Ex + Ey + Ez = (pi^2 hbar^2 / 2mL^2)(nx^2 + ny^2 + nz^2).
+
+Step 4: Note the quantum number constraints.
+Each ni must be a positive integer (ni = 1, 2, 3, ...). ni = 0 is excluded because it would make the wavefunction vanish everywhere.
+
+Step 5: Conclude.
+The correct energy eigenvalue is E = (pi^2 hbar^2 / 2mL^2)(nx^2 + ny^2 + nz^2).`
+  },
+
+  // Q2 — Ground state energy of a 3D cubic well
+  {
+    topic: "3D Wells & Degeneracy",
+    question: "What is the ground-state energy of a particle in a 3D cubic infinite potential well of side L?",
+    options: [
+      "3pi^2 hbar^2 / (2mL^2)",
+      "pi^2 hbar^2 / (2mL^2)",
+      "pi^2 hbar^2 / (6mL^2)",
+      "9pi^2 hbar^2 / (2mL^2)"
+    ],
+    correctIndex: 0,
+    hints: [
+      "Ground state means all three quantum numbers take their minimum allowed value.",
+      "Each quantum number ni has minimum value 1 (not 0). Substitute (nx, ny, nz) = (1, 1, 1) into the energy formula."
+    ],
+    solution:
+`Step 1: Identify the ground-state quantum numbers.
+Quantum numbers nx, ny, nz each begin at 1.
+So the ground state is the set (nx, ny, nz) = (1, 1, 1).
+
+Step 2: Apply the energy formula.
+E_{1,1,1} = (pi^2 hbar^2 / 2mL^2)(1^2 + 1^2 + 1^2) = (pi^2 hbar^2 / 2mL^2) x 3.
+
+Step 3: Simplify.
+E_ground = 3 pi^2 hbar^2 / (2mL^2).
+
+Step 4: Physical note — zero-point energy.
+This non-zero ground-state energy is the 3D analogue of the zero-point energy.
+It arises from quantum confinement and the Heisenberg uncertainty principle — the particle cannot be at rest inside the box.
+
+Step 5: Conclude.
+Ground-state energy of the 3D cubic infinite well = 3 pi^2 hbar^2 / (2mL^2).`
+  },
+
+  // Q3 — Degeneracy of the first excited level
+  {
+    topic: "3D Wells & Degeneracy",
+    question: "In a 3D cubic infinite potential well, the first excited energy level has nx^2 + ny^2 + nz^2 = 6. What is its degeneracy?",
+    options: [
+      "3  [states: (2,1,1), (1,2,1), (1,1,2)]",
+      "1  [only state (2,1,1)]",
+      "6  [all permutations including sign changes]",
+      "2  [states (2,2,1) and (1,1,2)]"
+    ],
+    correctIndex: 0,
+    hints: [
+      "Find all ordered triples (nx, ny, nz) of positive integers satisfying nx^2 + ny^2 + nz^2 = 6.",
+      "The only integer combination that works is {2, 1, 1} since 4 + 1 + 1 = 6. Count all distinct orderings."
+    ],
+    solution:
+`Step 1: Set up the search.
+We need all (nx, ny, nz) with ni >= 1 and nx^2 + ny^2 + nz^2 = 6.
+
+Step 2: Enumerate systematically.
+Try nx = 2: 4 + ny^2 + nz^2 = 6  =>  ny^2 + nz^2 = 2  =>  ny = nz = 1.  Valid: (2,1,1).
+Try nx = 1: 1 + ny^2 + nz^2 = 6  =>  ny^2 + nz^2 = 5.
+  ny = 2: nz^2 = 1  =>  nz = 1.  Valid: (1,2,1).
+  ny = 1: nz^2 = 4  =>  nz = 2.  Valid: (1,1,2).
+No other positive-integer combinations satisfy the equation.
+
+Step 3: Count distinct states.
+Three distinct states: (2,1,1), (1,2,1), (1,1,2).
+
+Step 4: Confirm all have the same energy.
+Each gives nx^2 + ny^2 + nz^2 = 6,  so E = 6 pi^2 hbar^2 / (2mL^2) for all three.
+
+Step 5: Conclude.
+The first excited energy level of the 3D cubic infinite well is three-fold (triply) degenerate.`
+  },
+
+  // Q4 — Effect of unequal box dimensions on degeneracy
+  {
+    topic: "3D Wells & Degeneracy",
+    question: "A 3D rectangular infinite potential box has sides Lx, Ly, Lz all different. Compared to the cubic box, what happens to degeneracy?",
+    options: [
+      "Most degeneracies are lifted because permutations of quantum numbers now give distinct energies.",
+      "Degeneracy increases because each dimension introduces its own independent set of energy levels.",
+      "Degeneracy is unaffected — it depends only on the number of quantum numbers, not on the dimensions.",
+      "Only the ground state loses degeneracy; all excited states remain degenerate."
+    ],
+    correctIndex: 0,
+    hints: [
+      "For unequal sides the energy is E = (pi^2 hbar^2 / 2m)(nx^2/Lx^2 + ny^2/Ly^2 + nz^2/Lz^2).",
+      "Swapping quantum numbers between axes (e.g. (2,1,1) vs (1,2,1)) no longer gives the same energy when Lx, Ly, Lz are all different."
+    ],
+    solution:
+`Step 1: Write the energy formula for a rectangular box.
+E_{nx,ny,nz} = (pi^2 hbar^2 / 2m)[nx^2/Lx^2 + ny^2/Ly^2 + nz^2/Lz^2].
+
+Step 2: Revisit the cubic case to see why degeneracy existed.
+When Lx = Ly = Lz = L, the energy simplifies to (pi^2 hbar^2/2mL^2)(nx^2+ny^2+nz^2).
+It depends only on the sum nx^2+ny^2+nz^2, so permutations like (2,1,1), (1,2,1), (1,1,2) all give the same energy => degenerate.
+
+Step 3: Check the asymmetric case.
+When the sides differ, swapping quantum numbers changes the energy:
+  (2,1,1): 4/Lx^2 + 1/Ly^2 + 1/Lz^2
+  (1,2,1): 1/Lx^2 + 4/Ly^2 + 1/Lz^2
+These are generally not equal when Lx != Ly, so the degeneracy is lifted.
+
+Step 4: Physical origin of degeneracy.
+Degeneracy in the cubic box arises from its three-fold rotational symmetry (all sides equal). Removing that symmetry removes the degeneracy.
+
+Step 5: Conclude.
+In a rectangular box with all sides unequal, most degeneracies present in the cubic box are lifted.`
+  },
+
+  // Q5 — Normalized 3D eigenfunction
+  {
+    topic: "3D Wells & Degeneracy",
+    question: "The correctly normalized eigenfunction for a particle in a 3D cubic infinite potential well (side L) is:",
+    options: [
+      "(2/L)^(3/2) sin(nx*pi*x/L) sin(ny*pi*y/L) sin(nz*pi*z/L)",
+      "(1/L)^(3/2) sin(nx*pi*x/L) sin(ny*pi*y/L) sin(nz*pi*z/L)",
+      "(2/L)^(3/2) cos(nx*pi*x/L) cos(ny*pi*y/L) cos(nz*pi*z/L)",
+      "(2/L)^(3/2) exp(i*nx*pi*x/L) exp(i*ny*pi*y/L) exp(i*nz*pi*z/L)"
+    ],
+    correctIndex: 0,
+    hints: [
+      "The 3D wavefunction is a product of three independent 1D eigenfunctions. Each 1D normalized form is sqrt(2/L) sin(ni*pi*xi/L).",
+      "Multiply the three 1D functions: the combined normalization prefactor is [sqrt(2/L)]^3 = (2/L)^(3/2)."
+    ],
+    solution:
+`Step 1: Recall the 1D normalized eigenfunction.
+For a 1D infinite square well of length L (0 <= x <= L):
+  psi_n(x) = sqrt(2/L) sin(n*pi*x/L),   n = 1, 2, 3, ...
+This satisfies the boundary conditions psi(0)=psi(L)=0 and is normalised so that integral |psi|^2 dx = 1.
+
+Step 2: Write the 3D solution as a product.
+Because the 3D potential separates, the full wavefunction is:
+  psi(x,y,z) = psi_nx(x) * psi_ny(y) * psi_nz(z).
+
+Step 3: Multiply out.
+  psi = [sqrt(2/L) sin(nx*pi*x/L)] * [sqrt(2/L) sin(ny*pi*y/L)] * [sqrt(2/L) sin(nz*pi*z/L)].
+
+Step 4: Combine the normalization factors.
+  [sqrt(2/L)]^3 = (2/L)^(3/2).
+
+Step 5: Final answer.
+  psi_{nx,ny,nz}(x,y,z) = (2/L)^(3/2) sin(nx*pi*x/L) sin(ny*pi*y/L) sin(nz*pi*z/L).
+This is normalised so that integral over the cube gives 1.`
+  },
+
+
+  // ======================================================
+  // TOPIC 2 — Quantum Tunneling  (Q6–Q10)
+  // ======================================================
+
+  // Q6 — Conceptual introduction to tunneling
+  {
+    topic: "Quantum Tunneling",
+    question: "A particle with total energy E < V0 encounters a rectangular potential barrier of height V0 and width d. What does quantum mechanics predict?",
+    options: [
+      "A non-zero probability that the particle passes through the barrier (quantum tunneling).",
+      "The particle is completely reflected with 100% probability, as in classical mechanics.",
+      "The particle gains energy inside the barrier to overcome V0.",
+      "The particle is permanently trapped inside the barrier."
+    ],
+    correctIndex: 0,
+    hints: [
+      "Classically, E < V0 means the particle cannot enter the barrier and is totally reflected. Quantum mechanics gives a different answer.",
+      "Inside the classically forbidden region the Schrodinger equation gives an exponentially decaying (not zero) wavefunction, allowing a non-zero transmitted wave beyond the barrier."
+    ],
+    solution:
+`Step 1: Classical prediction.
+If E < V0, classical mechanics says the particle cannot enter the barrier. Reflection is total; transmission is zero.
+
+Step 2: Set up the quantum problem — three regions.
+Region I  (x < 0):        free motion, psi_I  = e^{ikx} + R e^{-ikx},  k = sqrt(2mE)/hbar.
+Region II (0 < x < d):    barrier,     psi_II = A e^{-kappa*x} + B e^{+kappa*x},  kappa = sqrt(2m(V0-E))/hbar.
+Region III (x > d):       free motion, psi_III = T e^{ikx}.
+
+Step 3: Key observation inside the barrier.
+Because V0 > E, the Schrodinger equation gives d^2 psi/dx^2 = +kappa^2 psi (positive RHS).
+Solutions are real exponentials, NOT oscillatory. The wavefunction decays but does NOT vanish.
+
+Step 4: Apply boundary conditions.
+Continuity of psi and dpsi/dx at x = 0 and x = d links the three regions.
+Since psi_II(d) is not zero, a transmitted wave psi_III exists — even though E < V0.
+
+Step 5: Conclude.
+Quantum mechanics predicts a non-zero transmission probability.
+This phenomenon is called quantum tunneling.`
+  },
+
+  // Q7 — Decay constant kappa
+  {
+    topic: "Quantum Tunneling",
+    question: "The spatial decay constant kappa of the wavefunction inside a rectangular potential barrier (height V0 > E) is:",
+    options: [
+      "kappa = sqrt(2m(V0 - E)) / hbar",
+      "kappa = sqrt(2m*V0) / hbar",
+      "kappa = sqrt(2m*E) / hbar",
+      "kappa = sqrt(2m(V0 + E)) / hbar"
+    ],
+    correctIndex: 0,
+    hints: [
+      "Start from the time-independent Schrodinger equation inside the barrier: -(hbar^2/2m) d^2psi/dx^2 + V0*psi = E*psi.",
+      "Rearrange to get d^2psi/dx^2 = kappa^2 * psi, then read off kappa^2 = 2m(V0 - E)/hbar^2."
+    ],
+    solution:
+`Step 1: Write the TISE inside the barrier.
+  -(hbar^2/2m) d^2psi/dx^2 + V0*psi = E*psi.
+
+Step 2: Rearrange.
+  d^2psi/dx^2 = [2m(V0 - E)/hbar^2] * psi.
+
+Step 3: Identify kappa^2.
+  Let kappa^2 = 2m(V0 - E)/hbar^2.
+  Since V0 > E, kappa^2 > 0 (real positive number).
+  The equation becomes d^2psi/dx^2 = kappa^2 * psi, giving exponential (not oscillatory) solutions.
+
+Step 4: Extract kappa.
+  kappa = sqrt(2m(V0 - E)) / hbar.
+
+Step 5: Physical interpretation of kappa.
+  kappa sets the penetration length 1/kappa into the barrier.
+  Larger (V0 - E) or heavier mass m => larger kappa => wavefunction decays more rapidly inside the barrier.`
+  },
+
+  // Q8 — Transmission coefficient formula
+  {
+    topic: "Quantum Tunneling",
+    question: "The approximate tunneling transmission coefficient T for a wide rectangular barrier (kappa*d >> 1) is:",
+    options: [
+      "T ≈ exp(-2*kappa*d),  where kappa = sqrt(2m(V0-E))/hbar",
+      "T ≈ exp(+2*kappa*d)",
+      "T ≈ (kappa*d)^2",
+      "T ≈ 1 / (kappa*d)"
+    ],
+    correctIndex: 0,
+    hints: [
+      "Inside the barrier psi ~ e^{-kappa*x}. After traversing distance d, the amplitude is ~ e^{-kappa*d}.",
+      "Transmission probability = |amplitude|^2 = (e^{-kappa*d})^2 = e^{-2*kappa*d}."
+    ],
+    solution:
+`Step 1: Write the decaying wavefunction inside the barrier (dominant term for wide barrier).
+  psi_II(x) ≈ A e^{-kappa*x}.
+
+Step 2: Evaluate the amplitude at the far edge of the barrier x = d.
+  psi_II(d) ≈ A e^{-kappa*d}.
+
+Step 3: The transmitted amplitude is proportional to psi_II(d).
+  Transmitted amplitude ∝ e^{-kappa*d}.
+
+Step 4: Compute the transmission probability (probability = |amplitude|^2).
+  T = |transmitted amplitude|^2 / |incident amplitude|^2 ≈ e^{-2*kappa*d}.
+
+Step 5: Full expression with prefactor (for reference).
+  More precisely: T ≈ 16(E/V0)(1 - E/V0) * e^{-2*kappa*d}.
+  For wide barriers (kappa*d >> 1), the exponential factor dominates completely.
+
+Step 6: Conclude.
+  T ≈ exp(-2*kappa*d)  is the standard approximate result.`
+  },
+
+  // Q9 — Dependence of T on barrier width
+  {
+    topic: "Quantum Tunneling",
+    question: "If the barrier width d is doubled while all other parameters (V0, E, m) remain fixed, the tunneling probability T changes as:",
+    options: [
+      "T → T^2  (the new T is the square of the original T)",
+      "T → T/2  (T halves linearly)",
+      "T → 2T   (T doubles)",
+      "T remains unchanged"
+    ],
+    correctIndex: 0,
+    hints: [
+      "Use T ≈ e^{-2*kappa*d}. Replace d with 2d and compare.",
+      "e^{-2*kappa*(2d)} = e^{-4*kappa*d} = (e^{-2*kappa*d})^2 = T^2."
+    ],
+    solution:
+`Step 1: Write the original transmission probability.
+  T1 = e^{-2*kappa*d}.
+
+Step 2: Write the transmission probability for the doubled barrier width 2d.
+  T2 = e^{-2*kappa*(2d)} = e^{-4*kappa*d}.
+
+Step 3: Express T2 in terms of T1.
+  T2 = (e^{-2*kappa*d})^2 = T1^2.
+
+Step 4: Interpret quantitatively.
+  Since T1 < 1 (it is a probability), T1^2 < T1.
+  Example: if T1 = 0.01, then T2 = 0.0001 — a factor of 100 reduction for only a factor of 2 increase in width.
+
+Step 5: Physical significance.
+  The exponential dependence on width means tunneling probability is extremely sensitive to barrier thickness.
+  This is why quantum tunneling is significant at the atomic/nuclear scale (angstroms and femtometers) but completely negligible for macroscopic barriers.
+
+Step 6: Conclude.
+  Doubling the barrier width squares the transmission coefficient: T → T^2.`
+  },
+
+  // Q10 — Real-world applications of tunneling
+  {
+    topic: "Quantum Tunneling",
+    question: "Which of the following is NOT a real-world phenomenon or application of quantum tunneling?",
+    options: [
+      "Electrical resistance of a thick bulk copper wire at room temperature",
+      "Alpha decay of radioactive nuclei",
+      "Scanning tunneling microscopy (STM)",
+      "Tunnel diodes and Josephson junctions in electronics"
+    ],
+    correctIndex: 0,
+    hints: [
+      "Alpha decay, STM, and tunnel diodes all explicitly require a particle to cross a classically forbidden energy barrier.",
+      "Ask yourself: what is the primary mechanism for current flow in a normal thick metallic conductor — is there any classically forbidden barrier involved?"
+    ],
+    solution:
+`Step 1: Check alpha decay.
+The alpha particle sits inside a nucleus, confined by the nuclear potential.
+Classically it does not have enough energy to escape over the Coulomb barrier.
+Quantum mechanically it tunnels through the barrier — this is the entire mechanism of alpha decay.
+=> This IS a tunneling phenomenon.
+
+Step 2: Check scanning tunneling microscopy (STM).
+The STM tip is positioned nanometres above a conducting surface.
+Electrons tunnel through the vacuum gap (a classically forbidden region) between tip and sample.
+The current varies exponentially with tip-surface distance, consistent with T ~ e^{-2*kappa*d}.
+=> This IS a tunneling phenomenon.
+
+Step 3: Check tunnel diodes and Josephson junctions.
+Tunnel diodes rely on electrons tunneling through a thin depletion or insulating layer.
+Josephson junctions involve Cooper pairs tunneling through a thin insulator between superconductors.
+=> Both ARE tunneling phenomena.
+
+Step 4: Check resistance of a thick copper wire.
+In a normal metallic conductor current flows by drift of conduction electrons in an applied electric field.
+The dominant resistance mechanism is scattering from phonons and crystal impurities — classical electron transport.
+No classically forbidden energy barrier is present; the electrons move freely through the conduction band.
+=> This is NOT a tunneling application.
+
+Step 5: Conclude.
+The correct answer is: electrical resistance of a thick bulk copper wire.`
+  }
+
+); /* ===== End of Module 4 QUESTIONS.push ===== */
+  
+
 
   /***********************
    * Utilities
