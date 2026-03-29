@@ -220,12 +220,12 @@
 <script>
   /* Syllabus modules — fixed, matches BAPHY105 */
   const MODULES = [
-    { key: "Module1", label: "Wave-Particle Duality",               },
-    { key: "Module2", label: "Mathematical Foundations of QM",      },
-    { key: "Module3", label: "Postulates of Quantum Mechanics",     },
-    { key: "Module4", label: "Applications of Quantum Mechanics",   },
-    { key: "Module5", label: "Elements of Quantum Computing",       }
-  ];
+  { key: "M1", label: "Wave-Particle Duality",             hours: 8  },
+  { key: "M2", label: "Mathematical Foundations of QM",    hours: 10 },
+  { key: "M3", label: "Postulates of Quantum Mechanics",   hours: 8  },
+  { key: "M4", label: "Applications of Quantum Mechanics", hours: 7  },
+  { key: "M5", label: "Elements of Quantum Computing",     hours: 10 }
+ ];
 
   const TOPICS       = [];   /* question files push into this */
   const TOPIC_SLIDES = {};
@@ -312,8 +312,7 @@
     const header = document.createElement("div");
     header.className = "module-header";
     header.innerHTML = `
-      <span class="mod-title">${escapeHtml(mod.key)}: ${escapeHtml(mod.label)}</span>
-      <span class="mod-meta">${mod.hours} hrs</span>`;
+      <span class="mod-title">${escapeHtml(mod.key)}: ${escapeHtml(mod.label)}</span>;
     section.appendChild(header);
 
     if (modTopics.length === 0) {

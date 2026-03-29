@@ -11,8 +11,8 @@ TOPICS.push(
   { key: "Operators & Special Operators", label: "Linear + Hermitian/Unitary/Projection", moduleKey: "M2" },
   { key: "Matrix Algebra",                label: "Matrix algebra",                        moduleKey: "M2" },
   { key: "Eigenvalues & Eigenvectors",    label: "Eigenvalues and eigenvectors",          moduleKey: "M2" },
-  { key: "Pauli Matrices",               label: "Pauli matrices",                        moduleKey: "M2" },
-  { key: "Commutation Relations",        label: "Commutation relations",                 moduleKey: "M2" }
+  { key: "Pauli Matrices",                label: "Pauli matrices",                        moduleKey: "M2" },
+  { key: "Commutation Relations",         label: "Commutation relations",                 moduleKey: "M2" }
 );
 
 Object.assign(TOPIC_SLIDES, {
