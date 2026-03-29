@@ -3,330 +3,145 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Engineering Physics Quiz type questions</title>
+  <title>Engineering Physics Quiz</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
       padding: 20px;
     }
-
     .container {
-      max-width: 980px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-      padding: 30px;
+      max-width: 980px; margin: 0 auto; background: white;
+      border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); padding: 30px;
     }
-
     h1 { color: #667eea; text-align: center; margin-bottom: 10px; }
     .subtitle { text-align: center; color: #666; margin-bottom: 18px; font-size: 0.95em; }
-
     .stats {
-      display: flex;
-      justify-content: space-around;
-      margin: 16px 0 20px 0;
-      padding: 15px;
-      background: #f8f9fa;
-      border-radius: 8px;
-      gap: 10px;
-      flex-wrap: wrap;
+      display: flex; justify-content: space-around;
+      margin: 16px 0 20px 0; padding: 15px;
+      background: #f8f9fa; border-radius: 8px; gap: 10px; flex-wrap: wrap;
     }
-
     .stat-item { text-align: center; min-width: 140px; }
     .stat-value { font-size: 1.8em; font-weight: bold; color: #667eea; }
     .stat-label { color: #666; font-size: 0.9em; }
-
     .progress-bar {
-      background: #f0f0f0;
-      height: 10px;
-      border-radius: 5px;
-      margin-bottom: 20px;
-      overflow: hidden;
+      background: #f0f0f0; height: 10px;
+      border-radius: 5px; margin-bottom: 20px; overflow: hidden;
     }
-
     .progress-fill {
       height: 100%;
       background: linear-gradient(90deg, #667eea, #764ba2);
       transition: width 0.3s ease;
     }
-
     .hidden { display: none; }
-
-    /* Topic menu */
     .topic-screen {
-      background: #f8f9fa;
-      padding: 22px;
-      border-radius: 12px;
-      border-left: 5px solid #667eea;
-      margin-bottom: 20px;
+      background: #f8f9fa; padding: 22px; border-radius: 12px;
+      border-left: 5px solid #667eea; margin-bottom: 20px;
     }
-
-    .topic-title {
-      color: #333;
-      font-size: 1.2em;
-      margin-bottom: 8px;
-      text-align: center;
-    }
-
-    .topic-subtitle {
-      color: #666;
-      text-align: center;
-      margin-bottom: 16px;
-      font-size: 0.95em;
-    }
-
-    .topic-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 10px;
-    }
-
-    @media (min-width: 780px) {
-      .topic-grid { grid-template-columns: 1fr 1fr; }
-    }
-
-    /* Topic card (replaces clickable single button) */
+    .topic-title { color: #333; font-size: 1.2em; margin-bottom: 8px; text-align: center; }
+    .topic-subtitle { color: #666; text-align: center; margin-bottom: 16px; font-size: 0.95em; }
+    .topic-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px; }
+    @media (min-width: 780px) { .topic-grid { grid-template-columns: 1fr 1fr; } }
     .topic-card {
-      background: #ffffff;
-      border: 2px solid #ddd;
-      border-radius: 12px;
-      padding: 14px 16px;
-      transition: all 0.2s ease;
+      background: #ffffff; border: 2px solid #ddd;
+      border-radius: 12px; padding: 14px 16px; transition: all 0.2s ease;
     }
-
     .topic-card:hover {
       border-color: #667eea;
-      box-shadow: 0 3px 12px rgba(102, 126, 234, 0.18);
+      box-shadow: 0 3px 12px rgba(102,126,234,0.18);
       transform: translateY(-1px);
     }
-
-    .topic-card .meta {
-      display: block;
-      color: #666;
-      margin-top: 6px;
-      font-size: 0.9em;
-      line-height: 1.35em;
-    }
-
-    .topic-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
-
-    /* Quiz card */
+    .topic-card .meta { display: block; color: #666; margin-top: 6px; font-size: 0.9em; line-height: 1.35em; }
+    .topic-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
     .question-card {
-      background: #f8f9fa;
-      padding: 25px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      border-left: 5px solid #667eea;
+      background: #f8f9fa; padding: 25px; border-radius: 10px;
+      margin-bottom: 20px; border-left: 5px solid #667eea;
     }
-
-    .question-number {
-      color: #667eea;
-      font-weight: bold;
-      margin-bottom: 10px;
-      line-height: 1.4em;
-    }
-
-    .question-text {
-      font-size: 1.1em;
-      line-height: 1.6;
-      margin-bottom: 18px;
-      color: #333;
-      white-space: pre-line;
-    }
-
+    .question-number { color: #667eea; font-weight: bold; margin-bottom: 10px; line-height: 1.4em; }
+    .question-text { font-size: 1.1em; line-height: 1.6; margin-bottom: 18px; color: #333; white-space: pre-line; }
     .options { margin-bottom: 10px; }
-
     .option-btn {
-      width: 100%;
-      text-align: left;
-      background: #ffffff;
-      border: 2px solid #ddd;
-      border-radius: 10px;
-      padding: 12px 14px;
-      font-size: 1em;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      margin-bottom: 10px;
+      width: 100%; text-align: left; background: #ffffff; border: 2px solid #ddd;
+      border-radius: 10px; padding: 12px 14px; font-size: 1em; cursor: pointer;
+      transition: all 0.2s ease; margin-bottom: 10px;
     }
-
     .option-btn:hover {
       border-color: #667eea;
-      box-shadow: 0 3px 12px rgba(102, 126, 234, 0.18);
+      box-shadow: 0 3px 12px rgba(102,126,234,0.18);
       transform: translateY(-1px);
     }
-
     .option-btn:disabled { cursor: not-allowed; opacity: 0.88; }
     .option-btn.correct { border-color: #28a745; background: #d4edda; }
-    .option-btn.wrong { border-color: #dc3545; background: #f8d7da; }
-
+    .option-btn.wrong   { border-color: #dc3545; background: #f8d7da; }
     .btn {
-      padding: 12px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1em;
-      font-weight: 600;
-      transition: all 0.3s;
-      margin-right: 10px;
-      margin-top: 10px;
+      padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer;
+      font-size: 1em; font-weight: 600; transition: all 0.3s;
+      margin-right: 10px; margin-top: 10px;
     }
-
-    .btn-small {
-      padding: 10px 14px;
-      margin-right: 0;
-      margin-top: 0;
-      font-size: 0.95em;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-    }
-
+    .btn-small { padding: 10px 14px; margin-right: 0; margin-top: 0; font-size: 0.95em; }
+    .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
     .btn-secondary { background: #6c757d; color: white; }
     .btn-secondary:hover { background: #5a6268; }
-
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none !important;
-      box-shadow: none !important;
-    }
-
-    .feedback {
-      padding: 15px;
-      border-radius: 8px;
-      margin-top: 15px;
-      display: none;
-    }
-
-    .feedback.correct { background: #d4edda; border: 2px solid #28a745; color: #155724; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+    .feedback { padding: 15px; border-radius: 8px; margin-top: 15px; display: none; }
+    .feedback.correct   { background: #d4edda; border: 2px solid #28a745; color: #155724; }
     .feedback.incorrect { background: #f8d7da; border: 2px solid #dc3545; color: #721c24; }
-    .feedback.hint { background: #fff3cd; border: 2px solid #ffc107; color: #856404; }
-
+    .feedback.hint      { background: #fff3cd; border: 2px solid #ffc107; color: #856404; }
     .solution {
-      background: #e7f3ff;
-      padding: 20px;
-      border-radius: 8px;
-      margin-top: 15px;
-      border-left: 5px solid #2196F3;
-      display: none;
+      background: #e7f3ff; padding: 20px; border-radius: 8px;
+      margin-top: 15px; border-left: 5px solid #2196F3; display: none;
     }
-
     .solution h3 { color: #2196F3; margin-bottom: 10px; }
     .solution-content { line-height: 1.75; color: #333; }
-
     .pill {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: #eef2ff;
-      color: #3b4cca;
-      font-weight: 600;
-      font-size: 0.9em;
-      margin-left: 6px;
+      display: inline-block; padding: 4px 10px; border-radius: 999px;
+      background: #eef2ff; color: #3b4cca; font-weight: 600;
+      font-size: 0.9em; margin-left: 6px;
     }
-
-    /* Slides panel */
     .slides-panel {
-      margin-top: 18px;
-      background: #ffffff;
-      border: 2px solid #ddd;
-      border-radius: 12px;
-      padding: 14px;
+      margin-top: 18px; background: #ffffff; border: 2px solid #ddd;
+      border-radius: 12px; padding: 14px;
     }
-
     .slides-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 10px;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 10px; flex-wrap: wrap; margin-bottom: 10px;
     }
-
-    .slides-title {
-      color: #333;
-      font-size: 1.05em;
-      font-weight: 700;
-    }
-
-    .slides-subtitle {
-      color: #666;
-      font-size: 0.92em;
-      margin-top: 2px;
-    }
-
+    .slides-title  { color: #333; font-size: 1.05em; font-weight: 700; }
+    .slides-subtitle { color: #666; font-size: 0.92em; margin-top: 2px; }
     .slides-frame {
-      width: 100%;
-      height: 650px;
-      border: 2px solid #ddd;
-      border-radius: 12px;
-      background: #f8f9fa;
+      width: 100%; height: 650px; border: 2px solid #ddd;
+      border-radius: 12px; background: #f8f9fa;
     }
-
-    .note {
-      color: #666;
-      font-size: 0.9em;
-      margin-top: 8px;
-      text-align: center;
-    }
+    .note { color: #666; font-size: 0.9em; margin-top: 8px; text-align: center; }
   </style>
 </head>
 
 <body>
 <div class="container">
   <h1>🎓 Engineering Physics Quiz</h1>
-  <div class="subtitle">BAPHY105: Operators, Matrices, Eigenvalues, Pauli & Commutators</div>
+  <div class="subtitle">BAPHY105 — All Modules</div>
 
   <div class="stats">
-    <div class="stat-item">
-      <div class="stat-value" id="stat-topic">—</div>
-      <div class="stat-label">Current Topic</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-value" id="stat-q">—</div>
-      <div class="stat-label">Question</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-value" id="stat-score">0</div>
-      <div class="stat-label">Score</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-value" id="stat-attempts">0</div>
-      <div class="stat-label">Attempts</div>
-    </div>
+    <div class="stat-item"><div class="stat-value" id="stat-topic">—</div><div class="stat-label">Current Topic</div></div>
+    <div class="stat-item"><div class="stat-value" id="stat-q">—</div><div class="stat-label">Question</div></div>
+    <div class="stat-item"><div class="stat-value" id="stat-score">0</div><div class="stat-label">Score</div></div>
+    <div class="stat-item"><div class="stat-value" id="stat-attempts">0</div><div class="stat-label">Attempts</div></div>
   </div>
 
   <div class="progress-bar">
-    <div class="progress-fill" id="progress" style="width: 0%"></div>
+    <div class="progress-fill" id="progress" style="width:0%"></div>
   </div>
 
   <!-- Topic selection -->
   <div id="topic-screen" class="topic-screen">
     <div class="topic-title">Choose a topic</div>
-    <div class="topic-subtitle">Each topic has 10 questions. Options are shuffled every time.</div>
-
+    <div class="topic-subtitle">Options are shuffled every time.</div>
     <div id="topic-buttons" class="topic-grid"></div>
-
     <div style="text-align:center;">
-      <button class="btn btn-primary" id="start-all-btn">Start Full Quiz (All Topics)</button>
+      <button class="btn btn-primary"   id="start-all-btn">Start Full Quiz (All Topics)</button>
       <button class="btn btn-secondary" id="reset-scores-btn">Reset Saved Scores</button>
     </div>
 
@@ -338,13 +153,12 @@
           <div class="slides-subtitle" id="slides-topic">—</div>
         </div>
         <div class="topic-actions" style="margin-top:0;">
-          <a class="btn btn-primary btn-small" id="slides-download" href="#" download>Download PDF</a>
-          <a class="btn btn-secondary btn-small" id="slides-open-pdf" href="#" target="_blank" rel="noopener">Open PDF</a>
+          <a  class="btn btn-primary btn-small"   id="slides-download"  href="#" download>Download PDF</a>
+          <a  class="btn btn-secondary btn-small" id="slides-open-pdf"  href="#" target="_blank" rel="noopener">Open PDF</a>
           <button class="btn btn-secondary btn-small" id="slides-close-btn" type="button">Close</button>
         </div>
       </div>
-
-      <iframe id="slides-frame" class="slides-frame" src="" loading="lazy" title="PDF.js slides viewer"></iframe>
+      <iframe id="slides-frame" class="slides-frame" src="" loading="lazy" title="PDF.js viewer"></iframe>
     </div>
   </div>
 
@@ -353,2140 +167,48 @@
 
   <!-- Completion -->
   <div id="completion-screen" class="hidden">
-    <h2 style="text-align: center; color: #667eea; margin-bottom: 12px;">🎉 Quiz Completed!</h2>
-
+    <h2 style="text-align:center;color:#667eea;margin-bottom:12px;">🎉 Quiz Completed!</h2>
     <div class="stats">
-      <div class="stat-item">
-        <div class="stat-value" id="final-topic">—</div>
-        <div class="stat-label">Topic</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-value" id="final-score">0</div>
-        <div class="stat-label">Score</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-value" id="final-total">0</div>
-        <div class="stat-label">Total Questions</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-value" id="final-accuracy">0%</div>
-        <div class="stat-label">Accuracy</div>
-      </div>
+      <div class="stat-item"><div class="stat-value" id="final-topic">—</div><div class="stat-label">Topic</div></div>
+      <div class="stat-item"><div class="stat-value" id="final-score">0</div><div class="stat-label">Score</div></div>
+      <div class="stat-item"><div class="stat-value" id="final-total">0</div><div class="stat-label">Total</div></div>
+      <div class="stat-item"><div class="stat-value" id="final-accuracy">0%</div><div class="stat-label">Accuracy</div></div>
     </div>
-
-    <div style="text-align:center; margin-top: 6px;">
+    <div style="text-align:center;margin-top:6px;">
       <button class="btn btn-secondary" onclick="backToTopics()">Back to Topics</button>
-      <button class="btn btn-primary" onclick="restartSameTopic()">Retry Same Topic</button>
+      <button class="btn btn-primary"   onclick="restartSameTopic()">Retry Same Topic</button>
     </div>
   </div>
 </div>
 
+<!-- ══════════════════════════════════════════════════
+     STEP 1 — shared containers  (modules push into these)
+     ══════════════════════════════════════════════════ -->
 <script>
-  /***********************
-   * Topics
-   ***********************/
-  const TOPICS = [
-    { key: "Operators & Special Operators", label: "Linear + Hermitian/Unitary/Projection" },
-    { key: "Matrix Algebra", label: "Matrix algebra" },
-    { key: "Eigenvalues & Eigenvectors", label: "Eigenvalues and eigenvectors" },
-    { key: "Pauli Matrices", label: "Pauli matrices" },
-    { key: "Commutation Relations", label: "Commutation relations" }
-  ];
+  const TOPICS       = [];
+  const TOPIC_SLIDES = {};
+  const QUESTIONS    = [];
+</script>
 
-  /***********************
-   * Slides mapping (EDIT THESE FILENAMES)
-   * Keep PDFs inside: references/
-   ***********************/
-  const TOPIC_SLIDES = {
-    "Operators & Special Operators": "references/BPHY-Lecture-10.pdf",
-    "Matrix Algebra": "references/BPHY-Lecture-10.pdf",
-    "Eigenvalues & Eigenvectors": "references/BPHY-Lecture-10.pdf",
-    "Pauli Matrices": "references/BPHY-Lecture-11.pdf",
-    "Commutation Relations": "references/BPHY-Lecture-11.pdf"
-  };
-  
-  /* =========================================================
-   ADD-ONLY PATCH 1: new topics + slide references
-   Paste after your existing TOPIC_SLIDES object
-   ========================================================= */
+<!-- ══════════════════════════════════════════════════
+     STEP 2 — load each question module
+     ══════════════════════════════════════════════════ -->
+<script src="questions/module1.js"></script>
+<script src="questions/module2.js"></script>
+<script src="questions/module3.js"></script>
+<script src="questions/module4.js"></script>
+<script src="questions/module5.js"></script>
 
-TOPICS.push(
-  { key: "Observables & Operators", label: "Observables and operators" },
-  { key: "Expectation Values & Uncertainty", label: "Expectation values and uncertainty" },
-  { key: "Measurement in Quantum Mechanics", label: "Measurement in quantum mechanics" },
-  { key: "Sequential Stern-Gerlach", label: "Sequential Stern-Gerlach experiment" },
-  { key: "Schrödinger Equations", label: "TDSE and TISE" },
-  { key: "Particle in a 1D Potential Well", label: "Particle in a one-dimensional potential well" }
-);
+<!-- ══════════════════════════════════════════════════
+     STEP 3 — app logic  (runs after all modules loaded)
+     ══════════════════════════════════════════════════ -->
+<script>
+  const letters     = ["A","B","C","D"];
+  const STORAGE_KEY = "baphy105_scorecard_v1";
 
-TOPICS.push(
-  { key: "3D Wells & Degeneracy",  label: "3D Potential Wells and Degeneracy" },
-  { key: "Quantum Tunneling",       label: "Quantum Tunneling and Transmission" }
-);
-
-Object.assign(TOPIC_SLIDES, {
-  "3D Wells & Degeneracy": "references/Module4.pdf",
-  "Quantum Tunneling":      "references/Module4.pdf"
-});
-
-Object.assign(TOPIC_SLIDES, {
-  "Observables & Operators": "references/BPHY-Lecture-11.pdf",
-  "Expectation Values & Uncertainty": "references/BPHY-Lecture-12.pdf",
-  "Measurement in Quantum Mechanics": "references/BPHY-Lecture-12.pdf",
-  "Sequential Stern-Gerlach": "references/BPHY-Lecture-14.pdf",
-  "Schrödinger Equations": "references/BPHY-Lecture-13.pdf",
-  "Particle in a 1D Potential Well": "references/BPHY-Lecture-15.pdf"
-});
-
-
-  function pdfJsViewerUrl(pdfPath) {
-    const absolutePdfUrl = new URL(pdfPath, window.location.href).href;
-    return "pdfjs/web/viewer.html?file=" + encodeURIComponent(absolutePdfUrl);
+  function escapeHtml(s) {
+    return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
   }
-
-  function openSlides(topicKey) {
-    const pdfPath = TOPIC_SLIDES[topicKey];
-    if (!pdfPath) {
-      alert("Slides not linked for this topic yet. Add the PDF filename in TOPIC_SLIDES.");
-      return;
-    }
-
-    const panel = document.getElementById("slides-panel");
-    panel.classList.remove("hidden");
-
-    document.getElementById("slides-topic").textContent = `${topicKey} — ${pdfPath.split("/").pop()}`;
-    document.getElementById("slides-frame").src = pdfJsViewerUrl(pdfPath);
-    document.getElementById("slides-download").href = pdfPath;
-    document.getElementById("slides-open-pdf").href = pdfPath;
-
-    panel.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
-  function closeSlides() {
-    const panel = document.getElementById("slides-panel");
-    document.getElementById("slides-frame").src = "";
-    panel.classList.add("hidden");
-  }
-
-  /***********************
-   * Question bank (50)
-   * 10 questions per topic
-   ***********************/
-  const QUESTIONS = [
-    // ==============================
-    // Operators & Special Operators
-    // ==============================
-    {
-      topic: "Operators & Special Operators",
-      question: "Which mapping is NOT linear (operator on functions f)?",
-      options: ["L(f)=f^2", "L(f)=d f/dx", "L(f)=3f", "L(f)=x f(x)"],
-      correctIndex: 0,
-      hints: ["Test L(f+g) ?= L(f)+L(g).", "Squaring usually breaks additivity."],
-      solution:
-`Step 1: Recall the linearity (additivity) test.
-A linear operator L must satisfy L(f+g) = L(f) + L(g) for all functions f,g.
-
-Step 2: Test L(f)=f^2 using additivity.
-L(f+g) = (f+g)^2 = f^2 + 2fg + g^2.
-
-Step 3: Compare with L(f)+L(g).
-L(f)+L(g) = f^2 + g^2.
-
-Step 4: Conclude.
-Since (f+g)^2 ≠ f^2 + g^2 in general (the cross term 2fg is extra), L(f)=f^2 is NOT linear.
-Therefore the correct option is L(f)=f^2.`
-    },
-    {
-      topic: "Operators & Special Operators",
-      question: "Which statement is always true for any operator A?",
-      options: ["A†A is Hermitian", "A is Hermitian", "A commutes with every operator", "A is invertible"],
-      correctIndex: 0,
-      hints: ["Take the dagger: (A†A)† = A†(A†)†.", "That becomes A†A."],
-      solution:
-`Step 1: Use the definition of Hermitian.
-An operator H is Hermitian if H† = H.
-
-Step 2: Compute the adjoint of A†A.
-(A†A)† = A†† A† = A A†?  Be careful: (XY)† = Y† X†.
-So (A†A)† = A†† (A†) = A A†? Actually:
-Let X = A† and Y = A, then (XY)† = Y† X† = A† (A†)† = A† A.
-
-Step 3: Conclude.
-(A†A)† = A†A, hence A†A is Hermitian for any A.
-
-Step 4: Why other options fail.
-A itself need not be Hermitian; A need not commute with all operators; A need not be invertible.`
-    },
-    {
-      topic: "Operators & Special Operators",
-      question: "Hermitian condition (matrix/operator H) is:",
-      options: ["H = H†", "H†H = I", "H^2 = H", "det(H)=1"],
-      correctIndex: 0,
-      hints: ["Hermitian means equal to its conjugate transpose.", "Unitary and projector are different conditions."],
-      solution:
-`Step 1: Write the definition.
-Hermitian (self-adjoint) means H equals its adjoint: H = H†.
-
-Step 2: Interpret the distractors.
-H†H = I is the unitary condition.
-H^2 = H is the idempotent (projector-like) condition (not sufficient alone in QM).
-det(H)=1 is unrelated to being Hermitian.
-
-Step 3: Conclude.
-Therefore, the Hermitian condition is H = H†.`
-    },
-    {
-      topic: "Operators & Special Operators",
-      question: "Unitary condition (matrix/operator U) is:",
-      options: ["U†U = I", "U = U†", "U^2 = U", "tr(U)=0"],
-      correctIndex: 0,
-      hints: ["Unitary means inverse equals dagger.", "So U†U must be identity."],
-      solution:
-`Step 1: Start from the definition.
-U is unitary if it preserves inner products (norms), equivalently U−1 = U†.
-
-Step 2: Convert to an algebraic condition.
-If U−1 = U†, then multiplying by U on the right gives U†U = I.
-(Also UU† = I for unitary operators.)
-
-Step 3: Check distractors.
-U = U† is Hermitian, not unitary in general.
-U^2 = U is projector-like (idempotent).
-tr(U)=0 is not a defining property.
-
-Step 4: Conclude.
-Therefore the unitary condition is U†U = I.`
-    },
-    {
-      topic: "Operators & Special Operators",
-      question: "A projection operator P (in QM sense) must satisfy:",
-      options: ["P^2 = P and P = P†", "P^2 = I and P = P†", "P†P = I", "P = 0 only"],
-      correctIndex: 0,
-      hints: ["Project twice = project once.", "Projectors are Hermitian in QM."],
-      solution:
-`Step 1: Use the meaning of “projection”.
-Projecting twice gives the same result as projecting once, so P is idempotent:
-P^2 = P.
-
-Step 2: QM projection operators are also Hermitian.
-In QM, projectors correspond to observables (yes/no outcomes), so P must satisfy:
-P† = P.
-
-Step 3: Compare with other options.
-P^2 = I describes an involution (e.g., reflection), not a projector.
-P†P = I describes unitarity.
-P = 0 is only one trivial projector, not “must”.
-
-Step 4: Conclude.
-A projection operator must satisfy P^2 = P and P = P†.`
-    },
-    {
-      topic: "Operators & Special Operators",
-      question: "Let P = |u⟩⟨u|. When is P a projection operator?",
-      options: ["When ⟨u|u⟩ = 1", "When ⟨u|u⟩ = 0", "Always, for any |u⟩", "Only if |u⟩ is an eigenvector of every operator"],
-      correctIndex: 0,
-      hints: ["Check P^2 = |u⟩⟨u|u⟩⟨u|.", "You need ⟨u|u⟩ = 1 for idempotence."],
-      solution:
-`Step 1: Compute P^2.
-P^2 = (|u⟩⟨u|)(|u⟩⟨u|) = |u⟩(⟨u|u⟩)⟨u| = (⟨u|u⟩) |u⟩⟨u|.
-
-Step 2: Impose the projector condition P^2 = P.
-We need (⟨u|u⟩) P = P.
-
-Step 3: Conclude the condition on |u⟩.
-This requires ⟨u|u⟩ = 1 (assuming P is not the zero operator).
-
-Step 4: Quick checks.
-If ⟨u|u⟩ = 0 then |u⟩ is the zero vector, giving P = 0 (trivial).
-So the correct condition for a nontrivial projector is ⟨u|u⟩ = 1.`
-    },
-    {
-      topic: "Operators & Special Operators",
-      question: "If P and Q are projection operators and PQ = QP, then which is also a projection operator?",
-      options: ["PQ", "P + Q (always)", "P − Q (always)", "P + Q − I (always)"],
-      correctIndex: 0,
-      hints: ["Check (PQ)^2 when P^2=P and Q^2=Q.", "Commuting matters."],
-      solution:
-`Step 1: Use the projector properties of P and Q.
-P^2 = P and Q^2 = Q, and (in QM) P† = P and Q† = Q.
-
-Step 2: Check idempotence for PQ.
-(PQ)^2 = PQPQ.
-If P and Q commute, PQ = QP, then:
-(PQ)^2 = P(QP)Q = P(PQ)Q = (P^2)(Q^2) = PQ.
-
-Step 3: Check Hermitian property.
-(PQ)† = Q† P† = QP = PQ (since they commute).
-So PQ is Hermitian.
-
-Step 4: Conclude.
-Thus PQ satisfies (PQ)^2 = PQ and (PQ)† = PQ, so PQ is also a projection operator.`
-    },
-    {
-      topic: "Operators & Special Operators",
-      question: "If A and B are Hermitian, then the commutator [A,B] is:",
-      options: ["Anti-Hermitian (skew-Hermitian)", "Hermitian", "Unitary", "A projection"],
-      correctIndex: 0,
-      hints: ["Compute (AB−BA)†.", "You get a minus sign."],
-      solution:
-`Step 1: Start with the definition of the commutator.
-[A,B] = AB − BA.
-
-Step 2: Take the adjoint.
-([A,B])† = (AB − BA)† = (AB)† − (BA)†.
-
-Step 3: Use (XY)† = Y† X† and A†=A, B†=B (Hermitian).
-(AB)† = B†A† = BA.
-(BA)† = A†B† = AB.
-
-Step 4: Substitute.
-([A,B])† = BA − AB = −(AB − BA) = −[A,B].
-
-Step 5: Conclude.
-An operator K with K† = −K is anti-Hermitian (skew-Hermitian).
-So [A,B] is anti-Hermitian.`
-    },
-    {
-      topic: "Operators & Special Operators",
-      question: "If U is unitary and U|χ⟩=λ|χ⟩, then:",
-      options: ["|λ| = 1", "λ must be real", "λ must be 0", "λ must be ±2"],
-      correctIndex: 0,
-      hints: ["Unitary preserves norm: ||U|χ⟩|| = |||χ⟩||.", "So |λ| must be 1."],
-      solution:
-`Step 1: Use the property of unitary operators.
-Unitary means U†U = I, so norms are preserved:
-||U|χ⟩||^2 = ⟨χ|U†U|χ⟩ = ⟨χ|χ⟩.
-
-Step 2: Use the eigenvalue equation.
-If U|χ⟩ = λ|χ⟩, then:
-||U|χ⟩||^2 = ||λ|χ⟩||^2 = |λ|^2 ⟨χ|χ⟩.
-
-Step 3: Compare Step 1 and Step 2.
-|λ|^2 ⟨χ|χ⟩ = ⟨χ|χ⟩.
-
-Step 4: Conclude.
-For nonzero |χ⟩, ⟨χ|χ⟩ ≠ 0, hence |λ|^2 = 1 ⇒ |λ| = 1.
-So unitary eigenvalues lie on the unit circle (not necessarily real).`
-    },
-    {
-      topic: "Operators & Special Operators",
-      question: "If [A,B]=0, then which is true?",
-      options: ["[f(A),B]=0 for any polynomial f", "[A,B]=I", "A and B must be equal", "A must be unitary"],
-      correctIndex: 0,
-      hints: ["If AB=BA, then A^nB = BA^n.", "So any polynomial in A also commutes with B."],
-      solution:
-`Step 1: Translate the commutator condition.
-[A,B]=0 means AB − BA = 0, i.e., AB = BA.
-
-Step 2: Show powers of A commute with B.
-From AB=BA:
-A^2B = A(AB) = A(BA) = (AB)A = (BA)A = BA^2.
-By induction, A^n B = B A^n for all integers n ≥ 1.
-
-Step 3: Use a polynomial f(A).
-If f(A) = c0 I + c1 A + c2 A^2 + ... + ck A^k, then:
-f(A)B = (c0 I)B + c1 AB + c2 A^2B + ... + ck A^kB
-      = B(c0 I) + c1 BA + c2 BA^2 + ... + ck BA^k
-      = B f(A).
-
-Step 4: Conclude.
-So [f(A),B] = f(A)B − Bf(A) = 0 for any polynomial f.`
-    },
-
-    // ==============
-    // Matrix Algebra
-    // ==============
-    {
-      topic: "Matrix Algebra",
-      question: "For a 2×2 matrix A = [[a,b],[c,d]], det(A) equals:",
-      options: ["ad − bc", "ab − cd", "a + d", "b + c"],
-      correctIndex: 0,
-      hints: ["Use the standard 2×2 determinant formula.", "Diagonal product minus off-diagonal product."],
-      solution:
-`Step 1: Recall the determinant of a 2×2 matrix.
-For A = [[a,b],[c,d]], det(A) = a d − b c.
-
-Step 2: Quick reasoning.
-Determinant measures (signed) area scaling; the formula comes from expansion along a row/column.
-
-Step 3: Conclude.
-Therefore det(A) = ad − bc.`
-    },
-    {
-      topic: "Matrix Algebra",
-      question: "Which identity is always true (same-size matrices A,B)?",
-      options: ["tr(AB)=tr(BA)", "det(A+B)=det(A)+det(B)", "(A+B)^2 = A^2 + B^2", "AB=BA always"],
-      correctIndex: 0,
-      hints: ["Trace has cyclic property for products.", "Commutativity of matrices is not guaranteed."],
-      solution:
-`Step 1: Use the cyclic property of trace.
-For compatible matrices, trace is invariant under cyclic permutations:
-tr(AB) = tr(BA).
-
-Step 2: Why the other statements fail.
-det(A+B) generally ≠ det(A)+det(B).
-(A+B)^2 = A^2 + AB + BA + B^2, which equals A^2+B^2 only if AB+BA=0.
-AB=BA is not true for general matrices.
-
-Step 3: Conclude.
-The always-true identity is tr(AB)=tr(BA).`
-    },
-    {
-      topic: "Matrix Algebra",
-      question: "Transpose of a product satisfies:",
-      options: ["(AB)^T = B^T A^T", "(AB)^T = A^T B^T", "(AB)^T = AB", "(AB)^T = A + B"],
-      correctIndex: 0,
-      hints: ["Order reverses under transpose.", "Try a 2×2 example to verify."],
-      solution:
-`Step 1: Recall the rule.
-Transpose reverses the order of multiplication:
-(AB)^T = B^T A^T.
-
-Step 2: Why the order reverses.
-Because (AB)_{ij} = Σ_k A_{ik} B_{kj}, then transposing swaps i and j, effectively swapping the factors.
-
-Step 3: Conclude.
-So (AB)^T = B^T A^T.`
-    },
-    {
-      topic: "Matrix Algebra",
-      question: "Conjugate-transpose (dagger) of a product satisfies:",
-      options: ["(AB)† = B† A†", "(AB)† = A† B†", "(AB)† = AB", "(AB)† = A + B"],
-      correctIndex: 0,
-      hints: ["Dagger reverses order like transpose.", "Also complex-conjugates entries."],
-      solution:
-`Step 1: Dagger means conjugate transpose.
-So it both transposes (which reverses order) and complex-conjugates entries.
-
-Step 2: Apply the product rule.
-(AB)† = (AB)̄^T = (B̄ Ā)^T = (Ā)^T (B̄)^T? In standard operator notation:
-(AB)† = B† A†.
-
-Step 3: Conclude.
-Therefore (AB)† = B† A†.`
-    },
-    {
-      topic: "Matrix Algebra",
-      question: "Find x such that det([[x,1],[2,3]]) = 0.",
-      options: ["x = 2/3", "x = 3/2", "x = -2/3", "x = 0"],
-      correctIndex: 0,
-      hints: ["det = 3x − 2.", "Set 3x − 2 = 0."],
-      solution:
-`Step 1: Compute the determinant.
-det([[x,1],[2,3]]) = x·3 − 1·2 = 3x − 2.
-
-Step 2: Set determinant to zero.
-3x − 2 = 0.
-
-Step 3: Solve.
-3x = 2 ⇒ x = 2/3.
-
-Step 4: Conclude.
-So the correct value is x = 2/3.`
-    },
-    {
-      topic: "Matrix Algebra",
-      question: "If Q is an orthogonal matrix (real), then:",
-      options: ["Q^{-1} = Q^T", "Q^{-1} = Q", "Q^TQ = 0", "det(Q)=0 always"],
-      correctIndex: 0,
-      hints: ["Orthogonal means Q^T Q = I.", "So multiply both sides appropriately."],
-      solution:
-`Step 1: Start from the definition of orthogonal.
-A real matrix Q is orthogonal if Q^T Q = I.
-
-Step 2: Compare with the definition of inverse.
-By definition, Q^{-1} is the matrix such that Q^{-1}Q = I.
-
-Step 3: Identify Q^{-1}.
-Since Q^T Q = I, we can read off that Q^T acts as the inverse of Q:
-Q^{-1} = Q^T.
-
-Step 4: Note.
-Orthogonal matrices have det(Q)=±1, not necessarily 0.`
-    },
-    {
-      topic: "Matrix Algebra",
-      question: "If A is invertible, which statement is true?",
-      options: ["det(A) ≠ 0", "tr(A) ≠ 0", "A must be diagonal", "A must be symmetric"],
-      correctIndex: 0,
-      hints: ["Invertibility is tied to determinant for square matrices.", "Trace can be zero even if invertible."],
-      solution:
-`Step 1: Use a key theorem for square matrices.
-A is invertible ⇔ det(A) ≠ 0.
-
-Step 2: Intuition.
-det(A)=0 means A squashes volume to zero, so it cannot have an inverse.
-
-Step 3: Check distractors.
-tr(A) can be 0 even for invertible matrices (e.g., [[1,0],[0,−1]]).
-Invertible matrices need not be diagonal or symmetric.
-
-Step 4: Conclude.
-So the true statement is det(A) ≠ 0.`
-    },
-    {
-      topic: "Matrix Algebra",
-      question: "Which is always true for identity matrix I?",
-      options: ["AI = IA = A", "AI = I", "IA = 0", "AI = A^2"],
-      correctIndex: 0,
-      hints: ["Identity behaves like multiplying by 1.", "It should not change A."],
-      solution:
-`Step 1: Recall the role of the identity matrix.
-I acts like the multiplicative identity: multiplying by I leaves a matrix unchanged.
-
-Step 2: Apply on both sides.
-AI = A and IA = A.
-
-Step 3: Conclude.
-Therefore AI = IA = A is always true.`
-    },
-    {
-      topic: "Matrix Algebra",
-      question: "If U is unitary, which statement is always true?",
-      options: ["U^{-1} = U†", "U = U†", "U^2 = U", "det(U)=0"],
-      correctIndex: 0,
-      hints: ["Definition: U†U=I.", "Compare with inverse definition."],
-      solution:
-`Step 1: Start from the unitary definition.
-Unitary means U†U = I (and also UU† = I).
-
-Step 2: Compare with inverse definition.
-U^{-1} is defined by U^{-1}U = I.
-
-Step 3: Identify the inverse.
-Since U†U = I, U† serves as the left-inverse; for square matrices it is the inverse:
-U^{-1} = U†.
-
-Step 4: Conclude.
-So U^{-1} = U† is always true for a unitary matrix.`
-    },
-    {
-      topic: "Matrix Algebra",
-      question: "Trace under similarity transform: for invertible S, tr(S^{-1}AS) equals:",
-      options: ["tr(A)", "det(A)", "rank(A)", "0 always"],
-      correctIndex: 0,
-      hints: ["Trace is invariant under similarity transforms.", "Try A diagonal and S change-of-basis."],
-      solution:
-`Step 1: Use cyclicity of trace.
-tr(XY) = tr(YX). More generally, tr(XYZ) = tr(ZXY).
-
-Step 2: Apply to tr(S^{-1}AS).
-tr(S^{-1}AS) = tr(A S S^{-1}) by cycling the factors.
-
-Step 3: Simplify.
-SS^{-1} = I, so tr(A S S^{-1}) = tr(AI) = tr(A).
-
-Step 4: Conclude.
-Thus tr(S^{-1}AS) = tr(A).`
-    },
-
-    // ==========================
-    // Eigenvalues & Eigenvectors
-    // ==========================
-    {
-      topic: "Eigenvalues & Eigenvectors",
-      question: "Eigenvalues λ of A are found from:",
-      options: ["det(A − λI)=0", "tr(A − λI)=0", "A − λI = 0 (always)", "det(A)=0 (always)"],
-      correctIndex: 0,
-      hints: ["Characteristic polynomial comes from determinant.", "Nontrivial solutions require determinant zero."],
-      solution:
-`Step 1: Start from the eigenvalue equation.
-Av = λv for some nonzero vector v.
-
-Step 2: Rearrange.
-(A − λI)v = 0.
-
-Step 3: Nontrivial solutions condition.
-A homogeneous system (A − λI)v = 0 has a nonzero solution iff det(A − λI) = 0.
-
-Step 4: Conclude.
-So eigenvalues satisfy det(A − λI)=0 (the characteristic equation).`
-    },
-    {
-      topic: "Eigenvalues & Eigenvectors",
-      question: "For A = [[2,1],[1,2]], eigenvalues are:",
-      options: ["1 and 3", "0 and 4", "2 and 2", "-1 and 5"],
-      correctIndex: 0,
-      hints: ["det([[2−λ,1],[1,2−λ]])=(2−λ)^2−1.", "Set to 0."],
-      solution:
-`Step 1: Form A − λI.
-A − λI = [[2−λ, 1],[1, 2−λ]].
-
-Step 2: Compute determinant.
-det(A − λI) = (2−λ)(2−λ) − 1·1 = (2−λ)^2 − 1.
-
-Step 3: Set to zero.
-(2−λ)^2 − 1 = 0 ⇒ (2−λ)^2 = 1 ⇒ 2−λ = ±1.
-
-Step 4: Solve.
-If 2−λ = 1 ⇒ λ = 1.
-If 2−λ = −1 ⇒ λ = 3.
-
-Step 5: Conclude.
-Eigenvalues are 1 and 3.`
-    },
-    {
-      topic: "Eigenvalues & Eigenvectors",
-      question: "For A = [[2,1],[1,2]], an eigenvector for λ=3 is proportional to:",
-      options: ["(1,1)", "(1,−1)", "(2,0)", "(0,2)"],
-      correctIndex: 0,
-      hints: ["Solve (A−3I)v=0.", "You get v1=v2."],
-      solution:
-`Step 1: Use (A − λI)v = 0 with λ=3.
-A − 3I = [[2−3, 1],[1, 2−3]] = [[−1, 1],[1, −1]].
-
-Step 2: Solve the linear system.
-[[−1, 1],[1, −1]] [v1, v2]^T = 0 gives:
-−v1 + v2 = 0 ⇒ v2 = v1.
-
-Step 3: Write an eigenvector.
-Take v1=1 ⇒ v2=1, so v ∝ (1,1).
-
-Step 4: Conclude.
-Therefore the eigenvector for λ=3 is proportional to (1,1).`
-    },
-    {
-      topic: "Eigenvalues & Eigenvectors",
-      question: "For diagonal matrix diag(2,5,−1), the eigenvalues are:",
-      options: ["2, 5, −1", "Only 2", "Only 5", "2+5−1 = 6"],
-      correctIndex: 0,
-      hints: ["Diagonal matrices scale basis vectors.", "Each diagonal entry is an eigenvalue."],
-      solution:
-`Step 1: Recognize a diagonal matrix.
-A = diag(2,5,−1) acts on standard basis vectors e1,e2,e3 by scaling:
-Ae1 = 2e1, Ae2 = 5e2, Ae3 = (−1)e3.
-
-Step 2: Read eigenpairs.
-Each basis vector is an eigenvector and the scaling factor is its eigenvalue.
-
-Step 3: Conclude.
-Eigenvalues are exactly the diagonal entries: 2, 5, and −1.`
-    },
-    {
-      topic: "Eigenvalues & Eigenvectors",
-      question: "If Av=λv, then A^2 v equals:",
-      options: ["λ^2 v", "2λ v", "λ v", "v/λ"],
-      correctIndex: 0,
-      hints: ["Apply A again to Av.", "A(Av)=A(λv)=λ(Av)=λ(λv)."],
-      solution:
-`Step 1: Start with Av = λv.
-
-Step 2: Apply A again.
-A^2 v = A(Av) = A(λv).
-
-Step 3: Use linearity (scalar can be pulled out).
-A(λv) = λ A v.
-
-Step 4: Substitute Av again.
-λ A v = λ (λ v) = λ^2 v.
-
-Step 5: Conclude.
-So A^2 v = λ^2 v.`
-    },
-    {
-      topic: "Eigenvalues & Eigenvectors",
-      question: "If A is invertible and Av=λv (λ≠0), then A^{-1}v equals:",
-      options: ["(1/λ) v", "λ v", "0", "Undefined"],
-      correctIndex: 0,
-      hints: ["Multiply Av=λv by A^{-1} on the left.", "You get v = λ A^{-1} v."],
-      solution:
-`Step 1: Start from Av = λv and assume λ≠0.
-
-Step 2: Multiply by A^{-1} on the left.
-A^{-1}Av = A^{-1}(λv).
-
-Step 3: Simplify.
-A^{-1}A = I, so v = λ (A^{-1}v).
-
-Step 4: Solve for A^{-1}v.
-A^{-1}v = (1/λ) v.
-
-Step 5: Conclude.
-So v is also an eigenvector of A^{-1} with eigenvalue 1/λ.`
-    },
-    {
-      topic: "Eigenvalues & Eigenvectors",
-      question: "For any square matrix A, the sum of eigenvalues (with multiplicity) equals:",
-      options: ["tr(A)", "det(A)", "rank(A)", "0 always"],
-      correctIndex: 0,
-      hints: ["Check for diagonal matrices first.", "Trace matches sum of diagonal entries."],
-      solution:
-`Step 1: Use the characteristic polynomial fact.
-The characteristic polynomial det(A − λI) has coefficients related to trace and determinant.
-
-Step 2: Key result.
-For an n×n matrix, the sum of eigenvalues (counting algebraic multiplicity) equals tr(A).
-
-Step 3: Quick sanity check.
-If A is diagonal, eigenvalues are diagonal entries, and tr(A) is also the sum of diagonal entries.
-
-Step 4: Conclude.
-Therefore, sum of eigenvalues = tr(A).`
-    },
-    {
-      topic: "Eigenvalues & Eigenvectors",
-      question: "For any square matrix A, the product of eigenvalues (with multiplicity) equals:",
-      options: ["det(A)", "tr(A)", "rank(A)", "1 always"],
-      correctIndex: 0,
-      hints: ["Check for diagonal matrices first.", "Determinant multiplies diagonal entries."],
-      solution:
-`Step 1: Use the characteristic polynomial at λ=0.
-det(A − 0·I) = det(A).
-
-Step 2: Key result.
-The determinant equals the product of eigenvalues (counting multiplicity).
-
-Step 3: Quick sanity check.
-For diagonal A, det(A) is the product of diagonal entries, which are also eigenvalues.
-
-Step 4: Conclude.
-Therefore, product of eigenvalues = det(A).`
-    },
-    {
-      topic: "Eigenvalues & Eigenvectors",
-      question: "For Hermitian operator H, eigenvectors corresponding to distinct eigenvalues are:",
-      options: ["Orthogonal", "Always equal", "Always non-orthogonal", "Always complex"],
-      correctIndex: 0,
-      hints: ["This is a key theorem for Hermitian operators.", "It underpins orthonormal eigenbases."],
-      solution:
-`Step 1: Let H be Hermitian and take two eigenpairs.
-Hv1 = λ1 v1 and Hv2 = λ2 v2 with λ1 ≠ λ2.
-
-Step 2: Take inner products in two ways.
-Compute ⟨v1|Hv2⟩ = ⟨v1| (λ2 v2)⟩ = λ2 ⟨v1|v2⟩.
-
-Step 3: Use Hermiticity to move H to the bra side.
-Since H† = H, ⟨v1|Hv2⟩ = ⟨H v1|v2⟩ = ⟨λ1 v1|v2⟩ = λ1 ⟨v1|v2⟩.
-
-Step 4: Equate the two expressions.
-λ1 ⟨v1|v2⟩ = λ2 ⟨v1|v2⟩ ⇒ (λ1 − λ2) ⟨v1|v2⟩ = 0.
-
-Step 5: Conclude.
-Because λ1 ≠ λ2, we must have ⟨v1|v2⟩ = 0.
-So eigenvectors for distinct eigenvalues are orthogonal.`
-    },
-    {
-      topic: "Eigenvalues & Eigenvectors",
-      question: "If [A,B]=0 and A is Hermitian with non-degenerate eigenvalues, then:",
-      options: ["A and B can share eigenvectors (simultaneous eigenbasis)", "A and B must be equal", "B must be a projection", "A cannot be diagonalized"],
-      correctIndex: 0,
-      hints: ["Commuting + non-degenerate implies shared eigenvectors.", "This is the standard compatibility statement."],
-      solution:
-`Step 1: Start from commutation.
-[A,B]=0 implies AB=BA.
-
-Step 2: Take an eigenvector of A.
-Let Av = λv. Apply A to (Bv):
-A(Bv) = (AB)v = (BA)v = B(Av) = B(λv) = λ(Bv).
-
-Step 3: Interpret Step 2.
-So Bv is also an eigenvector of A with the same eigenvalue λ.
-
-Step 4: Use non-degeneracy.
-If λ is non-degenerate, the eigenspace for λ is 1-dimensional, so Bv must be proportional to v:
-Bv = μv for some μ.
-
-Step 5: Conclude.
-Thus v is simultaneously an eigenvector of both A and B.
-So A and B can share eigenvectors (simultaneous eigenbasis).`
-    },
-
-    // =============
-    // Pauli Matrices
-    // =============
-    {
-      topic: "Pauli Matrices",
-      question: "Which matrix is σx?",
-      options: ["[[0,1],[1,0]]", "[[1,0],[0,−1]]", "[[0,−i],[i,0]]", "[[1,0],[0,1]]"],
-      correctIndex: 0,
-      hints: ["σx swaps basis states.", "It has ones off-diagonal."],
-      solution:
-`Step 1: Recall the standard Pauli matrices.
-σx = [[0,1],[1,0]],
-σy = [[0,−i],[i,0]],
-σz = [[1,0],[0,−1]].
-
-Step 2: Identify the one with 1’s off-diagonal and zeros on the diagonal.
-That is [[0,1],[1,0]].
-
-Step 3: Conclude.
-So σx = [[0,1],[1,0]].`
-    },
-    {
-      topic: "Pauli Matrices",
-      question: "Which matrix is σy?",
-      options: ["[[0,−i],[i,0]]", "[[0,1],[1,0]]", "[[1,0],[0,−1]]", "[[1,0],[0,1]]"],
-      correctIndex: 0,
-      hints: ["σy has imaginary off-diagonals.", "It is Hermitian."],
-      solution:
-`Step 1: Recall σy.
-σy is the Pauli matrix with purely imaginary off-diagonal entries:
-σy = [[0,−i],[i,0]].
-
-Step 2: Check Hermiticity quickly.
-Conjugate transpose of [[0,−i],[i,0]] gives itself, so it is Hermitian.
-
-Step 3: Conclude.
-Therefore σy = [[0,−i],[i,0]].`
-    },
-    {
-      topic: "Pauli Matrices",
-      question: "Which matrix is σz?",
-      options: ["[[1,0],[0,−1]]", "[[0,1],[1,0]]", "[[0,−i],[i,0]]", "[[1,0],[0,1]]"],
-      correctIndex: 0,
-      hints: ["σz is diagonal.", "Entries are +1 and −1."],
-      solution:
-`Step 1: Recall σz.
-σz is diagonal with entries +1 and −1:
-σz = [[1,0],[0,−1]].
-
-Step 2: Identify the matching option.
-The matrix [[1,0],[0,−1]] matches exactly.
-
-Step 3: Conclude.
-So σz = [[1,0],[0,−1]].`
-    },
-    {
-      topic: "Pauli Matrices",
-      question: "Eigenvalues of σz are:",
-      options: ["+1 and −1", "0 and 1", "i and −i", "2 and −2"],
-      correctIndex: 0,
-      hints: ["σz is diagonal.", "Diagonal entries are eigenvalues."],
-      solution:
-`Step 1: Write σz explicitly.
-σz = [[1,0],[0,−1]].
-
-Step 2: Use the fact for diagonal matrices.
-For a diagonal matrix, eigenvalues are the diagonal entries.
-
-Step 3: Conclude.
-Eigenvalues are +1 and −1.`
-    },
-    {
-      topic: "Pauli Matrices",
-      question: "Which product identity is correct?",
-      options: ["σxσy = iσz", "σxσy = −iσz", "σxσy = σz", "σxσy = iI"],
-      correctIndex: 0,
-      hints: ["Standard Pauli multiplication.", "Order matters: σyσx = −iσz."],
-      solution:
-`Step 1: Use the standard Pauli multiplication rule.
-σi σj = δij I + i εijk σk.
-
-Step 2: Apply for i=x, j=y (distinct indices).
-δxy = 0, and εxyz = +1.
-
-Step 3: Therefore.
-σxσy = i σz.
-
-Step 4: Note about order.
-Reversing the order gives σyσx = −iσz, showing non-commutativity.`
-    },
-    {
-      topic: "Pauli Matrices",
-      question: "The commutator [σx,σy] equals:",
-      options: ["2iσz", "iσz", "2σz", "0"],
-      correctIndex: 0,
-      hints: ["Use [σi,σj]=2i εijk σk.", "So x,y gives z."],
-      solution:
-`Step 1: Use the Pauli commutator identity.
-[σi,σj] = 2i εijk σk.
-
-Step 2: Plug in i=x, j=y.
-εxyz = +1, so:
-[σx,σy] = 2i σz.
-
-Step 3: Conclude.
-Therefore [σx,σy] = 2iσz.`
-    },
-    {
-      topic: "Pauli Matrices",
-      question: "For i≠j, the anti-commutator {σi,σj} equals:",
-      options: ["0", "2I", "2σk", "I"],
-      correctIndex: 0,
-      hints: ["Distinct Pauli matrices anticommute.", "σxσy = −σyσx."],
-      solution:
-`Step 1: Recall the anti-commutator identity for Pauli matrices.
-{σi,σj} = 2 δij I.
-
-Step 2: Use i≠j.
-If i≠j then δij = 0.
-
-Step 3: Conclude.
-So {σi,σj} = 0 for i≠j.`
-    },
-    {
-      topic: "Pauli Matrices",
-      question: "Which identity is always true?",
-      options: ["σi^2 = I", "σi^2 = 0", "σi^2 = σi", "σi^2 = −I"],
-      correctIndex: 0,
-      hints: ["Check σxσx.", "It becomes identity."],
-      solution:
-`Step 1: Use σi σj = δij I + i εijk σk.
-Set i=j.
-
-Step 2: Evaluate.
-δii = 1 and εiik = 0 (because antisymmetric in i,i),
-so σi^2 = I.
-
-Step 3: Conclude.
-Therefore σi^2 = I for i = x,y,z.`
-    },
-    {
-      topic: "Pauli Matrices",
-      question: "Trace of σx, σy, σz is:",
-      options: ["0", "1", "2", "−1"],
-      correctIndex: 0,
-      hints: ["Trace is sum of diagonal entries.", "σx and σy have 0 diagonals; σz has 1+(−1)."],
-      solution:
-`Step 1: Use trace definition.
-tr(M) = sum of diagonal entries.
-
-Step 2: Compute each.
-σx has diagonal (0,0) ⇒ tr(σx)=0.
-σy has diagonal (0,0) ⇒ tr(σy)=0.
-σz has diagonal (1,−1) ⇒ tr(σz)=1 + (−1)=0.
-
-Step 3: Conclude.
-Thus tr(σx)=tr(σy)=tr(σz)=0.`
-    },
-    {
-      topic: "Pauli Matrices",
-      question: "Determinant of any Pauli matrix is:",
-      options: ["−1", "+1", "0", "Depends on i"],
-      correctIndex: 0,
-      hints: ["Compute det(σz)=det([[1,0],[0,−1]])=−1.", "Same for others."],
-      solution:
-`Step 1: Compute a representative case (σz).
-σz = [[1,0],[0,−1]] ⇒ det(σz) = (1)(−1) − 0 = −1.
-
-Step 2: Check σx quickly.
-σx = [[0,1],[1,0]] ⇒ det(σx) = 0·0 − 1·1 = −1.
-
-Step 3: Check σy quickly.
-σy = [[0,−i],[i,0]] ⇒ det(σy) = 0·0 − (−i)(i) = −(−i^2) = −(1) = −1.
-
-Step 4: Conclude.
-All Pauli matrices have determinant −1.`
-    },
-
-    // ======================
-    // Commutation Relations
-    // ======================
-    {
-      topic: "Commutation Relations",
-      question: "The commutator [A,B] is defined as:",
-      options: ["AB − BA", "AB + BA", "A + B", "A − B"],
-      correctIndex: 0,
-      hints: ["Commutator measures non-commutativity.", "If AB=BA, commutator is zero."],
-      solution:
-`Step 1: Definition.
-The commutator of A and B is defined by:
-[A,B] = AB − BA.
-
-Step 2: Interpretation.
-If AB=BA, then [A,B]=0 and the operators commute.
-
-Step 3: Conclude.
-So the correct definition is AB − BA.`
-    },
-    {
-      topic: "Commutation Relations",
-      question: "Which commutator is always zero for any operator A?",
-      options: ["[A, I]", "[A, A†]", "[A, B] for any B", "[A, A†A]"],
-      correctIndex: 0,
-      hints: ["Identity commutes with everything.", "AI=IA."],
-      solution:
-`Step 1: Use the identity property.
-For any operator A, AI = IA = A.
-
-Step 2: Compute the commutator.
-[A,I] = AI − IA = A − A = 0.
-
-Step 3: Why others are not always zero.
-[A,A†] need not be zero.
-[A,B] is not zero for arbitrary B.
-
-Step 4: Conclude.
-So [A,I]=0 is always true.`
-    },
-    {
-      topic: "Commutation Relations",
-      question: "If [A,B]=0, then:",
-      options: ["AB = BA", "AB = 0", "A = B", "A must be Hermitian"],
-      correctIndex: 0,
-      hints: ["Just rewrite the definition.", "[A,B]=AB−BA."],
-      solution:
-`Step 1: Start from the definition.
-[A,B] = AB − BA.
-
-Step 2: Set it equal to zero.
-[A,B]=0 ⇒ AB − BA = 0.
-
-Step 3: Rearrange.
-AB = BA.
-
-Step 4: Conclude.
-So if [A,B]=0, then AB = BA.`
-    },
-    {
-      topic: "Commutation Relations",
-      question: "Product rule for commutators is:",
-      options: ["[A,BC] = [A,B]C + B[A,C]", "[A,BC] = [A,B] + [A,C]", "[A,BC] = [A,B][A,C]", "[A,BC] = 0 always"],
-      correctIndex: 0,
-      hints: ["Expand A(BC) − (BC)A.", "Then regroup terms."],
-      solution:
-`Step 1: Start from the definition.
-[A,BC] = A(BC) − (BC)A = ABC − BCA.
-
-Step 2: Add and subtract BAC (a standard trick).
-ABC − BCA = (ABC − BAC) + (BAC − BCA).
-
-Step 3: Factor each group.
-ABC − BAC = (AB − BA)C = [A,B]C.
-BAC − BCA = B(AC − CA) = B[A,C].
-
-Step 4: Combine.
-[A,BC] = [A,B]C + B[A,C].
-
-Step 5: Conclude.
-So the correct product rule is [A,BC] = [A,B]C + B[A,C].`
-    },
-    {
-      topic: "Commutation Relations",
-      question: "Jacobi identity is:",
-      options: ["[A,[B,C]] + [B,[C,A]] + [C,[A,B]] = 0", "[A,B] + [B,C] + [C,A] = 0", "[A,B] = [B,A]", "[A,[A,B]] = 0 always"],
-      correctIndex: 0,
-      hints: ["This is the standard triple-commutator identity.", "It sums to zero."],
-      solution:
-`Step 1: State the identity.
-The Jacobi identity for commutators is:
-[A,[B,C]] + [B,[C,A]] + [C,[A,B]] = 0.
-
-Step 2: Interpretation.
-It is analogous to the Jacobi identity for Lie brackets and ensures consistent algebraic structure.
-
-Step 3: Conclude.
-So the correct option is [A,[B,C]] + [B,[C,A]] + [C,[A,B]] = 0.`
-    },
-    {
-      topic: "Commutation Relations",
-      question: "Canonical commutator (1D) is:",
-      options: ["[x,p] = iħ", "[x,p] = 0", "[x,p] = ħ", "[x,p] = −ħ"],
-      correctIndex: 0,
-      hints: ["This is a postulate of QM.", "Position and momentum do not commute."],
-      solution:
-`Step 1: Recall the canonical commutation relation in quantum mechanics.
-In 1D, the fundamental relation is:
-[x,p] = iħ.
-
-Step 2: Why it matters.
-This nonzero commutator underlies the Heisenberg uncertainty relation between position and momentum.
-
-Step 3: Conclude.
-Therefore the canonical commutator is [x,p] = iħ.`
-    },
-    {
-      topic: "Commutation Relations",
-      question: "Given [X,P] = iħ, what is [X, P^2]?",
-      options: ["2iħ P", "iħ P^2", "0", "−2iħ P"],
-      correctIndex: 0,
-      hints: ["Use [A,BC]=[A,B]C + B[A,C].", "So [X,P^2]=[X,P]P + P[X,P]."],
-      solution:
-`Step 1: Use the product rule for commutators.
-[X,P^2] = [X,PP] = [X,P]P + P[X,P].
-
-Step 2: Substitute the given commutator.
-Given [X,P] = iħ, so:
-[X,P^2] = (iħ)P + P(iħ).
-
-Step 3: Simplify (iħ is a scalar and commutes with P).
-(iħ)P + P(iħ) = iħ P + iħ P = 2 iħ P.
-
-Step 4: Conclude.
-Therefore [X, P^2] = 2iħ P.`
-    },
-    {
-      topic: "Commutation Relations",
-      question: "If A and B are Hermitian and AB is also Hermitian, then:",
-      options: ["[A,B]=0", "A=B", "A must be unitary", "B must be a projector"],
-      correctIndex: 0,
-      hints: ["(AB)† = B†A† = BA.", "If AB is Hermitian, AB=(AB)†."],
-      solution:
-`Step 1: Use “AB is Hermitian”.
-If AB is Hermitian, then (AB)† = AB.
-
-Step 2: Take the adjoint of AB.
-(AB)† = B† A†.
-
-Step 3: Use A and B Hermitian.
-A†=A and B†=B, so (AB)† = BA.
-
-Step 4: Equate Step 1 and Step 3.
-AB = (AB)† = BA.
-
-Step 5: Conclude.
-AB=BA ⇒ [A,B]=AB−BA=0.`
-    },
-    {
-      topic: "Commutation Relations",
-      question: "If two observables commute and A is non-degenerate, then they can be:",
-      options: ["Simultaneously diagonalized (common eigenbasis)", "Measured only one at a time", "Equal to identity", "Only anti-Hermitian"],
-      correctIndex: 0,
-      hints: ["Commuting + non-degenerate implies shared eigenvectors.", "This is compatibility in QM."],
-      solution:
-`Step 1: Use commutation as compatibility.
-If two observables (Hermitian operators) commute, they are compatible.
-
-Step 2: Add non-degeneracy.
-If A has a non-degenerate spectrum, each eigenvalue corresponds to a unique eigenvector direction.
-
-Step 3: Show invariance of eigenspaces.
-From [A,B]=0, B maps eigenvectors of A to eigenvectors of A with the same eigenvalue.
-With non-degeneracy, that means B keeps each eigenvector direction (up to scalar).
-
-Step 4: Conclude.
-So there exists a basis of simultaneous eigenvectors; equivalently, they can be simultaneously diagonalized.`
-    },
-    {
-      topic: "Commutation Relations",
-      question: "If A and B commute, then which is true?",
-      options: ["[A, B^n] = 0 for all integers n ≥ 1", "[A,B] = I", "[A,B] = 2AB", "A must be a projection"],
-      correctIndex: 0,
-      hints: ["If AB=BA then AB^n=B^nA.", "Induction works."],
-      solution:
-`Step 1: Start from AB = BA.
-
-Step 2: Prove the statement for n=1.
-B^1 = B, so [A,B]=0 (given).
-
-Step 3: Induction step.
-Assume AB^n = B^nA.
-Then:
-AB^{n+1} = A(B^n B) = (AB^n)B = (B^n A)B = B^n(AB) = B^n(BA) = (B^n B)A = B^{n+1}A.
-
-Step 4: Conclude.
-So AB^n = B^nA for all n≥1, hence [A,B^n] = 0 for all n≥1.`
-    }
-  ];
-  
- /* =========================================================
-   CONSOLIDATED QUESTION BANK
-   Formal wording + detailed solutions
-   Same structure as your attached code
-   ========================================================= */
-
-const NEW_MODULE_QUESTIONS = [
-  // =====================================================
-  // Observables & Operators
-  // =====================================================
-  {
-    topic: "Observables & Operators",
-    question: "Which statement correctly characterizes the condition that an operator must satisfy in order to represent a standard observable in quantum mechanics?",
-    options: [
-      "It must be Hermitian so that its eigenvalues are real and its eigenvectors can form an orthonormal basis in the finite-dimensional case.",
-      "It must contain only real matrix entries in every basis.",
-      "It must commute with every other observable.",
-      "It must be invertible."
-    ],
-    correctIndex: 0,
-    hints: [
-      "A physical measurement outcome must be real.",
-      "The required property is basis-independent."
-    ],
-    solution: `The correct answer is that an observable is represented by a Hermitian operator.
-
-The central reason is physical: measurement outcomes are real numbers. Hermitian operators have real eigenvalues, so they are suitable for representing quantities that can be measured in the laboratory. This is the mathematical property that connects the formalism to experimental outcomes.
-
-A second important point is that Hermitian operators have a well-behaved spectral structure. In the standard finite-dimensional setting, they can be diagonalized by an orthonormal basis of eigenvectors. That fact makes the Born-rule interpretation clean, because probabilities can be assigned to orthogonal measurement outcomes.
-
-By contrast, the statement that an operator must have only real matrix entries is too weak and also basis-dependent. A Hermitian operator may have complex entries in one basis and still represent a perfectly valid observable. What matters is Hermiticity, not the visual appearance of the matrix in a particular representation.
-
-Therefore the defining criterion is Hermiticity, not merely real entries, universal commutation, or invertibility.`
-  },
-  {
-    topic: "Observables & Operators",
-    question: "Suppose two Hermitian operators A and B satisfy [A,B] = 0. Which conclusion is the most precise?",
-    options: [
-      "They can be simultaneously diagonalized, with additional care required inside degenerate eigenspaces.",
-      "They must have identical eigenvalues.",
-      "They must be proportional to the identity.",
-      "They necessarily describe the same physical observable."
-    ],
-    correctIndex: 0,
-    hints: [
-      "Commutation is related to compatibility.",
-      "Degeneracy is the only subtle point here."
-    ],
-    solution: `The correct answer is that commuting Hermitian operators can be simultaneously diagonalized, but degeneracy must be handled carefully.
-
-If A and B commute, then they are compatible observables. This means there exists a basis in which both operators can be represented in diagonal form. In that basis, the basis vectors can be chosen to correspond to simultaneous eigenstates.
-
-The simplest case is when A has no degeneracy. Then each eigenvector of A is unique up to an overall phase, and commutation implies that B maps that eigenvector back into the same one-dimensional eigenspace. As a result, the vector is also an eigenvector of B.
-
-The subtlety appears when A has a degenerate eigenvalue. In that case, B need not already be diagonal in the degenerate subspace, but because A and B commute, B preserves that subspace. One must then diagonalize B inside that smaller subspace.
-
-So the strongest accurate statement is not that the operators are equal or have the same spectrum, but that they admit a common eigenbasis after degeneracies are treated correctly.`
-  },
-  {
-    topic: "Observables & Operators",
-    question: "Why is it conceptually incorrect to identify the possible outcomes of measuring an observable with the diagonal entries of its matrix representation?",
-    options: [
-      "Because diagonal entries depend on the chosen basis, whereas physical measurement outcomes are the operator eigenvalues.",
-      "Because diagonal entries are always zero for observables.",
-      "Because only the trace of the operator has physical meaning.",
-      "Because a measurable operator cannot be written as a matrix."
-    ],
-    correctIndex: 0,
-    hints: [
-      "Ask which quantities remain unchanged under a basis transformation.",
-      "A physical prediction should not depend on notation."
-    ],
-    solution: `The correct answer is that diagonal entries are basis-dependent, while measurement outcomes are basis-independent eigenvalues.
-
-A matrix representation changes when the basis changes. If one expresses the same operator in a different basis, its individual entries—including its diagonal entries—can change. Therefore diagonal entries do not have an invariant physical meaning by themselves.
-
-Measurement outcomes, however, must refer to properties of the operator that do not depend on how we write the operator. The eigenvalues satisfy that requirement. They are intrinsic to the operator and remain the same under a change of basis.
-
-One can see the danger clearly from a simple example: an operator that is diagonal in one basis need not be diagonal in another. If diagonal entries themselves were the outcomes, the predicted measurement results would depend on the arbitrary choice of basis, which is physically unacceptable.
-
-Hence the correct interpretation is that the outcomes of measurement are the eigenvalues of the observable, not the diagonal entries in an arbitrary representation.`
-  },
-  {
-    topic: "Observables & Operators",
-    question: "Let A be a Hermitian operator satisfying A^2 = I. What are the only possible measurement outcomes associated with A?",
-    options: [
-      "+1 and -1 only",
-      "0 only",
-      "Any real number",
-      "Only purely imaginary numbers"
-    ],
-    correctIndex: 0,
-    hints: [
-      "Apply the operator equation to an eigenvector.",
-      "Use the eigenvalue equation A|ψ⟩ = a|ψ⟩."
-    ],
-    solution: `The correct answer is that the only possible outcomes are +1 and -1.
-
-Take an eigenvector |ψ⟩ of A with eigenvalue a, so that A|ψ⟩ = a|ψ⟩. Applying A once more gives A^2|ψ⟩ = a^2|ψ⟩. But the operator identity states that A^2 = I, so the same vector must also satisfy A^2|ψ⟩ = |ψ⟩.
-
-Comparing the two results gives a^2|ψ⟩ = |ψ⟩. Since |ψ⟩ is not the zero vector, it follows that a^2 = 1. Therefore the only possible eigenvalues are a = +1 and a = -1.
-
-Because A is Hermitian, its eigenvalues must be real, which is fully consistent with these two values. No other real number can satisfy a^2 = 1, and purely imaginary values are excluded both by Hermiticity and by the same algebraic condition.
-
-Therefore the measurement spectrum of such an operator is restricted to the two values +1 and -1.`
-  },
-
-  // =====================================================
-  // Expectation Values & Uncertainty
-  // =====================================================
-  {
-    topic: "Expectation Values & Uncertainty",
-    question: "Which statement most accurately explains why the expectation value of an observable need not coincide with any single outcome obtained in an individual measurement?",
-    options: [
-      "The expectation value is an ensemble average and may lie between the actual eigenvalues available in one trial.",
-      "Expectation values are mathematical artifacts with no physical interpretation.",
-      "Only the largest eigenvalue can be measured in a single trial.",
-      "Expectation values are relevant only for mixed states."
-    ],
-    correctIndex: 0,
-    hints: [
-      "Distinguish one experiment from many identically prepared experiments.",
-      "The arithmetic mean of allowed outcomes need not itself be an allowed outcome."
-    ],
-    solution: `The correct answer is that the expectation value is an ensemble average and therefore need not equal a single-shot outcome.
-
-A quantum measurement performed once returns one of the eigenvalues of the observable. By contrast, the expectation value is defined as the weighted average of outcomes over many repeated measurements on identically prepared systems. It is therefore a statistical quantity, not necessarily an allowed outcome of one run.
-
-For example, suppose the only possible outcomes are +1 and -1 with equal probability. Then the expectation value is 0. However, an individual measurement never yields 0 in that situation; it yields either +1 or -1.
-
-This example shows the difference between the center of a distribution and the points in the distribution itself. An average may lie between available outcomes, especially when positive and negative contributions cancel.
-
-Hence the expectation value is physically meaningful, but it should not be confused with the result of a single measurement event.`
-  },
-  {
-    topic: "Expectation Values & Uncertainty",
-    question: "If a normalized state |ψ⟩ is an eigenstate of an observable A with eigenvalue a, which statement is correct?",
-    options: [
-      "⟨A⟩ = a and ΔA = 0.",
-      "⟨A⟩ = 0 and ΔA = a.",
-      "⟨A⟩ = a but ΔA must be nonzero.",
-      "Neither the expectation value nor the uncertainty can be determined."
-    ],
-    correctIndex: 0,
-    hints: [
-      "Use A|ψ⟩ = a|ψ⟩ directly in the definitions.",
-      "A sharp measurement outcome corresponds to zero spread."
-    ],
-    solution: `The correct answer is that the expectation value equals a and the uncertainty vanishes.
-
-Start from the eigenvalue equation A|ψ⟩ = a|ψ⟩. Since the state is normalized, the expectation value is
-⟨A⟩ = ⟨ψ|A|ψ⟩ = ⟨ψ|a|ψ⟩ = a⟨ψ|ψ⟩ = a.
-Thus the mean value is exactly the eigenvalue.
-
-Next examine the second moment. Applying A twice gives A^2|ψ⟩ = a^2|ψ⟩, so
-⟨A^2⟩ = ⟨ψ|A^2|ψ⟩ = a^2.
-Therefore the variance is
-ΔA^2 = ⟨A^2⟩ - ⟨A⟩^2 = a^2 - a^2 = 0.
-
-A zero variance means that repeated measurements on identically prepared copies of the state show no spread at all. Every trial yields the same value a.
-
-So an eigenstate of A is precisely a state of definite A-value, with expectation value a and uncertainty zero.`
-  },
-  {
-    topic: "Expectation Values & Uncertainty",
-    question: "A state has ⟨p⟩ = 0. Which interpretation is most accurate?",
-    options: [
-      "The average momentum is zero, but the momentum need not be definite and the state need not describe a particle at rest.",
-      "The particle certainly has momentum zero in every trial.",
-      "The particle certainly has zero kinetic energy.",
-      "The momentum operator is not defined for that state."
-    ],
-    correctIndex: 0,
-    hints: [
-      "The mean value does not by itself determine the spread.",
-      "Opposite momentum components can cancel in the average."
-    ],
-    solution: `The correct answer is that a zero expectation value of momentum does not by itself imply a particle at rest.
-
-The quantity ⟨p⟩ is an average over many measurements. It tells us the center of the momentum distribution, not whether the distribution is narrow or broad. A state may contain positive and negative momentum components whose contributions cancel in the mean.
-
-For instance, a symmetric superposition of +p and -p momentum states has ⟨p⟩ = 0. Nevertheless, each individual measurement returns either +p or -p, not necessarily 0. In such a state, the momentum is not sharp even though the average is zero.
-
-To decide whether the particle truly has a definite momentum, one must inspect the uncertainty Δp. If Δp = 0, then the momentum is sharp. If Δp is nonzero, the state contains a spread of momentum outcomes.
-
-Therefore ⟨p⟩ = 0 should be interpreted as zero average momentum, not automatically as exact rest.`
-  },
-  {
-    topic: "Expectation Values & Uncertainty",
-    question: "Why is the condition ⟨A^2⟩ = ⟨A⟩^2 significant?",
-    options: [
-      "It means the variance of A is zero, so the state has a definite value of A.",
-      "It implies that A must be the identity operator.",
-      "It proves that A is non-Hermitian.",
-      "It implies that every observable has the same expectation value."
-    ],
-    correctIndex: 0,
-    hints: [
-      "Recall the definition of variance.",
-      "Certainty corresponds to the absence of statistical spread."
-    ],
-    solution: `The correct answer is that this equality means the variance is zero and therefore the observable has a definite value in that state.
-
-By definition, the variance of A is
-ΔA^2 = ⟨A^2⟩ - ⟨A⟩^2.
-If the two terms are equal, then their difference is zero, so ΔA^2 = 0.
-
-A zero variance has a very strong physical interpretation. It means that repeated measurements of A on identically prepared systems produce no spread at all. The outcome is certain.
-
-In the simplest case, the state is an eigenstate of A. More generally, if degeneracy is present, the state may lie in an eigenspace corresponding to a single eigenvalue. In either case, the measured value is definite.
-
-Thus the importance of the condition is not algebraic only; it signals complete sharpness of the observable in the given state.`
-  },
-
-  // =====================================================
-  // Measurement in Quantum Mechanics
-  // =====================================================
-  {
-    topic: "Measurement in Quantum Mechanics",
-    question: "Why does an immediate repetition of an ideal projective measurement of the same observable return the same result with certainty?",
-    options: [
-      "Because the first measurement projects the state into the eigenspace associated with the observed eigenvalue.",
-      "Because the apparatus mechanically remembers the previous answer.",
-      "Because all observables begin to commute after a measurement.",
-      "Because the system becomes classical after one observation."
-    ],
-    correctIndex: 0,
-    hints: [
-      "The key idea is state update.",
-      "After the first measurement the state is no longer arbitrary."
-    ],
-    solution: `The correct answer is that the first ideal measurement projects the state into the eigenspace corresponding to the observed value.
-
-Before measurement, the state may be a superposition of several eigenstates of the observable. An ideal projective measurement selects one outcome and updates the state accordingly. The post-measurement state is therefore no longer the original superposition.
-
-If the same observable is measured again immediately, the system is already in a state belonging to the eigenspace of that same outcome. Since the second measurement is testing the same spectral decomposition, it finds the system already prepared in the required subspace.
-
-In the nondegenerate case, the post-measurement state is a single eigenvector. In the degenerate case, it lies somewhere inside the corresponding eigenspace. In either case, the measured eigenvalue is unchanged by an immediate repetition of the same ideal measurement.
-
-Thus the repeatability comes from the projection postulate, not from memory in the apparatus or from a transition to classical physics.`
-  },
-  {
-    topic: "Measurement in Quantum Mechanics",
-    question: "A system is in a superposition of two energy eigenstates. What does an ideal energy measurement yield in a single trial?",
-    options: [
-      "One of the allowed energy eigenvalues, obtained probabilistically according to the Born rule, followed by projection onto the corresponding eigenspace.",
-      "The arithmetic mean of the two energies in every trial.",
-      "A continuously varying energy between the two eigenvalues.",
-      "No change in the state because energy measurements are non-invasive."
-    ],
-    correctIndex: 0,
-    hints: [
-      "Single-trial outcomes are eigenvalues, not averages.",
-      "The coefficients determine probabilities."
-    ],
-    solution: `The correct answer is that a single trial returns one of the allowed energy eigenvalues with probabilities determined by the state's expansion coefficients.
-
-Suppose the state is written as a superposition of two energy eigenstates. Each component has an amplitude, and the Born rule says that the squared magnitude of each amplitude gives the probability of obtaining the corresponding energy in a measurement.
-
-Therefore the apparatus does not return the arithmetic mean in each run. Instead, each run yields one eigenvalue or the other. Only after many trials does one recover an average energy equal to the expectation value.
-
-After a particular outcome is obtained, the state is updated. The post-measurement state lies in the eigenspace associated with the observed energy. This is why a repeated energy measurement performed immediately afterward yields the same energy with certainty.
-
-So the measurement process has two aspects: probabilistic selection of an eigenvalue in a single run, and projection of the state onto the corresponding eigenspace.`
-  },
-  {
-    topic: "Measurement in Quantum Mechanics",
-    question: "What is the most accurate statement about the effect of measuring an observable that has a degenerate eigenvalue?",
-    options: [
-      "The post-measurement state lies in the eigenspace associated with the measured eigenvalue, but it need not be a uniquely specified eigenvector.",
-      "Degeneracy prevents the observable from being measurable.",
-      "The state always collapses to a unique basis vector fixed independently of the apparatus.",
-      "No state update occurs when the eigenvalue is degenerate."
-    ],
-    correctIndex: 0,
-    hints: [
-      "Degeneracy refers to a multi-dimensional eigenspace.",
-      "The measured value may not determine a unique vector."
-    ],
-    solution: `The correct answer is that the state is projected into the eigenspace corresponding to the measured degenerate eigenvalue.
-
-When an eigenvalue is degenerate, more than one orthogonal state yields the same measurement value. Therefore obtaining that value does not necessarily identify a unique eigenvector. What is determined with certainty is the eigenspace, not always the exact direction inside it.
-
-This point matters conceptually because the measurement result can be sharp even though the post-measurement state is not fully specified by that value alone. Additional commuting observables may be required if one wants to refine the description further and resolve the degeneracy.
-
-The wrong alternative is the claim that mathematics alone chooses a unique basis vector. In a degenerate subspace, many orthonormal bases are possible. Without extra physical structure, a unique vector is not singled out by the eigenvalue alone.
-
-Hence the careful statement is that the state collapses into the relevant eigenspace, not necessarily into one uniquely determined eigenvector.`
-  },
-  {
-    topic: "Measurement in Quantum Mechanics",
-    question: "Why is the measurement postulate needed in addition to Schrödinger evolution?",
-    options: [
-      "Because unitary time evolution alone does not specify how single experimental runs produce eigenvalues with Born-rule probabilities.",
-      "Because the Schrödinger equation is invalid whenever a detector is present.",
-      "Because measurements are classical processes unrelated to quantum states.",
-      "Because expectation values cannot be defined dynamically."
-    ],
-    correctIndex: 0,
-    hints: [
-      "Separate continuous state evolution from outcome assignment.",
-      "The issue is how theory connects to single laboratory events."
-    ],
-    solution: `The correct answer is that Schrödinger evolution by itself does not tell us how one specific measurement outcome is obtained in a single run.
-
-The Schrödinger equation governs the time evolution of the state of a closed quantum system. This evolution is continuous and unitary. It tells us how amplitudes change with time, but it does not by itself assign a single recorded eigenvalue to an individual measurement event.
-
-The measurement postulate adds precisely that missing operational link. It states which values can appear as outcomes, how probabilities are computed from the state, and how the state is updated after an outcome is observed.
-
-Without this extra postulate, the formalism would describe evolving wavefunctions but would not clearly specify how laboratory readings emerge from them. The issue is not that the Schrödinger equation becomes false, but that it is incomplete as a full account of measurement outcomes.
-
-Therefore the measurement postulate is needed to connect dynamical evolution with observed experimental statistics and state-update rules.`
-  },
-
-  // =====================================================
-  // Sequential Stern-Gerlach
-  // =====================================================
-  {
-    topic: "Sequential Stern-Gerlach",
-    question: "A beam selected from the z+ output of one Stern-Gerlach apparatus is sent directly into a second Stern-Gerlach apparatus also oriented along z. What is observed ideally?",
-    options: [
-      "Only the z+ output appears, because the first device has already prepared the beam in an eigenstate of S_z.",
-      "The beam splits equally into z+ and z-.",
-      "The second apparatus produces no output because the state has already been measured.",
-      "The beam changes into an x-basis superposition observable at the detector."
-    ],
-    correctIndex: 0,
-    hints: [
-      "This is an immediate repetition of the same observable.",
-      "The first selected beam is already an S_z eigenstate."
-    ],
-    solution: `The correct answer is that only the z+ channel appears.
-
-The first Stern-Gerlach device both measures and prepares the state. Once the z+ branch is selected, the outgoing beam is no longer an arbitrary mixture. It is a beam prepared in the state |z+⟩, which is an eigenstate of S_z.
-
-The second apparatus measures the same spin component along the same axis. Since the incoming state is already an eigenstate of that observable, the result is definite. There is no reason for a fresh split into z+ and z-.
-
-This is the spin analogue of repeating an ideal projective measurement of the same observable. The state preparation caused by the first apparatus guarantees the certainty of the second result.
-
-Therefore an ideal second z-oriented analyzer transmits only the z+ beam.`
-  },
-  {
-    topic: "Sequential Stern-Gerlach",
-    question: "A beam prepared in the state |z+⟩ is incident on a Stern-Gerlach apparatus oriented along x. Why do the x+ and x- outputs occur with equal intensity?",
-    options: [
-      "Because |z+⟩ is an equal superposition of |x+⟩ and |x-⟩.",
-      "Because the apparatus cannot distinguish spin states sharply along x.",
-      "Because S_x and S_z are actually the same observable written differently.",
-      "Because a spin state loses all directional information after preparation."
-    ],
-    correctIndex: 0,
-    hints: [
-      "Change the basis from z to x.",
-      "Equal amplitudes lead to equal probabilities."
-    ],
-    solution: `The correct answer is that |z+⟩ is an equal superposition of |x+⟩ and |x-⟩.
-
-A state that is definite with respect to one spin component need not be definite with respect to another. The state |z+⟩ is an eigenstate of S_z, but it is not an eigenstate of S_x. To predict the outcome of an x-oriented measurement, one must expand |z+⟩ in the x-basis.
-
-That expansion has equal-magnitude coefficients for |x+⟩ and |x-⟩. The Born rule then says that the probabilities are the squared magnitudes of those coefficients, which are equal. Hence the two outputs have equal intensity.
-
-The result does not indicate a flaw in the device. On the contrary, it reflects the non-commuting character of the spin components. A state sharp in z is necessarily indefinite in x.
-
-Therefore the equal split is a direct consequence of basis change and the Born rule.`
-  },
-  {
-    topic: "Sequential Stern-Gerlach",
-    question: "In the sequence z+ selected → x+ selected → z measurement, why does the final z-analyzer split the beam again?",
-    options: [
-      "Because the intermediate x-selection prepares the state |x+⟩, which is a superposition of |z+⟩ and |z-⟩.",
-      "Because the final z-analyzer is less accurate than the first one.",
-      "Because z-spin is not conserved in a laboratory magnetic field.",
-      "Because the two z-analyzers cannot agree in principle."
-    ],
-    correctIndex: 0,
-    hints: [
-      "The intermediate measurement changes the state.",
-      "Write |x+⟩ in the z-basis."
-    ],
-    solution: `The correct answer is that the intermediate x-measurement prepares a new state, namely |x+⟩, and that state is not definite with respect to S_z.
-
-After the first device, the system is in |z+⟩. If one were to measure S_z again immediately, the result would still be z+ with certainty. However, the insertion of an x-oriented analyzer changes the situation completely.
-
-Selecting the x+ output does not merely label the particles; it prepares the new state |x+⟩. That state can be expressed as a superposition of |z+⟩ and |z-⟩. Consequently, a later z-measurement has nonzero probability for both outcomes.
-
-This experiment shows that an intermediate incompatible measurement can erase the certainty established by an earlier measurement. The important point is not experimental imperfection, but state preparation by the intermediate analyzer.
-
-Therefore the final z-device splits the beam because the state entering it is |x+⟩, not the original |z+⟩.`
-  },
-  {
-    topic: "Sequential Stern-Gerlach",
-    question: "What is the most direct operational meaning of the statement [S_x, S_z] ≠ 0 in the Stern-Gerlach context?",
-    options: [
-      "The order in which x and z spin measurements are performed affects the observed statistics.",
-      "The operators have no eigenvectors.",
-      "The two observables can never be measured in any experiment.",
-      "The values of S_x and S_z are always numerically equal."
-    ],
-    correctIndex: 0,
-    hints: [
-      "Non-commutation manifests itself through order dependence.",
-      "Think of sequential analyzers rather than abstract algebra alone."
-    ],
-    solution: `The correct answer is that non-commutation means the order of the measurements matters physically.
-
-If two observables commute, one expects a common eigenbasis and compatibility of measurement. In that case, measuring one does not generally spoil the sharpness of the other. But when [S_x, S_z] ≠ 0, the two observables do not share a complete set of simultaneous sharp states.
-
-The Stern-Gerlach sequence makes this visible in an operational way. A z-prepared beam followed by an x-measurement gives one pattern, while an x-prepared beam followed by a z-measurement gives another pattern. The statistics depend on the measurement order because the first measurement prepares the state relevant for the second one.
-
-Thus the commutator is not merely a formal symbol. It encodes a directly observable experimental fact: the sequence of incompatible measurements changes the outcomes.
-
-Therefore the most concrete interpretation is order-dependent measurement statistics.`
-  },
-
-  // =====================================================
-  // Schrödinger Equations
-  // =====================================================
-  {
-    topic: "Schrödinger Equations",
-    question: "Which statement most accurately describes the relationship between the time-dependent Schrödinger equation (TDSE) and the time-independent Schrödinger equation (TISE)?",
-    options: [
-      "The TDSE is the general dynamical law, whereas the TISE is a special eigenvalue problem that arises when the Hamiltonian is time-independent and separation of variables is possible.",
-      "The TISE is the fundamental law and the TDSE is used only for measurements.",
-      "They are unrelated equations that apply to different branches of physics.",
-      "Only the TISE is valid for bound states."
-    ],
-    correctIndex: 0,
-    hints: [
-      "One equation governs evolution; the other is an eigenvalue problem.",
-      "Time-independence of the Hamiltonian is the standard gateway to the TISE."
-    ],
-    solution: `The correct answer is that the TDSE is the general evolution equation and the TISE is a special eigenvalue problem obtained under suitable conditions.
-
-The time-dependent Schrödinger equation tells us how the state evolves in time in the most general standard setting. It is the fundamental dynamical equation of nonrelativistic quantum mechanics.
-
-When the Hamiltonian does not depend explicitly on time, one may try a separated form such as ψ(x,t) = φ(x)T(t). Substituting this into the TDSE allows the spatial and temporal dependences to be separated. The spatial part then satisfies an eigenvalue equation of the form Hφ = Eφ, which is the TISE.
-
-Thus the TISE does not replace the TDSE. Instead, it emerges from the TDSE when the problem has enough structure to permit separation of variables. It is especially useful for finding stationary states and the allowed energy spectrum.
-
-So the correct relation is hierarchical: TDSE is the general law, TISE is a special but extremely important consequence in time-independent problems.`
-  },
-  {
-    topic: "Schrödinger Equations",
-    question: "What is the best correction to the statement, 'A stationary state does not change with time'?",
-    options: [
-      "Its probability density is time-independent, although the state vector acquires a time-dependent global phase factor.",
-      "It changes randomly in time, but the average change is zero.",
-      "It remains exactly identical in every respect, including phase.",
-      "It is not a legitimate solution of the Schrödinger equation."
-    ],
-    correctIndex: 0,
-    hints: [
-      "Distinguish the state vector from observable probability density.",
-      "Recall the phase factor e^{-iEt/ħ}."
-    ],
-    solution: `The correct answer is that a stationary state has time-independent observable probability density, even though the state vector acquires a global phase.
-
-If φ is an energy eigenstate with eigenvalue E, then its time evolution is
-ψ(x,t) = φ(x)e^{-iEt/ħ}.
-The exponential factor depends on time, so the state vector is not literally unchanged.
-
-However, measurable probabilities depend on |ψ(x,t)|². Since the phase factor has unit modulus, it disappears when taking the absolute square:
-|ψ(x,t)|² = |φ(x)|².
-Therefore the spatial probability density remains constant in time.
-
-This is why such states are called stationary. The observables built from the probability density are stationary even though the vector itself acquires a phase. That phase is global for a single energy eigenstate and does not affect the associated probability density.
-
-So the careful correction is that stationary states are stationary in observable density, not in the trivial sense of having no time dependence whatsoever.`
-  },
-  {
-    topic: "Schrödinger Equations",
-    question: "Why can a superposition of two stationary states produce a time-dependent probability density?",
-    options: [
-      "Because the two components acquire different time-dependent phases, and the interference term depends on their relative phase.",
-      "Because superpositions are forbidden for stationary states.",
-      "Because one of the energies must become complex.",
-      "Because normalization is lost once more than one eigenstate is present."
-    ],
-    correctIndex: 0,
-    hints: [
-      "A single global phase is harmless, but a relative phase is observable.",
-      "Look at the cross term in |ψ|²."
-    ],
-    solution: `The correct answer is that the relative phase between the components evolves in time and modifies the interference term.
-
-Consider a state
-ψ(x,t) = c1φ1(x)e^{-iE1t/ħ} + c2φ2(x)e^{-iE2t/ħ}.
-Each stationary component by itself has a time-independent probability density. The important new feature in the superposition is that the two phases evolve at different rates if E1 ≠ E2.
-
-When one computes |ψ|², cross terms appear. Those terms contain factors involving the phase difference, which depends on (E1 - E2)t/ħ. Because that relative phase changes with time, the interference pattern changes with time as well.
-
-So the state is non-stationary even though each component is stationary when taken separately. The time dependence is not due to any instability of eigenstates; it is due to interference between components with different energies.
-
-Therefore superpositions of stationary states are generally not stationary unless all contributing energies are the same.`
-  },
-  {
-    topic: "Schrödinger Equations",
-    question: "What is the most conceptually important role of the Hamiltonian in the time-dependent Schrödinger equation?",
-    options: [
-      "It generates the time evolution of the quantum state.",
-      "It serves only as a list of possible energy measurement errors.",
-      "It converts every state into a position eigenstate.",
-      "It removes all phase information from the wavefunction."
-    ],
-    correctIndex: 0,
-    hints: [
-      "Think dynamically, not only spectrally.",
-      "Energy interpretation is important, but there is a deeper structural role."
-    ],
-    solution: `The correct answer is that the Hamiltonian generates time evolution.
-
-In the time-dependent Schrödinger equation, the Hamiltonian determines how the state changes with time. This dynamical role is more fundamental than merely saying that it represents energy, although in many standard systems it does serve as the total energy operator.
-
-One way to understand this is to compare quantum mechanics with classical mechanics, where a generator governs evolution in time. In quantum theory, the Hamiltonian plays that role. It controls how phases accumulate and how superpositions evolve.
-
-Its spectral properties are also important. Energy eigenstates are especially convenient because they evolve by simple phase factors. But that convenience is a consequence of the deeper fact that the Hamiltonian is the operator responsible for time translation of the state.
-
-Therefore the most meaningful conceptual description is that the Hamiltonian is the generator of unitary time evolution.`
-  },
-
-  // =====================================================
-  // Particle in a 1D Potential Well
-  // =====================================================
-  {
-    topic: "Particle in a 1D Potential Well",
-    question: "Why must the wavefunction vanish at the boundaries of an infinite square well?",
-    options: [
-      "Because the wavefunction is zero in the region of infinite potential, and continuity requires it to vanish at the walls as well.",
-      "Because the derivative of the wavefunction must always vanish at any boundary.",
-      "Because a particle at a wall must have zero energy.",
-      "Because the normalization condition alone forces boundary values to be zero."
-    ],
-    correctIndex: 0,
-    hints: [
-      "Outside the well the particle is excluded.",
-      "Continuity of the wavefunction is the crucial point."
-    ],
-    solution: `The correct answer is that the wavefunction must match continuously to zero outside the well.
-
-In the idealized infinite square well, the potential is infinite outside the allowed region. In that region the particle cannot be found, so the wavefunction is taken to be zero there. This is the mathematical expression of complete exclusion from the forbidden region.
-
-A physically acceptable wavefunction must be continuous at the boundaries of the well. Since the wavefunction is zero just outside each wall, continuity requires that it also be zero exactly at the wall from the inside.
-
-This boundary condition is not an arbitrary extra rule. It is what selects the standing-wave solutions that fit inside the well. Only those solutions that vanish at both ends are admissible.
-
-Hence the boundary values vanish because the state must connect continuously to the zero wavefunction in the infinite-potential region.`
-  },
-  {
-    topic: "Particle in a 1D Potential Well",
-    question: "Why is the n = 0 candidate excluded from the spectrum of the infinite square well?",
-    options: [
-      "Because it produces the identically zero wavefunction, which cannot be normalized and therefore does not represent a physical state.",
-      "Because it corresponds to negative probability density.",
-      "Because it violates the uncertainty principle directly.",
-      "Because the Hamiltonian is undefined for n = 0."
-    ],
-    correctIndex: 0,
-    hints: [
-      "Evaluate sin(nπx/L) at n = 0.",
-      "A physical wavefunction cannot be zero everywhere."
-    ],
-    solution: `The correct answer is that n = 0 gives the zero function, which is not a physical state.
-
-The well eigenfunctions are proportional to sin(nπx/L). If one formally substitutes n = 0, the result is sin(0) = 0 for every x in the well. That means the wavefunction is identically zero everywhere.
-
-An identically zero function cannot be normalized. Since all probabilities are derived from the normalized wavefunction, the zero function carries no physical probability interpretation at all. It does not represent a state of the particle.
-
-Therefore n = 0 is not the ground state. The lowest admissible state is n = 1, which is nonzero, normalizable, and satisfies the boundary conditions properly.
-
-So the exclusion of n = 0 is a direct consequence of the physical requirement that the state be nontrivial and normalizable.`
-  },
-  {
-    topic: "Particle in a 1D Potential Well",
-    question: "Why is the ground-state energy of the infinite square well nonzero even though the potential inside the well is zero?",
-    options: [
-      "Because the boundary conditions force a standing wave with nonzero curvature, and therefore nonzero kinetic energy.",
-      "Because the particle gains energy from the walls whenever it reflects.",
-      "Because normalization contributes a fixed positive energy.",
-      "Because the potential is actually nonzero at the center of the well."
-    ],
-    correctIndex: 0,
-    hints: [
-      "Total energy is not the same as potential energy.",
-      "Confinement imposes a minimum allowed wavelength."
-    ],
-    solution: `The correct answer is that the confinement enforced by the boundaries produces a minimum nonzero kinetic energy.
-
-Inside the well, the potential energy is indeed zero. However, the total energy is the sum of kinetic and potential contributions. A zero potential does not imply zero total energy.
-
-Because the wavefunction must vanish at both walls, only standing waves that fit the interval are allowed. The lowest such wave is the n = 1 mode, not a constant function. That lowest mode has nonzero curvature, and in quantum mechanics curvature of the wavefunction is associated with kinetic energy.
-
-Equivalently, the allowed wavelengths are quantized, so the momentum cannot be zero in the ground state. The system cannot satisfy the boundary conditions with a completely flat, zero-momentum state.
-
-Therefore the ground state has a positive minimum energy, often called zero-point energy.`
-  },
-  {
-    topic: "Particle in a 1D Potential Well",
-    question: "Why are the energy levels of the infinite square well not equally spaced?",
-    options: [
-      "Because the energies scale as n^2, so successive gaps increase with n.",
-      "Because the width of the well changes for different states.",
-      "Because odd values of n are forbidden.",
-      "Because the potential becomes stronger at higher energy."
-    ],
-    correctIndex: 0,
-    hints: [
-      "Recall the form of E_n.",
-      "Compute E_{n+1} - E_n."
-    ],
-    solution: `The correct answer is that the energies depend quadratically on the quantum number n.
-
-For the infinite square well, the energy spectrum is
-E_n = n^2π^2ħ^2 / (2mL^2).
-The key feature is the factor n^2. If the spectrum were proportional to n, the spacing would be constant. But because it is proportional to n^2, the gaps grow with n.
-
-To see this explicitly, compare consecutive levels:
-E_{n+1} - E_n ∝ (n+1)^2 - n^2 = 2n + 1.
-Since 2n + 1 increases as n increases, the separation between adjacent levels becomes larger at higher n.
-
-This is why the infinite well differs from systems such as the harmonic oscillator, where the energy spacing is uniform. In the well, the allowed standing-wave pattern leads naturally to a quadratic spectrum.
-
-Therefore the levels are not equally spaced because E_n scales as n^2 rather than linearly with n.`
-  }  
-];
-
-/* ---- Push all 10 Module-4 questions into QUESTIONS ---- */
-QUESTIONS.push(
-
-  // ======================================================
-  // TOPIC 1 — 3D Wells & Degeneracy  (Q1–Q5)
-  // ======================================================
-
-  // Q1 — Energy eigenvalues of a 3D cubic infinite well
-  {
-    topic: "3D Wells & Degeneracy",
-    question: "For a particle trapped inside a 3D infinite potential well with equal side length L, the energy eigenvalue E_{n\u2093,n\u1D67,n_z} is:",
-    options: [
-      "(\u03C0\u00B2\u0127\u00B2/2mL\u00B2)(n\u2093\u00B2 + n\u1D67\u00B2 + n_z\u00B2)",
-      "(\u03C0\u00B2\u0127\u00B2/2mL\u00B2)(n\u2093 + n\u1D67 + n_z)",
-      "(\u03C0\u00B2\u0127/2mL\u00B2)(n\u2093\u00B2 + n\u1D67\u00B2 + n_z\u00B2)",
-      "(\u03C0\u00B2\u0127\u00B2/mL\u00B2)(n\u2093\u00B2 + n\u1D67\u00B2 + n_z\u00B2)"
-    ],
-    correctIndex: 0,
-    hints: [
-      "Separate the 3D Schrodinger equation into three independent 1D problems using the product ansatz psi(x,y,z)=X(x)Y(y)Z(z).",
-      "Each 1D box of length L contributes ni^2 * pi^2 * hbar^2 / (2mL^2). Total energy is the sum of all three contributions."
-    ],
-    solution:
-`Step 1: Separate the 3D Schrodinger equation.
-Inside the box the potential is zero, so -(hbar^2/2m) del^2 psi = E psi.
-With the product ansatz psi(x,y,z) = X(x)Y(y)Z(z), this separates into three independent 1D problems.
-
-Step 2: Solve each 1D infinite well.
-For a 1D infinite square well of length L the quantised energy is:
-  En = n^2 * pi^2 * hbar^2 / (2mL^2),   n = 1, 2, 3, ...
-
-Step 3: Add the three independent contributions.
-  E_{nx,ny,nz} = Ex + Ey + Ez = (pi^2 hbar^2 / 2mL^2)(nx^2 + ny^2 + nz^2).
-
-Step 4: Note the quantum number constraints.
-Each ni must be a positive integer (ni = 1, 2, 3, ...). ni = 0 is excluded because it would make the wavefunction vanish everywhere.
-
-Step 5: Conclude.
-The correct energy eigenvalue is E = (pi^2 hbar^2 / 2mL^2)(nx^2 + ny^2 + nz^2).`
-  },
-
-  // Q2 — Ground state energy of a 3D cubic well
-  {
-    topic: "3D Wells & Degeneracy",
-    question: "What is the ground-state energy of a particle in a 3D cubic infinite potential well of side L?",
-    options: [
-      "3pi^2 hbar^2 / (2mL^2)",
-      "pi^2 hbar^2 / (2mL^2)",
-      "pi^2 hbar^2 / (6mL^2)",
-      "9pi^2 hbar^2 / (2mL^2)"
-    ],
-    correctIndex: 0,
-    hints: [
-      "Ground state means all three quantum numbers take their minimum allowed value.",
-      "Each quantum number ni has minimum value 1 (not 0). Substitute (nx, ny, nz) = (1, 1, 1) into the energy formula."
-    ],
-    solution:
-`Step 1: Identify the ground-state quantum numbers.
-Quantum numbers nx, ny, nz each begin at 1.
-So the ground state is the set (nx, ny, nz) = (1, 1, 1).
-
-Step 2: Apply the energy formula.
-E_{1,1,1} = (pi^2 hbar^2 / 2mL^2)(1^2 + 1^2 + 1^2) = (pi^2 hbar^2 / 2mL^2) x 3.
-
-Step 3: Simplify.
-E_ground = 3 pi^2 hbar^2 / (2mL^2).
-
-Step 4: Physical note — zero-point energy.
-This non-zero ground-state energy is the 3D analogue of the zero-point energy.
-It arises from quantum confinement and the Heisenberg uncertainty principle — the particle cannot be at rest inside the box.
-
-Step 5: Conclude.
-Ground-state energy of the 3D cubic infinite well = 3 pi^2 hbar^2 / (2mL^2).`
-  },
-
-  // Q3 — Degeneracy of the first excited level
-  {
-    topic: "3D Wells & Degeneracy",
-    question: "In a 3D cubic infinite potential well, the first excited energy level has nx^2 + ny^2 + nz^2 = 6. What is its degeneracy?",
-    options: [
-      "3  [states: (2,1,1), (1,2,1), (1,1,2)]",
-      "1  [only state (2,1,1)]",
-      "6  [all permutations including sign changes]",
-      "2  [states (2,2,1) and (1,1,2)]"
-    ],
-    correctIndex: 0,
-    hints: [
-      "Find all ordered triples (nx, ny, nz) of positive integers satisfying nx^2 + ny^2 + nz^2 = 6.",
-      "The only integer combination that works is {2, 1, 1} since 4 + 1 + 1 = 6. Count all distinct orderings."
-    ],
-    solution:
-`Step 1: Set up the search.
-We need all (nx, ny, nz) with ni >= 1 and nx^2 + ny^2 + nz^2 = 6.
-
-Step 2: Enumerate systematically.
-Try nx = 2: 4 + ny^2 + nz^2 = 6  =>  ny^2 + nz^2 = 2  =>  ny = nz = 1.  Valid: (2,1,1).
-Try nx = 1: 1 + ny^2 + nz^2 = 6  =>  ny^2 + nz^2 = 5.
-  ny = 2: nz^2 = 1  =>  nz = 1.  Valid: (1,2,1).
-  ny = 1: nz^2 = 4  =>  nz = 2.  Valid: (1,1,2).
-No other positive-integer combinations satisfy the equation.
-
-Step 3: Count distinct states.
-Three distinct states: (2,1,1), (1,2,1), (1,1,2).
-
-Step 4: Confirm all have the same energy.
-Each gives nx^2 + ny^2 + nz^2 = 6,  so E = 6 pi^2 hbar^2 / (2mL^2) for all three.
-
-Step 5: Conclude.
-The first excited energy level of the 3D cubic infinite well is three-fold (triply) degenerate.`
-  },
-
-  // Q4 — Effect of unequal box dimensions on degeneracy
-  {
-    topic: "3D Wells & Degeneracy",
-    question: "A 3D rectangular infinite potential box has sides Lx, Ly, Lz all different. Compared to the cubic box, what happens to degeneracy?",
-    options: [
-      "Most degeneracies are lifted because permutations of quantum numbers now give distinct energies.",
-      "Degeneracy increases because each dimension introduces its own independent set of energy levels.",
-      "Degeneracy is unaffected — it depends only on the number of quantum numbers, not on the dimensions.",
-      "Only the ground state loses degeneracy; all excited states remain degenerate."
-    ],
-    correctIndex: 0,
-    hints: [
-      "For unequal sides the energy is E = (pi^2 hbar^2 / 2m)(nx^2/Lx^2 + ny^2/Ly^2 + nz^2/Lz^2).",
-      "Swapping quantum numbers between axes (e.g. (2,1,1) vs (1,2,1)) no longer gives the same energy when Lx, Ly, Lz are all different."
-    ],
-    solution:
-`Step 1: Write the energy formula for a rectangular box.
-E_{nx,ny,nz} = (pi^2 hbar^2 / 2m)[nx^2/Lx^2 + ny^2/Ly^2 + nz^2/Lz^2].
-
-Step 2: Revisit the cubic case to see why degeneracy existed.
-When Lx = Ly = Lz = L, the energy simplifies to (pi^2 hbar^2/2mL^2)(nx^2+ny^2+nz^2).
-It depends only on the sum nx^2+ny^2+nz^2, so permutations like (2,1,1), (1,2,1), (1,1,2) all give the same energy => degenerate.
-
-Step 3: Check the asymmetric case.
-When the sides differ, swapping quantum numbers changes the energy:
-  (2,1,1): 4/Lx^2 + 1/Ly^2 + 1/Lz^2
-  (1,2,1): 1/Lx^2 + 4/Ly^2 + 1/Lz^2
-These are generally not equal when Lx != Ly, so the degeneracy is lifted.
-
-Step 4: Physical origin of degeneracy.
-Degeneracy in the cubic box arises from its three-fold rotational symmetry (all sides equal). Removing that symmetry removes the degeneracy.
-
-Step 5: Conclude.
-In a rectangular box with all sides unequal, most degeneracies present in the cubic box are lifted.`
-  },
-
-  // Q5 — Normalized 3D eigenfunction
-  {
-    topic: "3D Wells & Degeneracy",
-    question: "The correctly normalized eigenfunction for a particle in a 3D cubic infinite potential well (side L) is:",
-    options: [
-      "(2/L)^(3/2) sin(nx*pi*x/L) sin(ny*pi*y/L) sin(nz*pi*z/L)",
-      "(1/L)^(3/2) sin(nx*pi*x/L) sin(ny*pi*y/L) sin(nz*pi*z/L)",
-      "(2/L)^(3/2) cos(nx*pi*x/L) cos(ny*pi*y/L) cos(nz*pi*z/L)",
-      "(2/L)^(3/2) exp(i*nx*pi*x/L) exp(i*ny*pi*y/L) exp(i*nz*pi*z/L)"
-    ],
-    correctIndex: 0,
-    hints: [
-      "The 3D wavefunction is a product of three independent 1D eigenfunctions. Each 1D normalized form is sqrt(2/L) sin(ni*pi*xi/L).",
-      "Multiply the three 1D functions: the combined normalization prefactor is [sqrt(2/L)]^3 = (2/L)^(3/2)."
-    ],
-    solution:
-`Step 1: Recall the 1D normalized eigenfunction.
-For a 1D infinite square well of length L (0 <= x <= L):
-  psi_n(x) = sqrt(2/L) sin(n*pi*x/L),   n = 1, 2, 3, ...
-This satisfies the boundary conditions psi(0)=psi(L)=0 and is normalised so that integral |psi|^2 dx = 1.
-
-Step 2: Write the 3D solution as a product.
-Because the 3D potential separates, the full wavefunction is:
-  psi(x,y,z) = psi_nx(x) * psi_ny(y) * psi_nz(z).
-
-Step 3: Multiply out.
-  psi = [sqrt(2/L) sin(nx*pi*x/L)] * [sqrt(2/L) sin(ny*pi*y/L)] * [sqrt(2/L) sin(nz*pi*z/L)].
-
-Step 4: Combine the normalization factors.
-  [sqrt(2/L)]^3 = (2/L)^(3/2).
-
-Step 5: Final answer.
-  psi_{nx,ny,nz}(x,y,z) = (2/L)^(3/2) sin(nx*pi*x/L) sin(ny*pi*y/L) sin(nz*pi*z/L).
-This is normalised so that integral over the cube gives 1.`
-  },
-
-
-  // ======================================================
-  // TOPIC 2 — Quantum Tunneling  (Q6–Q10)
-  // ======================================================
-
-  // Q6 — Conceptual introduction to tunneling
-  {
-    topic: "Quantum Tunneling",
-    question: "A particle with total energy E < V0 encounters a rectangular potential barrier of height V0 and width d. What does quantum mechanics predict?",
-    options: [
-      "A non-zero probability that the particle passes through the barrier (quantum tunneling).",
-      "The particle is completely reflected with 100% probability, as in classical mechanics.",
-      "The particle gains energy inside the barrier to overcome V0.",
-      "The particle is permanently trapped inside the barrier."
-    ],
-    correctIndex: 0,
-    hints: [
-      "Classically, E < V0 means the particle cannot enter the barrier and is totally reflected. Quantum mechanics gives a different answer.",
-      "Inside the classically forbidden region the Schrodinger equation gives an exponentially decaying (not zero) wavefunction, allowing a non-zero transmitted wave beyond the barrier."
-    ],
-    solution:
-`Step 1: Classical prediction.
-If E < V0, classical mechanics says the particle cannot enter the barrier. Reflection is total; transmission is zero.
-
-Step 2: Set up the quantum problem — three regions.
-Region I  (x < 0):        free motion, psi_I  = e^{ikx} + R e^{-ikx},  k = sqrt(2mE)/hbar.
-Region II (0 < x < d):    barrier,     psi_II = A e^{-kappa*x} + B e^{+kappa*x},  kappa = sqrt(2m(V0-E))/hbar.
-Region III (x > d):       free motion, psi_III = T e^{ikx}.
-
-Step 3: Key observation inside the barrier.
-Because V0 > E, the Schrodinger equation gives d^2 psi/dx^2 = +kappa^2 psi (positive RHS).
-Solutions are real exponentials, NOT oscillatory. The wavefunction decays but does NOT vanish.
-
-Step 4: Apply boundary conditions.
-Continuity of psi and dpsi/dx at x = 0 and x = d links the three regions.
-Since psi_II(d) is not zero, a transmitted wave psi_III exists — even though E < V0.
-
-Step 5: Conclude.
-Quantum mechanics predicts a non-zero transmission probability.
-This phenomenon is called quantum tunneling.`
-  },
-
-  // Q7 — Decay constant kappa
-  {
-    topic: "Quantum Tunneling",
-    question: "The spatial decay constant kappa of the wavefunction inside a rectangular potential barrier (height V0 > E) is:",
-    options: [
-      "kappa = sqrt(2m(V0 - E)) / hbar",
-      "kappa = sqrt(2m*V0) / hbar",
-      "kappa = sqrt(2m*E) / hbar",
-      "kappa = sqrt(2m(V0 + E)) / hbar"
-    ],
-    correctIndex: 0,
-    hints: [
-      "Start from the time-independent Schrodinger equation inside the barrier: -(hbar^2/2m) d^2psi/dx^2 + V0*psi = E*psi.",
-      "Rearrange to get d^2psi/dx^2 = kappa^2 * psi, then read off kappa^2 = 2m(V0 - E)/hbar^2."
-    ],
-    solution:
-`Step 1: Write the TISE inside the barrier.
-  -(hbar^2/2m) d^2psi/dx^2 + V0*psi = E*psi.
-
-Step 2: Rearrange.
-  d^2psi/dx^2 = [2m(V0 - E)/hbar^2] * psi.
-
-Step 3: Identify kappa^2.
-  Let kappa^2 = 2m(V0 - E)/hbar^2.
-  Since V0 > E, kappa^2 > 0 (real positive number).
-  The equation becomes d^2psi/dx^2 = kappa^2 * psi, giving exponential (not oscillatory) solutions.
-
-Step 4: Extract kappa.
-  kappa = sqrt(2m(V0 - E)) / hbar.
-
-Step 5: Physical interpretation of kappa.
-  kappa sets the penetration length 1/kappa into the barrier.
-  Larger (V0 - E) or heavier mass m => larger kappa => wavefunction decays more rapidly inside the barrier.`
-  },
-
-  // Q8 — Transmission coefficient formula
-  {
-    topic: "Quantum Tunneling",
-    question: "The approximate tunneling transmission coefficient T for a wide rectangular barrier (kappa*d >> 1) is:",
-    options: [
-      "T ≈ exp(-2*kappa*d),  where kappa = sqrt(2m(V0-E))/hbar",
-      "T ≈ exp(+2*kappa*d)",
-      "T ≈ (kappa*d)^2",
-      "T ≈ 1 / (kappa*d)"
-    ],
-    correctIndex: 0,
-    hints: [
-      "Inside the barrier psi ~ e^{-kappa*x}. After traversing distance d, the amplitude is ~ e^{-kappa*d}.",
-      "Transmission probability = |amplitude|^2 = (e^{-kappa*d})^2 = e^{-2*kappa*d}."
-    ],
-    solution:
-`Step 1: Write the decaying wavefunction inside the barrier (dominant term for wide barrier).
-  psi_II(x) ≈ A e^{-kappa*x}.
-
-Step 2: Evaluate the amplitude at the far edge of the barrier x = d.
-  psi_II(d) ≈ A e^{-kappa*d}.
-
-Step 3: The transmitted amplitude is proportional to psi_II(d).
-  Transmitted amplitude ∝ e^{-kappa*d}.
-
-Step 4: Compute the transmission probability (probability = |amplitude|^2).
-  T = |transmitted amplitude|^2 / |incident amplitude|^2 ≈ e^{-2*kappa*d}.
-
-Step 5: Full expression with prefactor (for reference).
-  More precisely: T ≈ 16(E/V0)(1 - E/V0) * e^{-2*kappa*d}.
-  For wide barriers (kappa*d >> 1), the exponential factor dominates completely.
-
-Step 6: Conclude.
-  T ≈ exp(-2*kappa*d)  is the standard approximate result.`
-  },
-
-  // Q9 — Dependence of T on barrier width
-  {
-    topic: "Quantum Tunneling",
-    question: "If the barrier width d is doubled while all other parameters (V0, E, m) remain fixed, the tunneling probability T changes as:",
-    options: [
-      "T → T^2  (the new T is the square of the original T)",
-      "T → T/2  (T halves linearly)",
-      "T → 2T   (T doubles)",
-      "T remains unchanged"
-    ],
-    correctIndex: 0,
-    hints: [
-      "Use T ≈ e^{-2*kappa*d}. Replace d with 2d and compare.",
-      "e^{-2*kappa*(2d)} = e^{-4*kappa*d} = (e^{-2*kappa*d})^2 = T^2."
-    ],
-    solution:
-`Step 1: Write the original transmission probability.
-  T1 = e^{-2*kappa*d}.
-
-Step 2: Write the transmission probability for the doubled barrier width 2d.
-  T2 = e^{-2*kappa*(2d)} = e^{-4*kappa*d}.
-
-Step 3: Express T2 in terms of T1.
-  T2 = (e^{-2*kappa*d})^2 = T1^2.
-
-Step 4: Interpret quantitatively.
-  Since T1 < 1 (it is a probability), T1^2 < T1.
-  Example: if T1 = 0.01, then T2 = 0.0001 — a factor of 100 reduction for only a factor of 2 increase in width.
-
-Step 5: Physical significance.
-  The exponential dependence on width means tunneling probability is extremely sensitive to barrier thickness.
-  This is why quantum tunneling is significant at the atomic/nuclear scale (angstroms and femtometers) but completely negligible for macroscopic barriers.
-
-Step 6: Conclude.
-  Doubling the barrier width squares the transmission coefficient: T → T^2.`
-  },
-
-  // Q10 — Real-world applications of tunneling
-  {
-    topic: "Quantum Tunneling",
-    question: "Which of the following is NOT a real-world phenomenon or application of quantum tunneling?",
-    options: [
-      "Electrical resistance of a thick bulk copper wire at room temperature",
-      "Alpha decay of radioactive nuclei",
-      "Scanning tunneling microscopy (STM)",
-      "Tunnel diodes and Josephson junctions in electronics"
-    ],
-    correctIndex: 0,
-    hints: [
-      "Alpha decay, STM, and tunnel diodes all explicitly require a particle to cross a classically forbidden energy barrier.",
-      "Ask yourself: what is the primary mechanism for current flow in a normal thick metallic conductor — is there any classically forbidden barrier involved?"
-    ],
-    solution:
-`Step 1: Check alpha decay.
-The alpha particle sits inside a nucleus, confined by the nuclear potential.
-Classically it does not have enough energy to escape over the Coulomb barrier.
-Quantum mechanically it tunnels through the barrier — this is the entire mechanism of alpha decay.
-=> This IS a tunneling phenomenon.
-
-Step 2: Check scanning tunneling microscopy (STM).
-The STM tip is positioned nanometres above a conducting surface.
-Electrons tunnel through the vacuum gap (a classically forbidden region) between tip and sample.
-The current varies exponentially with tip-surface distance, consistent with T ~ e^{-2*kappa*d}.
-=> This IS a tunneling phenomenon.
-
-Step 3: Check tunnel diodes and Josephson junctions.
-Tunnel diodes rely on electrons tunneling through a thin depletion or insulating layer.
-Josephson junctions involve Cooper pairs tunneling through a thin insulator between superconductors.
-=> Both ARE tunneling phenomena.
-
-Step 4: Check resistance of a thick copper wire.
-In a normal metallic conductor current flows by drift of conduction electrons in an applied electric field.
-The dominant resistance mechanism is scattering from phonons and crystal impurities — classical electron transport.
-No classically forbidden energy barrier is present; the electrons move freely through the conduction band.
-=> This is NOT a tunneling application.
-
-Step 5: Conclude.
-The correct answer is: electrical resistance of a thick bulk copper wire.`
-  }
-
-); /* ===== End of Module 4 QUESTIONS.push ===== */
-  
-
-
-  /***********************
-   * Utilities
-   ***********************/
-  const letters = ["A", "B", "C", "D"];
-  const STORAGE_KEY = "baphy105_topic_scorecard_v1";
-
-  function escapeHtml(str) {
-    return String(str)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;");
-  }
-
   function shuffleArray(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -2494,383 +216,226 @@ The correct answer is: electrical resistance of a thick bulk copper wire.`
     }
     return arr;
   }
-
   function shuffledQuestionView(q) {
     const items = q.options.map((text, idx) => ({ text, isCorrect: idx === q.correctIndex }));
     shuffleArray(items);
-    const options = items.map(x => x.text);
-    const correctIndex = items.findIndex(x => x.isCorrect);
-    return { options, correctIndex };
+    return { options: items.map(x => x.text), correctIndex: items.findIndex(x => x.isCorrect) };
   }
-
   function loadScorecard() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return {};
-      const data = JSON.parse(raw);
-      return (data && typeof data === "object") ? data : {};
-    } catch {
-      return {};
-    }
+    try { const d = JSON.parse(localStorage.getItem(STORAGE_KEY)); return (d && typeof d==="object") ? d : {}; }
+    catch { return {}; }
   }
+  function saveScorecard(sc)  { localStorage.setItem(STORAGE_KEY, JSON.stringify(sc)); }
+  function resetScorecard()   { localStorage.removeItem(STORAGE_KEY); }
+  function pct(n, d)          { return d ? Math.round(100*n/d)+"%" : "0%"; }
 
-  function saveScorecard(scorecard) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(scorecard));
-  }
-
-  function resetScorecard() {
-    localStorage.removeItem(STORAGE_KEY);
-  }
-
-  function pct(n, d) {
-    if (!d) return "0%";
-    return Math.round((100 * n) / d) + "%";
-  }
-
-  /***********************
-   * State
-   ***********************/
-  let activeTopicKey = null;        // "__ALL__" or topic string
-  let activeQuestions = [];         // chosen set, shuffled order
-  let currentQuestionIndex = 0;
-
-  let score = 0;
-  let attempts = 0;
-  let hintIndex = 0;
-  let locked = false;
-
-  let viewOptions = [];
-  let viewCorrectIndex = -1;
-
+  /* ── state ── */
+  let activeTopicKey = null, activeQuestions = [], currentQuestionIndex = 0;
+  let score = 0, attempts = 0, hintIndex = 0, locked = false;
+  let viewOptions = [], viewCorrectIndex = -1;
   let scorecard = loadScorecard();
 
-  /***********************
-   * UI: Topic menu
-   ***********************/
+  /* ── slides ── */
+  function pdfJsViewerUrl(path) {
+    return "pdfjs/web/viewer.html?file=" + encodeURIComponent(new URL(path, window.location.href).href);
+  }
+  function openSlides(key) {
+    const p = TOPIC_SLIDES[key];
+    if (!p) { alert("Slides not linked for this topic yet."); return; }
+    const panel = document.getElementById("slides-panel");
+    panel.classList.remove("hidden");
+    document.getElementById("slides-topic").textContent  = key + " — " + p.split("/").pop();
+    document.getElementById("slides-frame").src          = pdfJsViewerUrl(p);
+    document.getElementById("slides-download").href      = p;
+    document.getElementById("slides-open-pdf").href      = p;
+    panel.scrollIntoView({ behavior:"smooth", block:"start" });
+  }
+  function closeSlides() {
+    document.getElementById("slides-frame").src = "";
+    document.getElementById("slides-panel").classList.add("hidden");
+  }
+
+  /* ── topic menu ── */
   function buildTopicMenu() {
     const wrap = document.getElementById("topic-buttons");
     wrap.innerHTML = "";
-
     TOPICS.forEach(t => {
       const count = QUESTIONS.filter(q => q.topic === t.key).length;
-
-      const sc = scorecard[t.key] || {};
-      const last = (typeof sc.lastScore === "number") ? `${sc.lastScore}/${sc.lastTotal}` : "—";
-      const best = (typeof sc.bestScore === "number") ? `${sc.bestScore}/${sc.bestTotal}` : "—";
-
-      const pdfPath = TOPIC_SLIDES[t.key] || "";
-      const hasSlides = !!pdfPath;
+      const sc    = scorecard[t.key] || {};
+      const last  = typeof sc.lastScore === "number" ? sc.lastScore+"/"+sc.lastTotal : "—";
+      const best  = typeof sc.bestScore === "number" ? sc.bestScore+"/"+sc.bestTotal : "—";
+      const pdf   = TOPIC_SLIDES[t.key] || "";
 
       const card = document.createElement("div");
       card.className = "topic-card";
       card.innerHTML = `
-        <div>
-          <strong>${escapeHtml(t.label)}</strong>
-          <span class="pill">${count} Q</span>
-        </div>
+        <div><strong>${escapeHtml(t.label)}</strong><span class="pill">${count} Q</span></div>
         <span class="meta">Last: ${escapeHtml(last)} | Best: ${escapeHtml(best)}</span>
-        <span class="meta">Slides: ${hasSlides ? escapeHtml(pdfPath.split("/").pop()) : "Not linked"}</span>
+        <span class="meta">Slides: ${pdf ? escapeHtml(pdf.split("/").pop()) : "Not linked"}</span>
         <div class="topic-actions">
-          <button class="btn btn-primary btn-small" type="button" data-action="start">Start Quiz</button>
-          <button class="btn btn-secondary btn-small" type="button" data-action="view" ${hasSlides ? "" : "disabled"}>View Slides</button>
-        </div>
-      `;
-
+          <button class="btn btn-primary   btn-small" data-action="start">Start Quiz</button>
+          <button class="btn btn-secondary btn-small" data-action="view" ${pdf?"":"disabled"}>View Slides</button>
+        </div>`;
       card.querySelector('[data-action="start"]').addEventListener("click", () => startTopic(t.key));
-      card.querySelector('[data-action="view"]').addEventListener("click", () => openSlides(t.key));
-
+      card.querySelector('[data-action="view"]' ).addEventListener("click", () => openSlides(t.key));
       wrap.appendChild(card);
     });
-
-    document.getElementById("start-all-btn").onclick = startAllTopics;
-
+    document.getElementById("start-all-btn").onclick    = startAllTopics;
     document.getElementById("reset-scores-btn").onclick = () => {
-      if (confirm("Reset all saved topic scores?")) {
-        resetScorecard();
-        scorecard = loadScorecard();
-        buildTopicMenu();
-      }
+      if (confirm("Reset all saved topic scores?")) { resetScorecard(); scorecard=loadScorecard(); buildTopicMenu(); }
     };
   }
-
   function showTopicScreen() {
     document.getElementById("topic-screen").classList.remove("hidden");
     document.getElementById("quiz-content").classList.add("hidden");
     document.getElementById("completion-screen").classList.add("hidden");
-
     document.getElementById("progress").style.width = "0%";
-    setTopStats("—", "—", 0, 0);
+    setTopStats("—","—",0,0);
   }
 
-  /***********************
-   * Start / Restart
-   ***********************/
+  /* ── start / restart ── */
   function resetRunStats() {
-    currentQuestionIndex = 0;
-    score = 0;
-    attempts = 0;
-    hintIndex = 0;
-    locked = false;
-
-    document.getElementById("stat-score").textContent = "0";
+    currentQuestionIndex = score = attempts = hintIndex = 0; locked = false;
+    document.getElementById("stat-score").textContent    = "0";
     document.getElementById("stat-attempts").textContent = "0";
   }
-
-  function startTopic(topicKey) {
-    closeSlides();
-
-    activeTopicKey = topicKey;
-    activeQuestions = QUESTIONS.filter(q => q.topic === topicKey);
-    shuffleArray(activeQuestions);
-
-    resetRunStats();
+  function startTopic(key) {
+    closeSlides(); activeTopicKey = key;
+    activeQuestions = QUESTIONS.filter(q => q.topic === key);
+    shuffleArray(activeQuestions); resetRunStats();
     document.getElementById("topic-screen").classList.add("hidden");
     document.getElementById("quiz-content").classList.remove("hidden");
     loadQuestion();
   }
-
   function startAllTopics() {
-    closeSlides();
-
-    activeTopicKey = "__ALL__";
-    activeQuestions = [...QUESTIONS];
-    shuffleArray(activeQuestions);
-
-    resetRunStats();
+    closeSlides(); activeTopicKey = "__ALL__";
+    activeQuestions = [...QUESTIONS]; shuffleArray(activeQuestions); resetRunStats();
     document.getElementById("topic-screen").classList.add("hidden");
     document.getElementById("quiz-content").classList.remove("hidden");
     loadQuestion();
   }
+  function restartSameTopic() { activeTopicKey==="__ALL__" ? startAllTopics() : startTopic(activeTopicKey); }
+  function backToTopics()     { buildTopicMenu(); showTopicScreen(); }
 
-  function restartSameTopic() {
-    if (activeTopicKey === "__ALL__") return startAllTopics();
-    if (activeTopicKey) return startTopic(activeTopicKey);
-    showTopicScreen();
+  /* ── quiz rendering ── */
+  function setTopStats(topic, q, s, a) {
+    document.getElementById("stat-topic").textContent    = topic;
+    document.getElementById("stat-q").textContent        = q;
+    document.getElementById("stat-score").textContent    = String(s);
+    document.getElementById("stat-attempts").textContent = String(a);
   }
-
-  function backToTopics() {
-    buildTopicMenu();
-    showTopicScreen();
-  }
-
-  /***********************
-   * Quiz rendering
-   ***********************/
-  function setTopStats(topic, qText, scoreVal, attemptsVal) {
-    document.getElementById("stat-topic").textContent = topic;
-    document.getElementById("stat-q").textContent = qText;
-    document.getElementById("stat-score").textContent = String(scoreVal);
-    document.getElementById("stat-attempts").textContent = String(attemptsVal);
-  }
-
   function updateProgress() {
-    const progress = (currentQuestionIndex / activeQuestions.length) * 100;
-    document.getElementById("progress").style.width = progress + "%";
+    document.getElementById("progress").style.width =
+      (currentQuestionIndex / activeQuestions.length * 100) + "%";
   }
-
-  function formatSolution(solution) {
-    return solution.split("\n").map(line => {
+  function formatSolution(sol) {
+    return sol.split("\n").map(line => {
       const t = line.trim();
-      if (t.startsWith("Step") || t.startsWith("•") || /^\d+\./.test(t)) {
-        return `<p style="margin: 8px 0; padding-left: 10px;"><strong>${escapeHtml(line)}</strong></p>`;
-      }
-      return `<p style="margin: 8px 0;">${escapeHtml(line)}</p>`;
+      if (t.startsWith("Step") || t.startsWith("•") || /^\d+\./.test(t))
+        return `<p style="margin:8px 0;padding-left:10px;"><strong>${escapeHtml(line)}</strong></p>`;
+      return `<p style="margin:8px 0;">${escapeHtml(line)}</p>`;
     }).join("");
   }
-
   function loadQuestion() {
-    if (currentQuestionIndex >= activeQuestions.length) {
-      showCompletionScreen();
-      return;
-    }
-
+    if (currentQuestionIndex >= activeQuestions.length) { showCompletionScreen(); return; }
     const q = activeQuestions[currentQuestionIndex];
-    hintIndex = 0;
-    locked = false;
-
+    hintIndex = 0; locked = false;
     const view = shuffledQuestionView(q);
-    viewOptions = view.options;
-    viewCorrectIndex = view.correctIndex;
+    viewOptions = view.options; viewCorrectIndex = view.correctIndex;
 
-    const optionsHTML = viewOptions.map((opt, i) => {
-      const label = letters[i] ? letters[i] + ") " : "";
-      return `<button class="option-btn" id="opt-${i}" onclick="selectOption(${i})">${label}${escapeHtml(opt)}</button>`;
-    }).join("");
-
-    const topicDisplay = (activeTopicKey === "__ALL__") ? "All Topics" : q.topic;
-    setTopStats(topicDisplay, `${currentQuestionIndex + 1}/${activeQuestions.length}`, score, attempts);
+    const opts = viewOptions.map((opt,i) =>
+      `<button class="option-btn" id="opt-${i}" onclick="selectOption(${i})">${letters[i]}) ${escapeHtml(opt)}</button>`
+    ).join("");
+    const topicDisplay = activeTopicKey==="__ALL__" ? "All Topics" : q.topic;
+    setTopStats(topicDisplay, `${currentQuestionIndex+1}/${activeQuestions.length}`, score, attempts);
 
     document.getElementById("quiz-content").innerHTML = `
       <div class="question-card">
-        <div class="question-number">
-          Question ${currentQuestionIndex + 1} of ${activeQuestions.length}
-          | Topic: ${escapeHtml(q.topic)}
-        </div>
-
+        <div class="question-number">Question ${currentQuestionIndex+1} of ${activeQuestions.length} | Topic: ${escapeHtml(q.topic)}</div>
         <div class="question-text">${escapeHtml(q.question)}</div>
-
-        <div class="options">${optionsHTML}</div>
-
+        <div class="options">${opts}</div>
         <div>
           <button class="btn btn-secondary" onclick="backToTopics()">Change Topic</button>
           <button class="btn btn-secondary" id="skip-btn" onclick="skipQuestion()">Skip</button>
           <button class="btn btn-primary hidden" id="next-btn" onclick="nextQuestion()">Next →</button>
         </div>
-
         <div class="feedback" id="feedback"></div>
-
         <div class="solution" id="solution">
           <h3>📖 Full Solution</h3>
           <div class="solution-content">${formatSolution(q.solution)}</div>
         </div>
-      </div>
-    `;
-
+      </div>`;
     updateProgress();
   }
-
-  function setButtonsDisabled(disabled) {
-    for (let i = 0; i < 4; i++) {
-      const btn = document.getElementById(`opt-${i}`);
-      if (btn) btn.disabled = disabled;
-    }
+  function setButtonsDisabled(d) {
+    for (let i=0;i<4;i++) { const b=document.getElementById(`opt-${i}`); if(b) b.disabled=d; }
   }
-
   function showNextOnly() {
-    const nextBtn = document.getElementById("next-btn");
-    const skipBtn = document.getElementById("skip-btn");
-    if (nextBtn) nextBtn.classList.remove("hidden");
-    if (skipBtn) skipBtn.classList.add("hidden");
+    const n=document.getElementById("next-btn"), s=document.getElementById("skip-btn");
+    if(n) n.classList.remove("hidden");
+    if(s) s.classList.add("hidden");
   }
-
   function selectOption(index) {
     if (locked) return;
-
     const q = activeQuestions[currentQuestionIndex];
-    const feedback = document.getElementById("feedback");
-
+    const fb = document.getElementById("feedback");
     attempts++;
     document.getElementById("stat-attempts").textContent = String(attempts);
-
-    const clickedBtn = document.getElementById(`opt-${index}`);
+    const btn = document.getElementById(`opt-${index}`);
 
     if (index === viewCorrectIndex) {
-      locked = true;
-      score++;
+      locked = true; score++;
       document.getElementById("stat-score").textContent = String(score);
-
-      if (clickedBtn) clickedBtn.classList.add("correct");
-
-      feedback.className = "feedback correct";
-      feedback.style.display = "block";
-      feedback.innerHTML = "✅ <strong>Correct!</strong> Here is the full solution:";
-
-      document.getElementById("solution").style.display = "block";
-      setButtonsDisabled(true);
-      showNextOnly();
-      return;
-    }
-
-    if (clickedBtn) clickedBtn.classList.add("wrong");
-
-    if (hintIndex < q.hints.length) {
-      feedback.className = "feedback hint";
-      feedback.style.display = "block";
-      feedback.innerHTML = `💡 <strong>Hint ${hintIndex + 1}:</strong> ${escapeHtml(q.hints[hintIndex])}`;
-      hintIndex++;
+      if (btn) btn.classList.add("correct");
+      fb.className = "feedback correct"; fb.textContent = "✅ Correct!"; fb.style.display = "block";
+      const sol = document.getElementById("solution"); if(sol) sol.style.display = "block";
+      setButtonsDisabled(true); showNextOnly();
     } else {
-      locked = true;
-      feedback.className = "feedback incorrect";
-      feedback.style.display = "block";
-      feedback.innerHTML = "❌ <strong>Incorrect.</strong> Here is the full solution:";
-
-      const correctBtn = document.getElementById(`opt-${viewCorrectIndex}`);
-      if (correctBtn) correctBtn.classList.add("correct");
-
-      document.getElementById("solution").style.display = "block";
-      setButtonsDisabled(true);
-      showNextOnly();
+      if (btn) btn.classList.add("wrong");
+      const hint = q.hints && q.hints[hintIndex] ? q.hints[hintIndex] : null;
+      hintIndex = Math.min(hintIndex+1, (q.hints||[]).length);
+      fb.className   = hint ? "feedback hint" : "feedback incorrect";
+      fb.textContent = hint ? `💡 Hint: ${hint}` : "❌ Incorrect. Try again!";
+      fb.style.display = "block";
     }
   }
-
   function skipQuestion() {
-    if (locked) return;
-
-    const feedback = document.getElementById("feedback");
-    feedback.className = "feedback hint";
-    feedback.style.display = "block";
-    feedback.innerHTML = "⏭️ <strong>Skipped.</strong> Solution shown for reference:";
-
-    const correctBtn = document.getElementById(`opt-${viewCorrectIndex}`);
-    if (correctBtn) correctBtn.classList.add("correct");
-
-    document.getElementById("solution").style.display = "block";
-    locked = true;
-    setButtonsDisabled(true);
-    showNextOnly();
+    const fb = document.getElementById("feedback");
+    fb.className   = "feedback incorrect";
+    fb.textContent = `⏭ Skipped. Answer: ${letters[viewCorrectIndex]}) ${viewOptions[viewCorrectIndex]}`;
+    fb.style.display = "block";
+    const sol = document.getElementById("solution"); if(sol) sol.style.display = "block";
+    setButtonsDisabled(true); showNextOnly();
   }
-
-  function nextQuestion() {
-    currentQuestionIndex++;
-    loadQuestion();
-  }
-
-  /***********************
-   * Completion + scorecard
-   ***********************/
-  function updateScorecardOnFinish() {
-    if (activeTopicKey === "__ALL__") return;
-
-    const topic = activeTopicKey;
-    const total = activeQuestions.length;
-
-    const existing = scorecard[topic] || {};
-    const lastScore = score;
-    const lastTotal = total;
-
-    let bestScore = existing.bestScore;
-    let bestTotal = existing.bestTotal;
-
-    if (typeof bestScore !== "number" || lastScore > bestScore) {
-      bestScore = lastScore;
-      bestTotal = lastTotal;
-    }
-
-    scorecard[topic] = {
-      lastScore, lastTotal,
-      bestScore, bestTotal,
-      updatedAt: new Date().toISOString()
-    };
-
-    saveScorecard(scorecard);
-  }
+  function nextQuestion() { currentQuestionIndex++; loadQuestion(); }
 
   function showCompletionScreen() {
-    updateScorecardOnFinish();
+    const label = activeTopicKey==="__ALL__"
+      ? "All Topics"
+      : (TOPICS.find(t=>t.key===activeTopicKey)||{}).label || activeTopicKey;
+    document.getElementById("final-topic").textContent    = label;
+    document.getElementById("final-score").textContent    = String(score);
+    document.getElementById("final-total").textContent    = String(activeQuestions.length);
+    document.getElementById("final-accuracy").textContent = pct(score, attempts);
 
+    if (activeTopicKey !== "__ALL__") {
+      const sc = scorecard[activeTopicKey] || {};
+      sc.lastScore = score; sc.lastTotal = activeQuestions.length;
+      if (typeof sc.bestScore !== "number" || score > sc.bestScore) {
+        sc.bestScore = score; sc.bestTotal = activeQuestions.length;
+      }
+      scorecard[activeTopicKey] = sc; saveScorecard(scorecard);
+    }
+    document.getElementById("topic-screen").classList.add("hidden");
     document.getElementById("quiz-content").classList.add("hidden");
     document.getElementById("completion-screen").classList.remove("hidden");
-
-    const label = (activeTopicKey === "__ALL__") ? "All Topics" : activeTopicKey;
-
-    document.getElementById("final-topic").textContent = label;
-    document.getElementById("final-score").textContent = String(score);
-    document.getElementById("final-total").textContent = String(activeQuestions.length);
-    document.getElementById("final-accuracy").textContent = pct(score, activeQuestions.length);
-
     document.getElementById("progress").style.width = "100%";
-    setTopStats(label, `${activeQuestions.length}/${activeQuestions.length}`, score, attempts);
   }
 
-  /***********************
-   * Boot
-   ***********************/
-  window.onload = function () {
-    buildTopicMenu();
-    showTopicScreen();
-
-    document.getElementById("slides-close-btn").addEventListener("click", closeSlides);
-  };
+  /* ── init ── */
+  buildTopicMenu();
+  showTopicScreen();
+  document.getElementById("slides-close-btn").addEventListener("click", closeSlides);
 </script>
 </body>
 </html>
