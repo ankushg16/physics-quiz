@@ -5,8 +5,8 @@
 // ============================================================
 
 TOPICS.push(
-  { key: "3D Wells & Degeneracy", label: "3D Potential Wells and Degeneracy" },
-  { key: "Quantum Tunneling",     label: "Quantum Tunneling and Transmission" }
+  { key: "3D Wells & Degeneracy", label: "3D Potential Wells and Degeneracy",    moduleKey: "M4" },
+  { key: "Quantum Tunneling",     label: "Quantum Tunneling and Transmission",   moduleKey: "M4" }
 );
 
 Object.assign(TOPIC_SLIDES, {

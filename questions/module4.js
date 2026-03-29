@@ -5,8 +5,8 @@
 // ============================================================
 
 TOPICS.push(
-  { key: "Schrödinger Equations",           label: "TDSE and TISE" },
-  { key: "Particle in a 1D Potential Well", label: "Particle in a one-dimensional potential well" }
+  { key: "Schrödinger Equations",           label: "TDSE and TISE",                              moduleKey: "M3" },
+  { key: "Particle in a 1D Potential Well", label: "Particle in a one-dimensional potential well", moduleKey: "M4" }
 );
 
 Object.assign(TOPIC_SLIDES, {

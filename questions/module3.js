@@ -5,8 +5,8 @@
 // ============================================================
 
 TOPICS.push(
-  { key: "Measurement in Quantum Mechanics", label: "Measurement in quantum mechanics" },
-  { key: "Sequential Stern-Gerlach",         label: "Sequential Stern-Gerlach experiment" }
+  { key: "Measurement in Quantum Mechanics", label: "Measurement in quantum mechanics",   moduleKey: "M3" },
+  { key: "Sequential Stern-Gerlach",         label: "Sequential Stern-Gerlach experiment",moduleKey: "M3" }
 );
 
 Object.assign(TOPIC_SLIDES, {

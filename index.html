@@ -116,6 +116,39 @@
       border-radius: 12px; background: #f8f9fa;
     }
     .note { color: #666; font-size: 0.9em; margin-top: 8px; text-align: center; }
+    
+    /* ── Module grouping ── */
+.module-section {
+  margin-bottom: 24px;
+}
+
+.module-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  padding: 10px 18px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.module-header .mod-title {
+  font-weight: 700;
+  font-size: 1.05em;
+}
+
+.module-header .mod-meta {
+  font-size: 0.85em;
+  opacity: 0.88;
+}
+
+.module-empty {
+  color: #999;
+  font-style: italic;
+  font-size: 0.92em;
+  padding: 6px 4px;
+}
   </style>
 </head>
 
@@ -139,7 +172,7 @@
   <div id="topic-screen" class="topic-screen">
     <div class="topic-title">Choose a topic</div>
     <div class="topic-subtitle">Options are shuffled every time.</div>
-    <div id="topic-buttons" class="topic-grid"></div>
+    <div id="topic-buttons"></div>
     <div style="text-align:center;">
       <button class="btn btn-primary"   id="start-all-btn">Start Full Quiz (All Topics)</button>
       <button class="btn btn-secondary" id="reset-scores-btn">Reset Saved Scores</button>
@@ -185,7 +218,16 @@
      STEP 1 — shared containers  (modules push into these)
      ══════════════════════════════════════════════════ -->
 <script>
-  const TOPICS       = [];
+  /* Syllabus modules — fixed, matches BAPHY105 */
+  const MODULES = [
+    { key: "Module1", label: "Wave-Particle Duality",               },
+    { key: "Module2", label: "Mathematical Foundations of QM",      },
+    { key: "Module3", label: "Postulates of Quantum Mechanics",     },
+    { key: "Module4", label: "Applications of Quantum Mechanics",   },
+    { key: "Module5", label: "Elements of Quantum Computing",       }
+  ];
+
+  const TOPICS       = [];   /* question files push into this */
   const TOPIC_SLIDES = {};
   const QUESTIONS    = [];
 </script>
@@ -257,9 +299,38 @@
 
   /* ── topic menu ── */
   function buildTopicMenu() {
-    const wrap = document.getElementById("topic-buttons");
-    wrap.innerHTML = "";
-    TOPICS.forEach(t => {
+  const wrap = document.getElementById("topic-buttons");
+  wrap.innerHTML = "";
+
+  MODULES.forEach(mod => {
+    const modTopics = TOPICS.filter(t => t.moduleKey === mod.key);
+
+    const section = document.createElement("div");
+    section.className = "module-section";
+
+    /* ── module header ── */
+    const header = document.createElement("div");
+    header.className = "module-header";
+    header.innerHTML = `
+      <span class="mod-title">${escapeHtml(mod.key)}: ${escapeHtml(mod.label)}</span>
+      <span class="mod-meta">${mod.hours} hrs</span>`;
+    section.appendChild(header);
+
+    if (modTopics.length === 0) {
+      /* placeholder for modules with no questions yet */
+      const empty = document.createElement("div");
+      empty.className = "module-empty";
+      empty.textContent = "No questions added yet for this module.";
+      section.appendChild(empty);
+      wrap.appendChild(section);
+      return;
+    }
+
+    /* ── topic grid ── */
+    const grid = document.createElement("div");
+    grid.className = "topic-grid";
+
+    modTopics.forEach(t => {
       const count = QUESTIONS.filter(q => q.topic === t.key).length;
       const sc    = scorecard[t.key] || {};
       const last  = typeof sc.lastScore === "number" ? sc.lastScore+"/"+sc.lastTotal : "—";
@@ -278,13 +349,20 @@
         </div>`;
       card.querySelector('[data-action="start"]').addEventListener("click", () => startTopic(t.key));
       card.querySelector('[data-action="view"]' ).addEventListener("click", () => openSlides(t.key));
-      wrap.appendChild(card);
+      grid.appendChild(card);
     });
-    document.getElementById("start-all-btn").onclick    = startAllTopics;
-    document.getElementById("reset-scores-btn").onclick = () => {
-      if (confirm("Reset all saved topic scores?")) { resetScorecard(); scorecard=loadScorecard(); buildTopicMenu(); }
-    };
-  }
+
+    section.appendChild(grid);
+    wrap.appendChild(section);
+  });
+
+  document.getElementById("start-all-btn").onclick    = startAllTopics;
+  document.getElementById("reset-scores-btn").onclick = () => {
+    if (confirm("Reset all saved topic scores?")) {
+      resetScorecard(); scorecard = loadScorecard(); buildTopicMenu();
+    }
+  };
+}
   function showTopicScreen() {
     document.getElementById("topic-screen").classList.remove("hidden");
     document.getElementById("quiz-content").classList.add("hidden");

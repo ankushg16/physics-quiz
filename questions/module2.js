@@ -5,8 +5,8 @@
 // ============================================================
 
 TOPICS.push(
-  { key: "Observables & Operators",          label: "Observables and operators" },
-  { key: "Expectation Values & Uncertainty", label: "Expectation values and uncertainty" }
+  { key: "Observables & Operators",          label: "Observables and operators",          moduleKey: "M3" },
+  { key: "Expectation Values & Uncertainty", label: "Expectation values and uncertainty", moduleKey: "M3" }
 );
 
 Object.assign(TOPIC_SLIDES, {
